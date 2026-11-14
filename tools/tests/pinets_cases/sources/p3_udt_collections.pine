@@ -1,0 +1,29 @@
+//@version=6
+indicator("P3 user-defined type and collections")
+type Level
+    float price = na
+    int touches = 0
+
+method bump(Level this) =>
+    this.touches += 1
+    this
+
+makeLevel(float p) =>
+    Level.new(p, 0)
+
+Level a = Level.new()
+Level b = makeLevel(close)
+b.bump()
+b.bump()
+var array<Level> levels = array.new<Level>()
+if barstate.isfirst
+    array.push(levels, Level.new(1.5, 7))
+Level first = array.get(levels, 0)
+plot(na(a.price) ? 1 : 0, title = "A_IS_NA")
+plot(nz(a.price, -2.0), title = "A_NZ")
+plot(a.touches, title = "A_TOUCHES")
+plot(b.price - close, title = "B_DELTA")
+plot(b.touches, title = "B_TOUCHES")
+plot(first.price, title = "FIRST_PRICE")
+plot(first.touches, title = "FIRST_TOUCHES")
+plot(array.size(levels), title = "SIZE")

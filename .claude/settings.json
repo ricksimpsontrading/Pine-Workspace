@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "worktree": {
+    "baseRef": "head"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status:*)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log)",
+      "Bash(git log:*)",
+      "Bash(git show)",
+      "Bash(git show:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git ls-remote:*)",
+      "Bash(git config --get:*)",
+      "Bash(python3 -m tools.pws_workspace version)",
+      "Bash(python3 -m tools.pws_workspace session-status:*)",
+      "Bash(python3 -m tools.pws_workspace menu:*)",
+      "Bash(python3 -m tools.pws_workspace scan:*)",
+      "Bash(python3 -m tools.pws_workspace doctor:*)",
+      "Bash(python3 -m tools.pws_workspace standard-status:*)",
+      "Bash(python3 -m tools.pws_workspace guard:*)",
+      "Bash(python3 -m tools.pws_workspace source-fingerprint:*)",
+      "Bash(python3 -m tools.pws_workspace validation-status:*)",
+      "Bash(python3 -m tools.pws_workspace tv-mode)",
+      "Bash(python3 -m tools.pws_workspace config show)",
+      "Bash(python3 -m tools.pws_workspace migrate --plan)",
+      "Bash(python3 -m tools.pws_workspace migrate --list-backups)",
+      "Bash(python3 -m tools.pws_workspace tooling-status)",
+      "Bash(python3 -m tools.pws_workspace pinets status)",
+      "Bash(python3 -m tools.pws_workspace pinets verify)",
+      "Bash(python3 -m tools.pws_workspace pinets recalibrate-plan)",
+      "Bash(python3 -m tools.pws_workspace github status)",
+      "Bash(python3 -m tools.pws_workspace github destinations)",
+      "Bash(python3 -m tools.pws_workspace github export-diff:*)",
+      "Bash(python3 -m tools.pws_workspace maintenance cleanup)",
+      "Bash(python3 -m tools.pws_workspace license status:*)",
+      "Bash(python3 -m tools.pws_workspace license render:*)",
+      "Bash(python3 -m tools.pws_workspace license templates)",
+      "Bash(gh auth status:*)",
+      "Bash(gh repo view:*)"
+    ],
+    "ask": [
+      "Bash(git commit)",
+      "Bash(git commit:*)",
+      "Bash(git remote)",
+      "Bash(git remote:*)",
+      "Bash(git push)",
+      "Bash(git push:*)",
+      "Bash(python3 -m tools.pws_workspace github publish:*)",
+      "Bash(python3 -m tools.pws_workspace github fetch:*)",
+      "Bash(python3 -m tools.pws_workspace pinets install:*)",
+      "Bash(python3 -m tools.pws_workspace pinets rollback:*)",
+      "Bash(python3 -m tools.pws_workspace pinets check-update)",
+      "Bash(python3 -m tools.pws_workspace migrate --apply)",
+      "Bash(python3 -m tools.pws_workspace migrate --rollback:*)",
+      "Bash(python3 -m tools.pws_workspace maintenance archives-remove-source:*)",
+      "Bash(python3 -m tools.pws_workspace update check:*)",
+      "Bash(python3 -m tools.pws_workspace update fetch:*)",
+      "Bash(python3 -m tools.pws_workspace update apply:*)",
+      "Bash(python3 -m tools.pws_workspace build-release:*)",
+      "Bash(python3 -m tools.pws_workspace build-distribution:*)",
+      "Bash(python3 -m tools.pws_workspace upgrade:*)",
+      "Bash(python3 -m tools.pws_workspace init:*)",
+      "Bash(python3 -m tools.pws_workspace maintenance cleanup --execute)",
+      "Bash(python3 -m tools.pws_workspace maintenance cleanup --execute:*)",
+      "Bash(python3 -m tools.pws_workspace maintenance archives-import:*)",
+      "Bash(python3 -m tools.pws_workspace license write:*)",
+      "Bash(python3 -m tools.pws_workspace license set-fields:*)",
+      "Bash(python3 -m tools.pws_workspace license confirm:*)",
+      "Bash(python3 -m tools.pws_workspace pinets verify --record:*)",
+      "Bash(python3 -m tools.pws_workspace github destination-remove:*)",
+      "Bash(git tag)",
+      "Bash(git tag:*)",
+      "Bash(gh release:*)",
+      "Bash(gh auth login:*)",
+      "Bash(gh repo create:*)"
+    ],
+    "deny": [
+      "Bash(gh repo delete:*)",
+      "Bash(gh api:*)",
+      "Bash(gh secret:*)",
+      "Bash(gh auth token:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 -m tools.pws_workspace hook-session-start",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 -m tools.pws_workspace hook-stop",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

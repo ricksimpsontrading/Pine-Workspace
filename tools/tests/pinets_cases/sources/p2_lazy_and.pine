@@ -1,0 +1,5 @@
+//@version=6
+indicator("P2 lazy and")
+var array<float> empty = array.new<float>(0)
+bool guarded = array.size(empty) > 0 and array.get(empty, 0) > 0
+plot(guarded ? 1 : 0, title = "GUARDED")

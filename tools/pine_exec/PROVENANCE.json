@@ -1,0 +1,35 @@
+{
+  "installed_artifact": {
+    "note": "recorded by `pinets verify --record` from the artifact on disk",
+    "path": "node_modules/pinets/dist/pinets.min.es.js",
+    "recorded_at": "2026-11-06T02:23:39Z",
+    "sha256": "fe414fedd3a8e99e582a131dab43d2bfd816bca33ffe2624cb41b41ab1a8761d"
+  },
+  "license": {
+    "commercial_license_held": false,
+    "installed_metadata_license": "AGPL-3.0-only",
+    "license_basis": "AGPL-3.0-only",
+    "notice_conserved": "PINETS_LICENSE (copie versionnee du fichier LICENSE du paquet installe, sha256 6f1e622c82a380075843bb084a7ec3b1f1d12a4a02526d75e78b0924a860aa75)",
+    "usage_scope_assessment": "Usage local du moteur : chaque utilisateur installe PineTS lui-meme depuis npm (version epinglee) et l'execute sur sa machine. La distribution publique de Pine-Workspace livre le thin adapter, place sous AGPL-3.0-only par decision du titulaire du 2026-11-13 (tools/pine_exec/*.mjs et metadonnees du paquet ; texte officiel dans tools/pine_exec/LICENSE), la declaration de dependance (pin, lockfile) et cette copie de la licence de PineTS, jamais PineTS. Architecture : l'adaptateur charge PineTS dans son propre processus Node ; le coeur Apache-2.0 ne charge jamais PineTS : son outillage Python lance les programmes de l'adaptateur comme processus separes et echange des fichiers et du JSON, et ses tests contiennent de courts programmes JavaScript qui importent des modules de l'adaptateur (jamais PineTS directement). Evaluation d'usage enregistree, PAS une analyse juridique : la frontiere entre composants n'est pas tranchee juridiquement (analyse du 2026-11-13). Toute distribution de PineTS ou d'un derive, toute modification de PineTS, toute integration du moteur a un produit distribue ou toute exposition comme service reseau impose d'arreter et de refaire l'analyse de licence (spec 24.4.13).",
+    "adapter_license": "AGPL-3.0-only",
+    "adapter_license_text": "tools/pine_exec/LICENSE : texte officiel de la GNU AGPL v3 (gnu.org, sha256 0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0)"
+  },
+  "package": "pinets",
+  "pinned_version": "0.10.0",
+  "provenance": {
+    "github_tag_note": "Existence d'un tag GitHub correspondant a npm 0.10.0 : NON VERIFIEE le 2026-09-29. Le registre declare gitHead 1f65fa2dc1d46a9b254163599030f4bc27580922. Le pin fait foi sur le registry npm, jamais sur un tag GitHub, conformement a la spec (version depuis l'artefact reellement installable).",
+    "installation_note": "Installation du 2026-09-29 hors ligne, scripts desactives, depuis le cache npm de l'installation isolee d'evaluation du 2026-09-28. Lockfile et node_modules identiques a cette installation (4 paquets, memes versions et integrites). dist/pinets.min.es.js sha256 fe414fedd3a8e99e582a131dab43d2bfd816bca33ffe2624cb41b41ab1a8761d.",
+    "lockfile_integrity_matches_registry": true,
+    "previous_pin": {
+      "pinned_version": "0.9.33",
+      "registry_integrity": "sha512-co+TfFuiNYy8ph2N8efMLZcJ/BPhJs2Eb8Hn0a+d08KxyKIueYs0DyN6vudAfpr6X2phaUghAHbbfExfbD/sJw==",
+      "replaced_on": "2026-09-29",
+      "rollback": "docs/maintenance/2026-09-28-migration-pinets-0.10.0/02-dossier-migration.md, section 5"
+    },
+    "published_at": "2026-09-25T12:30:27Z",
+    "registry": "https://registry.npmjs.org/pinets",
+    "registry_integrity": "sha512-kwm/S5HzF6qKtOzVnqV3HczPPjUbd6q1rPXKldyYiceGx9vTY2ZTd8Ae5GLb8wo+TqA0Exrg/RShjTGsbP/e2A==",
+    "tarball": "https://registry.npmjs.org/pinets/-/pinets-0.10.0.tgz"
+  },
+  "verified_at": "2026-09-29"
+}

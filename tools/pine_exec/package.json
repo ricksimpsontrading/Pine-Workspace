@@ -1,0 +1,11 @@
+{
+  "name": "pws-pine-exec",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Thin local adapter around PineTS for capability-gated behavioral execution of Pine sources (Pine Workspace). Not a platform, not a server, not a TradingView substitute.",
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "pinets": "0.10.0"
+  }
+}

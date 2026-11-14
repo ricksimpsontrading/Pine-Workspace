@@ -1,0 +1,5 @@
+# Gitignored local files the workflow depends on inside worktrees
+# (only files that are BOTH matched here and gitignored are copied).
+.claude/settings.local.json
+CLAUDE.local.md
+pws.config.json

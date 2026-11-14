@@ -1,0 +1,144 @@
+{
+  "capabilities": {
+    "declaration-indicator": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "declaration indicator() v6 acceptee et executee",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "parametres de declaration (overlay, max_*_count...) non couverts"
+    },
+    "math-arith": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "(high + low) / 2 (plot MID) concordant 60/60 points",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "operateurs +, / seuls testes ; pas de division par zero ni valeurs extremes"
+    },
+    "plot-plot": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "canal de sortie plot() fonctionnel : 4 series titrees restituees avec na -> null",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "options de style et plots multiples non couverts"
+    },
+    "series-builtin": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "close/high/low consommes correctement par SMA5/PREV/MID concordants",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "hl2/hlc3/ohlc4/volume non testes individuellement"
+    },
+    "series-history": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "close[1] (plot PREV) concordant 60/60 points avec la reference independante",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "un seul offset teste ([1]) : pas encore representatif"
+    },
+    "ta-ema": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "EMA5 suit la convention SMA-seed (na barres 0-3, seed=SMA(5) barre 4) : 56/60 points exacts vs reference SMA-seed, 4/60 divergent d'au plus 1 ulp au 12e chiffre significatif (ordre d'accumulation flottante)",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [
+        "Convention de seed : PineTS utilise SMA-seed, PAS la recurrence seedee premiere valeur (57/60 points divergents vs cette variante). La correspondance avec le comportement TradingView reel n'est PAS etablie localement et exigerait une observation TradingView.",
+        "Ecarts flottants d'ordre d'accumulation <= 1 ulp a 12 chiffres sur 4/60 points : comparaison tolerante requise (tolerance relative 1e-9) pour cette capability."
+      ],
+      "rationale_non_gating": "convention de seed non arbitree contre TradingView et concordance non exacte au bit pres : non representatif pour un claim gating"
+    },
+    "ta-sma": {
+      "calibration_status": "CURRENT",
+      "capability_status": "EXPERIMENTAL",
+      "cases": [
+        "calib-core"
+      ],
+      "evidence": "SMA5 concordant 60/60 points (na initiaux inclus) avec la reference independante apres arrondi 12 chiffres significatifs",
+      "evidence_artifacts": [
+        "calib-core.pine",
+        "calib-core.expected.json",
+        "lcg-42-60.json"
+      ],
+      "known_divergences": [],
+      "rationale_non_gating": "un seul dataset et une seule longueur : pas encore representatif pour un claim gating"
+    }
+  },
+  "case_artifacts": {
+    "calib-core.expected.json": {
+      "claim_type": "local-math-contract",
+      "path": "cases/calib-core.expected.json",
+      "reference_provenance": "Calcule par tools/tests/ref_indicators.py (implementation independante, PineTS jamais utilise comme oracle), sha256 5b9f819a9a10578c202c1d8510b090bb4faab1a2364bd2f5e3333a61f1bd48d4",
+      "sha256": "32f5f30266b29dff24bbd8f08949d4871362b533bc7101e6934b5610ea8aa322"
+    },
+    "calib-core.pine": {
+      "path": "cases/calib-core.pine",
+      "sha256": "2af35b3a46c1c3a1d8553477c1833481d9bfda39edf8e85f55180fcbe409f5fb"
+    },
+    "lcg-42-60.json": {
+      "descriptor": "synthetique deterministe lcg-ohlcv-v1 seed=42 bars=60, arithmetique 32 bits, reproduit exactement par le miroir Python (verifie)",
+      "path": "datasets/lcg-42-60.json",
+      "sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36"
+    }
+  },
+  "environment": {
+    "calibrated_at": "2026-11-13",
+    "executor_fingerprint": "61ac912abd51d5b2e609380764d1d0c3d94a8eaea85dfdf1c30b83b05cc7f685",
+    "normalization_schema": "pws-pinets-norm-v2",
+    "pinets_version": "0.10.0",
+    "recalibration_note": "Recalibration du 2026-09-05 (seconde vague, apres revue adversariale) : normalisation passee a pws-pinets-norm-v2 (tri des alertes par code-unit, independant de la locale), fingerprint incluant exec_argv, refus validation/ physique et insensible a la casse, fraicheur exigeant des artefacts verifies lies aux cas, compare valide en forme, classificateur durci (balance de parentheses, chaines completes, locals prioritaires). Cas re-executes contre les memes references independantes : SMA5/PREV/MID concordants exacts, EMA5 conforme a la divergence documentee (SMA-seed, tolerance 1e-9). Identites precedentes (389d6869... du 2026-09-04, 387106eb... vague 1) : historiques, STALE par derivation. | Recalibration 3e vague (2026-09-05) : contrat evidence_artifacts explicite par capability (liste non vide, integralement verifiee, incluant au moins une reference independante avec reference_provenance ; staleness scopee aux capabilities reellement concernees), compare exigeant identites typees et payload normalise des deux cotes, contrat de rapport 51.4 partage promotion/lecture. Cas re-executes contre les memes references : concordances inchangees. | Recalibration finale 3e vague (2026-09-06) apres durcissements de la revue ciblee : confinement physique des artefacts de calibration (traversal/symlink = echec), sections non-plot actionnables dans compare, refus des formes corrompues du run precedent a la promotion, preuves verifiees aussi a la promotion. Cas re-executes : concordances inchangees. | Recalibration 4e vague (2026-09-06) apres durcissement des identites requises par compare (identite 24.4.6 complete typee, configuration jamais defaultee, source_sha256 requis des deux cotes). Cas re-executes : concordances inchangees. | Recalibration finale 4e vague (2026-09-06) apres les 4 MINOR de la revue ciblee (traversal de namespace de preuves refuse structurellement, incoherence passed etendue a tout resultat enregistre, timestamp RFC 3339 exige par compare, diff CHANGED jamais vide). Concordances inchangees. | Recalibration du 2026-09-29 apres migration de l'executeur actif de PineTS 0.9.33 vers 0.10.0 (decision de Rick). Identite precedente (pinets 0.9.33, fingerprint 57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2, calibree le 2026-09-05) : historique, STALE par derivation. Cas calib-core re-execute contre les memes references independantes, inchangees : SMA5/PREV/MID concordants exacts, EMA5 conforme a la convention SMA-seed dans la tolerance 1e-9 ; sortie normalisee identique a celle obtenue sous 0.9.33 (payload sha256 a0c978caeefb6e251c630c8cc2a98a27e1511dc1dfcb99560dc2a9599bb6aa16). Aucun statut de capability modifie : les sept restent EXPERIMENTAL. Aucune promotion GATING. | Recalibration du 2026-11-13 apres changement des seules metadonnees de licence de l'adaptateur (decision du titulaire : en-tetes SPDX AGPL-3.0-only et mentions dans runner/normalize/datasets/fingerprint.mjs, champ license de package.json et de l'entree racine du lockfile). Identite precedente (pinets 0.10.0, fingerprint a7494ac94d37017dc768fa71eb29ffc13df833fbf7d3f09705bd3f69c9d5b958, calibree le 2026-09-29) : historique, STALE par derivation. Moteur inchange : pin 0.10.0, versions et integrites du lockfile, artefact installe fe414fedd3a8e99e582a131dab43d2bfd816bca33ffe2624cb41b41ab1a8761d. Cas calib-core re-execute contre les memes references independantes, inchangees : SMA5/PREV/MID concordants exacts, EMA5 conforme a la convention SMA-seed (ecart relatif max 9.1e-12, tolerance 1e-9) ; sortie normalisee identique a celle de l'identite precedente (payload sha256 a0c978caeefb6e251c630c8cc2a98a27e1511dc1dfcb99560dc2a9599bb6aa16) : aucun changement du comportement execute. Hashes des artefacts de cas inchanges. Aucun statut de capability modifie : les sept restent EXPERIMENTAL. Aucune promotion GATING."
+  },
+  "policy": {
+    "detection_note": "capabilities_used des runs = detection lexicale (borne inferieure declaree). Toute conclusion gating future exige zero token non classifie (regle closed-world du runner).",
+    "effective_gating_note": "effective_gating n'est JAMAIS persiste ici : il est derive a la lecture (capability_status == GATING ET calibration_status == CURRENT). Le doctor verifie son absence.",
+    "evidence_contract": "CURRENT exige que evidence_artifacts de la capability soit non vide, que chaque artefact liste verifie son hash, et qu'au moins un porte reference_provenance (reference independante, spec 24.4.5). Un artefact defaillant ne rend STALE que les capabilities qui le listent ; une derive d'environnement rend STALE tout CURRENT.",
+    "promotion_criteria": "Une promotion GATING d'une capability exige une recalibration explicite contre le triplet exact courant avec un jeu de cas representatif : plusieurs datasets (dont zone de warmup na, gaps, valeurs extremes), plusieurs longueurs/parametres, reference independante hashee, et decision consignee. Jamais de promotion automatique.",
+    "zero_gating_statement": "Aucune capability n'est GATING au bootstrap. Ce resultat est honnete et valide (spec 61.10.17 / 64.3) : les cas de calibration executes sont reels et concordants mais pas encore representatifs pour un claim gating (un seul dataset synthetique, une seule longueur par indicateur, pas de cas limites na/gaps)."
+  },
+  "schema": "pws-calibration-v1"
+}

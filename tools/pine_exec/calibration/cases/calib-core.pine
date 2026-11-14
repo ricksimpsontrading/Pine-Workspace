@@ -1,0 +1,6 @@
+//@version=6
+indicator("PWS Calibration Core")
+plot(ta.sma(close, 5), title="SMA5")
+plot(ta.ema(close, 5), title="EMA5")
+plot(close[1], title="PREV")
+plot((high + low) / 2, title="MID")

@@ -1,0 +1,1277 @@
+{
+ "counts": {
+  "CONCORDANT": 6,
+  "CONCORDANT_WITHIN_TOLERANCE": 1,
+  "DIVERGENT": 0,
+  "EXECUTION_FAIL": 5,
+  "NOT_DETERMINISTIC": 0,
+  "OBSERVED_ONLY": 0
+ },
+ "engine_identities": [
+  {
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "pinets_version": "0.9.33"
+  }
+ ],
+ "nature": "observation d'un moteur sur des cas generiques ; ni test du tooling, ni calibration, ni validation TradingView ; aucun statut gating",
+ "observations": [
+  {
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "control-flow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P1-typed-counter",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "error": "Failed to transpile Pine Script version 6: Expected OPERATOR but got IDENTIFIER at 5:10",
+   "execution_status": "PINETS_EXECUTION_FAIL",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "784096b4fd77baed22c7c6f5f010416ed7ab946fe06953a391a47235d22d1831",
+   "family": "P1",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "outcome": "EXECUTION_FAIL",
+   "pinets_version": "0.9.33",
+   "same_error_on_second_run": true,
+   "source_sha256": "911424bbb918187d1d214e11e3acdd1162284a05d62cfade54ad551e6ecd3726",
+   "unclassified_tokens": [
+    "i"
+   ]
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "control-flow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P1-untyped-counter",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "7c254c03848198556782c4ca51388b002b1d80c2c3a4faedaf7a818f7d99c944",
+   "family": "P1",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "423e77ce4709e9abfc4d13e6eab9a11d41398ee1961c4fc2bae6c54a3065dd51",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "TOTAL": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "TOTAL"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "b60cae1cc9e62e11725a31da342725e8876ee253ca32c37dd9b856c1018db596",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  },
+  {
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-flow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-function": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P1-typed-counter-in-function",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "error": "Failed to transpile Pine Script version 6: Expected OPERATOR but got IDENTIFIER at 6:18",
+   "execution_status": "PINETS_EXECUTION_FAIL",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "72e3a9cf52e5c5c8ae51b76f3cce4c7457e4a552efdf3bf08349086850ea3ab2",
+   "family": "P1",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "outcome": "EXECUTION_FAIL",
+   "pinets_version": "0.9.33",
+   "same_error_on_second_run": true,
+   "source_sha256": "df8029c9d7f77d7b339f4cc52f636b877c8a8492dd6309621bf9de0cc944e4e3",
+   "unclassified_tokens": [
+    "i"
+   ]
+  },
+  {
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "array-get": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-new": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-size": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "logic-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "state-var": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P2-lazy-and",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "error": "Index 0 is out of bounds, array size is 0.",
+   "execution_status": "PINETS_EXECUTION_FAIL",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "8894d8ddcdd62c6e5488bbb72a4ade55d68e3c5ae2f63f8e418f4ead7d1528d4",
+   "family": "P2",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "outcome": "EXECUTION_FAIL",
+   "pinets_version": "0.9.33",
+   "same_error_on_second_run": true,
+   "source_sha256": "1838556cd7ba04c809b003fcd7179b96b19e7a61fc71e2c9401f477d57451350",
+   "unclassified_tokens": []
+  },
+  {
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "array-get": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-new": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-size": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "logic-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "state-var": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P2-lazy-or",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "error": "Index 0 is out of bounds, array size is 0.",
+   "execution_status": "PINETS_EXECUTION_FAIL",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "8a0f92728e71aba2f570da3df3446a05e5944f1b29324ecb2454b00dc630cb34",
+   "family": "P2",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "outcome": "EXECUTION_FAIL",
+   "pinets_version": "0.9.33",
+   "same_error_on_second_run": true,
+   "source_sha256": "4d3a85f33f85f8aaeff5490f93af1aa9478766ad88e0cea22af2aff9db128239",
+   "unclassified_tokens": []
+  },
+  {
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "array-get": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-new": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-size": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "state-var": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P2-lazy-ternary",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "error": "Index 0 is out of bounds, array size is 0.",
+   "execution_status": "PINETS_EXECUTION_FAIL",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "ee2d7e318cabd00a9e4274fa0e6200b12a044ca6a1642621b76da8078f6b701f",
+   "family": "P2",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "outcome": "EXECUTION_FAIL",
+   "pinets_version": "0.9.33",
+   "same_error_on_second_run": true,
+   "source_sha256": "7f6337b25bed2aad52c959b9acb7d65a2c493f68f7f5d126f590bf41ab630939",
+   "unclassified_tokens": []
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "array-get": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-new": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-push": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-size": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "barstate-isfirst": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "builtin-nz": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-flow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-function": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-method": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-type": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "state-var": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "udt-member-access": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P3-udt-collections",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "330d160ab0c2605f921d985ee84eaa06faf6790ea6f3b3c9ec9c2134afa35356",
+   "family": "P3",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "2f1be5565e97625ec2c3f29cdfc2764116ef1f19149587dfff48ca8841ab0837",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "A_IS_NA": {
+     "observed": {
+      "A_IS_NA": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "A_IS_NA"
+     ],
+     "status": "exploration"
+    },
+    "A_NZ": {
+     "observed": {},
+     "observed_absent": true,
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [],
+     "status": "exploration"
+    },
+    "A_TOUCHES": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "A_TOUCHES"
+     ],
+     "status": "established"
+    },
+    "B_DELTA": {
+     "observed": {
+      "B_DELTA": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "B_DELTA"
+     ],
+     "status": "exploration"
+    },
+    "B_TOUCHES": {
+     "observed": {
+      "B_TOUCHES": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "B_TOUCHES"
+     ],
+     "status": "exploration"
+    },
+    "FIRST_PRICE": {
+     "observed": {
+      "FIRST_PRICE": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "FIRST_PRICE"
+     ],
+     "status": "exploration"
+    },
+    "FIRST_TOUCHES": {
+     "observed": {
+      "FIRST_TOUCHES": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "FIRST_TOUCHES"
+     ],
+     "status": "exploration"
+    },
+    "SIZE": {
+     "observed": {
+      "SIZE": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "candidate"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "SIZE"
+     ],
+     "status": "exploration"
+    }
+   },
+   "source_sha256": "9401ae948c053fd7ef0e9047319e081bc6a1aa7ffdb05b347ccfadac8453eb9b",
+   "unclassified_tokens": [
+    "Level",
+    "Level.new"
+   ],
+   "unexpected_payload_keys": {
+    "#1": {
+     "all_null": true,
+     "distinct_values_sample": [],
+     "points": 60
+    }
+   },
+   "warnings_recorded": []
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-history": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-ema": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-sma": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P4-core-lcg60",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "6b16ffd18b7eeeec2222bd6327c0f7b2c879fbcab858f312abeaa6384c27496b",
+   "family": "P4",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "3cf51467eda21888ec9ebf71a6c5578b084db3ba5f19669534d28e4d512bed6b",
+   "outcome": "CONCORDANT_WITHIN_TOLERANCE",
+   "pinets_version": "0.9.33",
+   "series": {
+    "EMA1": {
+     "equals": [
+      "first_value_seed",
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA1"
+     ],
+     "status": "established"
+    },
+    "EMA20": {
+     "close_to": [
+      "sma_seed"
+     ],
+     "detail": {
+      "sma_seed": {
+       "actual": {
+        "t": 1577970000000,
+        "v": 110.557792638
+       },
+       "differing_points": 2,
+       "expected": {
+        "t": 1577970000000,
+        "v": 110.557792637
+       },
+       "first_index": 37,
+       "largest_relative_gap": 9.354055767774425e-12,
+       "na_pattern_mismatches": 0,
+       "reason": "values",
+       "within_tolerance": true
+      }
+     },
+     "outcome": "CONCORDANT_WITHIN_TOLERANCE",
+     "payload_keys": [
+      "EMA20"
+     ],
+     "status": "established"
+    },
+    "EMA5": {
+     "close_to": [
+      "sma_seed"
+     ],
+     "detail": {
+      "sma_seed": {
+       "actual": {
+        "t": 1577937600000,
+        "v": 111.729833156
+       },
+       "differing_points": 4,
+       "expected": {
+        "t": 1577937600000,
+        "v": 111.729833155
+       },
+       "first_index": 28,
+       "largest_relative_gap": 9.088230796324808e-12,
+       "na_pattern_mismatches": 0,
+       "reason": "values",
+       "within_tolerance": true
+      }
+     },
+     "outcome": "CONCORDANT_WITHIN_TOLERANCE",
+     "payload_keys": [
+      "EMA5"
+     ],
+     "status": "established"
+    },
+    "PREV1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV1"
+     ],
+     "status": "established"
+    },
+    "PREV3": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV3"
+     ],
+     "status": "established"
+    },
+    "SMA1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA1"
+     ],
+     "status": "established"
+    },
+    "SMA20": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA20"
+     ],
+     "status": "established"
+    },
+    "SMA5": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA5"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-history": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-ema": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-sma": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P4-core-constant",
+   "dataset_sha256": "f96172aa8db31b54603b329da1d768538d6f2a85b867bf1b4467d9b0268865fa",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "ca024689c5f5375a5de48ec1b831f9f31c22e56723427b4957f51aa2e75758a6",
+   "family": "P4",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "d64c3f6f4a04ba917b24afd1c99e2874d211c19912ba2a34b0199d016bb9263d",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "EMA1": {
+     "equals": [
+      "first_value_seed",
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA1"
+     ],
+     "status": "established"
+    },
+    "EMA20": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA20"
+     ],
+     "status": "established"
+    },
+    "EMA5": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA5"
+     ],
+     "status": "established"
+    },
+    "PREV1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV1"
+     ],
+     "status": "established"
+    },
+    "PREV3": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV3"
+     ],
+     "status": "established"
+    },
+    "SMA1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA1"
+     ],
+     "status": "established"
+    },
+    "SMA20": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA20"
+     ],
+     "status": "established"
+    },
+    "SMA5": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA5"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-history": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-ema": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-sma": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P4-core-monotone",
+   "dataset_sha256": "1766305c3d4d8d89a6bc88326a960d45aee50faf845dce696a8dc8f758347ba5",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "8edd41ec7bac5e22e24d02ba2e6f87e8c6101040d0f2cc2f89c590e5514196bd",
+   "family": "P4",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "fc1f5a3473d5e7f27db17c2b5b67b691968a8270b0fd3a4fbee61abf9e32c5be",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "EMA1": {
+     "equals": [
+      "first_value_seed",
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA1"
+     ],
+     "status": "established"
+    },
+    "EMA20": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA20"
+     ],
+     "status": "established"
+    },
+    "EMA5": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA5"
+     ],
+     "status": "established"
+    },
+    "PREV1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV1"
+     ],
+     "status": "established"
+    },
+    "PREV3": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV3"
+     ],
+     "status": "established"
+    },
+    "SMA1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA1"
+     ],
+     "status": "established"
+    },
+    "SMA20": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA20"
+     ],
+     "status": "established"
+    },
+    "SMA5": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA5"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  },
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-history": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-ema": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-sma": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P4-core-gapped",
+   "dataset_sha256": "3929a60e19d345366b6780e8deddb6cb2a0d7d02823fbc826475b010a4860d16",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "9fcb415fab9d99bb2f918f1ff8b5b4d956f4192856a11165742caae188801ead",
+   "family": "P4",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "374d8a11e9c7349c6366e9d93b83e7a327c29a8e4fc6ba430652530d793a8edf",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "EMA1": {
+     "equals": [
+      "first_value_seed",
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA1"
+     ],
+     "status": "established"
+    },
+    "EMA20": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA20"
+     ],
+     "status": "established"
+    },
+    "EMA5": {
+     "equals": [
+      "sma_seed"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "EMA5"
+     ],
+     "status": "established"
+    },
+    "PREV1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV1"
+     ],
+     "status": "established"
+    },
+    "PREV3": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PREV3"
+     ],
+     "status": "established"
+    },
+    "SMA1": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA1"
+     ],
+     "status": "established"
+    },
+    "SMA20": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA20"
+     ],
+     "status": "established"
+    },
+    "SMA5": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "SMA5"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  },
+  {
+   "alerts_recorded": 2,
+   "calibration_environment_match": true,
+   "capabilities_used": {
+    "alert": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "alert-freq_once_per_bar": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "barstate-islast": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-flow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "label-new": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "CURRENT",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P7-outputs",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "deterministic": true,
+   "execution_status": "PINETS_EXECUTION_PASS",
+   "executor_fingerprint": "57d5e9099fdc9c9f4ec56b458785385fd776b51d026753a0afa77981682440d2",
+   "expected_sha256": "1841b1f5bf5c2b3e40d0ea7f6fbbef5653a9ab64bea7bfbf02354e2082cc5b4e",
+   "family": "P7",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "ac518141f4ffbeb3d49a9f3120886c23b5b4f4454a8a4094d881c77fdb2774b3",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.9.33",
+   "series": {
+    "ALWAYS_NA": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "ALWAYS_NA"
+     ],
+     "status": "established"
+    },
+    "DUP": {
+     "observed": {
+      "DUP": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "even_bars_close"
+       ],
+       "points": 60
+      },
+      "DUP#1": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "close"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "DUP",
+      "DUP#1"
+     ],
+     "status": "exploration"
+    },
+    "UP_FLAG": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "UP_FLAG"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "2421c1748a8806814d2f64889756ef76da0ae2564b3382ecedccfcdfb9532751",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  }
+ ],
+ "observed_on": "2026-09-28",
+ "schema": "pws-pinets-case-observations-v1"
+}

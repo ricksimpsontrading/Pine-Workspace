@@ -1,0 +1,10 @@
+//! pws-template: original Pine Workspace template, reusable in your scripts under docs/licensing/TEMPLATE_PERMISSION.md (no PWS attribution required). This line is removed at render time.
+// This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License (CC BY-NC-SA 4.0): {{CC_URL}}
+// You may share and adapt it for non-commercial purposes, with attribution, under the
+// same license. Creative Commons does not recommend its licenses for software; this
+// choice is deliberate for a published trading script whose terms are set by its
+// author, and it does not replace TradingView's own rules (House Rules, publishing
+// rules, script moderation), which apply in addition.
+// © {{YEAR_RANGE}} {{COPYRIGHT_HOLDER}}
+// Version: X.Y.Z

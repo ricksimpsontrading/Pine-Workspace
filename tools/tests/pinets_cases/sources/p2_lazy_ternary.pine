@@ -1,0 +1,5 @@
+//@version=6
+indicator("P2 lazy ternary")
+var array<float> empty = array.new<float>(0)
+float picked = array.size(empty) > 0 ? array.get(empty, 0) : -1.0
+plot(picked, title = "PICKED")

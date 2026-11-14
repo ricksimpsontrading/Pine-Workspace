@@ -1,0 +1,6 @@
+//@version=6
+indicator("P5 na inside the window")
+float src = bar_index % 7 == 3 ? na : close
+plot(src, title = "SRC")
+plot(ta.highest(src, 5), title = "HIGHEST5")
+plot(ta.lowest(src, 5), title = "LOWEST5")

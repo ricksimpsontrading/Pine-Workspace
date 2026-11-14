@@ -1,0 +1,257 @@
+{
+ "case": "P1-typed-counter",
+ "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+ "explorations": [],
+ "schema": "pws-pinets-case-expected-v1",
+ "series": {
+  "TOTAL": {
+   "missing_proof": "la forme `for int i = ...` n'apparait ni dans le gabarit de syntaxe ni dans les exemples de la page lue ; elle n'y est ni autorisee ni interdite. Indice historique seulement : des sources contenant cette forme ont ete compiles par TradingView (runs enregistres du workspace), ce qui ne fixe pas la valeur de cette fixture. Preuve manquante : observation TradingView de cette fixture",
+   "provenance": "valeur candidate : trois iterations, par application de la regle de la borne incluse (documentation officielle, User Manual v6, page language/loops, consultee le 2026-09-28 : la derniere iteration a lieu lorsque le compteur atteint la borne `to`, donc borne incluse. Citation obtenue par un outil d'extraction, a reconfirmer par lecture directe.) a un compteur annote",
+   "status": "exploration",
+   "variants": {
+    "candidate": [
+     {
+      "t": 1577836800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577840400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577844000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577847600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577851200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577854800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577858400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577862000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577865600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577869200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577872800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577876400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577880000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577883600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577887200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577890800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577894400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577898000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577901600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577905200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577908800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577912400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577916000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577919600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577923200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577926800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577930400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577934000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577937600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577941200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577944800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577948400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577952000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577955600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577959200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577962800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577966400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577970000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577973600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577977200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577980800000,
+      "v": 3.0
+     },
+     {
+      "t": 1577984400000,
+      "v": 3.0
+     },
+     {
+      "t": 1577988000000,
+      "v": 3.0
+     },
+     {
+      "t": 1577991600000,
+      "v": 3.0
+     },
+     {
+      "t": 1577995200000,
+      "v": 3.0
+     },
+     {
+      "t": 1577998800000,
+      "v": 3.0
+     },
+     {
+      "t": 1578002400000,
+      "v": 3.0
+     },
+     {
+      "t": 1578006000000,
+      "v": 3.0
+     },
+     {
+      "t": 1578009600000,
+      "v": 3.0
+     },
+     {
+      "t": 1578013200000,
+      "v": 3.0
+     },
+     {
+      "t": 1578016800000,
+      "v": 3.0
+     },
+     {
+      "t": 1578020400000,
+      "v": 3.0
+     },
+     {
+      "t": 1578024000000,
+      "v": 3.0
+     },
+     {
+      "t": 1578027600000,
+      "v": 3.0
+     },
+     {
+      "t": 1578031200000,
+      "v": 3.0
+     },
+     {
+      "t": 1578034800000,
+      "v": 3.0
+     },
+     {
+      "t": 1578038400000,
+      "v": 3.0
+     },
+     {
+      "t": 1578042000000,
+      "v": 3.0
+     },
+     {
+      "t": 1578045600000,
+      "v": 3.0
+     },
+     {
+      "t": 1578049200000,
+      "v": 3.0
+     }
+    ]
+   }
+  }
+ }
+}

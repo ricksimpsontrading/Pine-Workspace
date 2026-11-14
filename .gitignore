@@ -1,0 +1,28 @@
+# Local Claude Code state (never versioned)
+.claude/settings.local.json
+
+# PWS personal configuration (identity, language, TV mode, GitHub destinations)
+pws.config.json
+CLAUDE.local.md
+.claude/runtime/
+.claude/worktrees/
+
+# PineTS thin adapter — dependencies and ephemeral run outputs
+tools/pine_exec/node_modules/
+.claude/runtime/pine-local-test/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Advisory lock files of the PWS writers (tv_mode, validation promotion)
+*.lock
+
+# macOS artifacts actually produced on this machine
+.DS_Store
+
+# Local archives are evidence: every file under docs/maintenance/archives/ stays
+# versionable whatever its name (a directory rule needs its own negation, Git
+# never re-includes a file whose parent folder is excluded)
+!docs/maintenance/archives/**/
+!docs/maintenance/archives/**

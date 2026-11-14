@@ -1,0 +1,6 @@
+//@version=6
+indicator("P5 pivots")
+plot(ta.pivothigh(close, 2, 2), title = "PIVOTHIGH_2_2")
+plot(ta.pivotlow(close, 2, 2), title = "PIVOTLOW_2_2")
+plot(ta.pivothigh(close, 3, 1), title = "PIVOTHIGH_3_1")
+plot(ta.pivotlow(close, 3, 1), title = "PIVOTLOW_3_1")

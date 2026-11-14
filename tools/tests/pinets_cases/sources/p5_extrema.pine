@@ -1,0 +1,6 @@
+//@version=6
+indicator("P5 highest and lowest")
+plot(ta.highest(close, 5), title = "HIGHEST5")
+plot(ta.lowest(close, 5), title = "LOWEST5")
+plot(ta.highestbars(close, 5), title = "HIGHESTBARS5")
+plot(ta.lowestbars(close, 5), title = "LOWESTBARS5")

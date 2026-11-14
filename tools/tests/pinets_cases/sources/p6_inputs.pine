@@ -1,0 +1,8 @@
+//@version=6
+indicator("P6 inputs")
+int len = input.int(5, "Length")
+float mult = input.float(2.0, "Multiplier")
+float src = input.source(close, "Source")
+plot(ta.sma(close, len), title = "SMA_LEN")
+plot(close * mult, title = "SCALED")
+plot(src, title = "SRC")

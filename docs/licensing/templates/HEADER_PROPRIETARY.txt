@@ -1,0 +1,11 @@
+//! pws-template: original Pine Workspace template, reusable in your scripts under docs/licensing/TEMPLATE_PERMISSION.md (no PWS attribution required). This line is removed at render time.
+// © {{YEAR_RANGE}} {{COPYRIGHT_HOLDER}}
+// All Rights Reserved.
+//
+// This Pine Script is proprietary. No general permission to reproduce, modify or
+// redistribute it is granted, subject to mandatory rights and to permissions expressly
+// granted in writing by the copyright holder. Use is subject to the terms made
+// available with the script (TradingView publication terms, free-use grant or
+// end-user licence agreement, as applicable).
+//
+// Version: X.Y.Z

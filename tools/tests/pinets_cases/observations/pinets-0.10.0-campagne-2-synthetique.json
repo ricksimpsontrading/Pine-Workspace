@@ -1,0 +1,285 @@
+{
+ "campaign": {
+  "engine": {
+   "executor": ".claude/runtime/pinets-eval/0.10.0",
+   "files": {
+    "node_modules/pinets/dist/pinets.min.es.js": "fe414fedd3a8e99e582a131dab43d2bfd816bca33ffe2624cb41b41ab1a8761d",
+    "node_modules/pinets/package.json": "4f2c6b9137bf3b421a34309d4f9186d044b6e4b4c5c919c9e318c39f34303abb",
+    "normalize.mjs": "0146592c4ff024417bbc0d88fbb769144d01280de0921f5d6fdef975a2fe72d8",
+    "package-lock.json": "d2bb2f0e6c2c644f62348a581984451a3738e4aecacfc8e058576e455bf74c47",
+    "package.json": "d0738501587791bd6b364c9bc728404fdc9bc733bbf25294f4f77f3df407fadf",
+    "runner.mjs": "009e52866ffd08e36a14370b40806e336c6b9eca4105b6b996bc2f7009e1894a"
+   },
+   "installed_pinets_version": "0.10.0"
+  },
+  "harness": {
+   "cases_lib.py": "61a741435e499e5173dfd9652ff348998ec7187d4d460b160461051530489083",
+   "run_campaign.py": "3ddf5368eadb79c583062f50e7bb4a093cdb0cf1ec7bff288925c0de1de0c9d9"
+  },
+  "id": "2026-09-28-0.10.0-campagne-2-synthetique",
+  "manifest_sha256": "466b8d520578f5a99cdf458eadbf5c73b35c4f8fd77647ccc62c73e602298ae0",
+  "observed_on": "2026-09-28",
+  "scope": [
+   {
+    "case": "P5-ties-synthetic",
+    "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+    "expected_sha256": "1fa17c0d2c2471d94b800405ebc7be0e8cce7ce61e0d96a855ab362c11b145f2",
+    "source_sha256": "09f3421ff8a4576ceaa11348a7343c844e7a8c3f2caa26734f73f0e015a1e01d"
+   }
+  ],
+  "scope_note": "cette campagne porte sur ces cas et ces empreintes seulement ; elle ne dit rien d'un cas ajoute ou modifie ensuite",
+  "status": "COMPLETE",
+  "unusable_reasons": []
+ },
+ "counts": {
+  "CONCORDANT": 1,
+  "CONCORDANT_WITHIN_TOLERANCE": 0,
+  "DIVERGENT": 0,
+  "EXECUTION_FAIL": 0,
+  "HARNESS_FAILURE": 0,
+  "INVALID_PAYLOAD": 0,
+  "NOT_DETERMINISTIC": 0,
+  "OBSERVED_ONLY": 0
+ },
+ "engine_identities": [
+  {
+   "executor_fingerprint": "1bb272ff50c367c3b7b71054c51115eb8596291a3469a83b1fc87e9bf488f9b9",
+   "normalization_schema": "pws-pinets-norm-v2",
+   "pinets_version": "0.10.0"
+  }
+ ],
+ "nature": "observation d'un moteur sur des cas generiques ; ni test du dispositif, ni calibration, ni validation TradingView ; aucun statut gating",
+ "observations": [
+  {
+   "alerts_recorded": 0,
+   "calibration_environment_match": false,
+   "capabilities_used": {
+    "array-from": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "array-get": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "compare-op": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "control-ternary": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "declaration-indicator": {
+     "calibration_status": "STALE",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "math-arith": {
+     "calibration_status": "STALE",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "plot-plot": {
+     "calibration_status": "STALE",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "series-builtin": {
+     "calibration_status": "STALE",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "state-var": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-highest": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-highestbars": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-lowest": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-lowestbars": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-pivothigh": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "ta-pivotlow": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    },
+    "type-annotation": {
+     "calibration_status": "MISSING",
+     "capability_status": "EXPERIMENTAL"
+    }
+   },
+   "case": "P5-ties-synthetic",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "deterministic": true,
+   "execution_status": [
+    "PINETS_EXECUTION_PASS",
+    "PINETS_EXECUTION_PASS"
+   ],
+   "executor_fingerprint": "1bb272ff50c367c3b7b71054c51115eb8596291a3469a83b1fc87e9bf488f9b9",
+   "expected_sha256": "1fa17c0d2c2471d94b800405ebc7be0e8cce7ce61e0d96a855ab362c11b145f2",
+   "family": "P5",
+   "internal_keys_present": [
+    "__boxes__",
+    "__labels__",
+    "__linefills__",
+    "__lines__",
+    "__polylines__",
+    "__tables__"
+   ],
+   "normalization_schema": "pws-pinets-norm-v2",
+   "normalized_payload_sha256": "cf7f5384fc4710f37de72241c80728e3505aa180850a70501c17198f0bfa4b00",
+   "outcome": "CONCORDANT",
+   "pinets_version": "0.10.0",
+   "series": {
+    "HIGHEST5_NA": {
+     "observed": {
+      "HIGHEST5_NA": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "restart_after_na"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "HIGHEST5_NA"
+     ],
+     "status": "exploration"
+    },
+    "HIGHESTBARS5": {
+     "observed": {
+      "HIGHESTBARS5": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "negative_oldest_tie"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "HIGHESTBARS5"
+     ],
+     "status": "exploration"
+    },
+    "LOWEST5_NA": {
+     "observed": {
+      "LOWEST5_NA": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "restart_after_na"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "LOWEST5_NA"
+     ],
+     "status": "exploration"
+    },
+    "LOWESTBARS5": {
+     "observed": {
+      "LOWESTBARS5": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "negative_oldest_tie"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "LOWESTBARS5"
+     ],
+     "status": "exploration"
+    },
+    "PHASE": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "PHASE"
+     ],
+     "status": "established"
+    },
+    "PIVOTHIGH_2_2": {
+     "observed": {
+      "PIVOTHIGH_2_2": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "equal_admitted_left"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "PIVOTHIGH_2_2"
+     ],
+     "status": "exploration"
+    },
+    "PIVOTHIGH_3_1": {
+     "observed": {
+      "PIVOTHIGH_3_1": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "equal_admitted_left"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "PIVOTHIGH_3_1"
+     ],
+     "status": "exploration"
+    },
+    "PIVOTLOW_2_2": {
+     "observed": {
+      "PIVOTLOW_2_2": {
+       "compared_to_candidates": "CONCORDANT",
+       "equals": [
+        "equal_admitted_left"
+       ],
+       "points": 60
+      }
+     },
+     "outcome": "OBSERVED_ONLY",
+     "payload_keys": [
+      "PIVOTLOW_2_2"
+     ],
+     "status": "exploration"
+    },
+    "S": {
+     "equals": [
+      "expected"
+     ],
+     "outcome": "CONCORDANT",
+     "payload_keys": [
+      "S"
+     ],
+     "status": "established"
+    }
+   },
+   "source_sha256": "09f3421ff8a4576ceaa11348a7343c844e7a8c3f2caa26734f73f0e015a1e01d",
+   "unclassified_tokens": [],
+   "unexpected_payload_keys": {},
+   "warnings_recorded": []
+  }
+ ],
+ "schema": "pws-pinets-case-observations-v2"
+}

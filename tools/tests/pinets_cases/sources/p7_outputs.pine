@@ -1,0 +1,13 @@
+//@version=6
+indicator("P7 outputs")
+bool up = close > open
+float evenClose = bar_index % 2 == 0 ? close : na
+plot(evenClose, title = "DUP")
+plot(close, title = "DUP")
+plot(na, title = "ALWAYS_NA")
+plot(up ? 1 : 0, title = "UP_FLAG")
+alertcondition(up, title = "Up bar", message = "up")
+if up
+    alert("bar up", alert.freq_once_per_bar)
+if barstate.islast
+    label.new(bar_index, high, "last")

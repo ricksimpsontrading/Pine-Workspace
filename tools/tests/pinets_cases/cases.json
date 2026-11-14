@@ -1,0 +1,229 @@
+{
+ "cases": [
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P1-typed-counter.expected.json",
+   "expected_sha256": "784096b4fd77baed22c7c6f5f010416ed7ab946fe06953a391a47235d22d1831",
+   "family": "P1",
+   "id": "P1-typed-counter",
+   "role": "compteur de boucle type : construction a observer",
+   "source": "tools/tests/pinets_cases/sources/p1_typed_counter.pine",
+   "source_sha256": "911424bbb918187d1d214e11e3acdd1162284a05d62cfade54ad551e6ecd3726"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P1-untyped-counter.expected.json",
+   "expected_sha256": "7c254c03848198556782c4ca51388b002b1d80c2c3a4faedaf7a818f7d99c944",
+   "family": "P1",
+   "id": "P1-untyped-counter",
+   "role": "temoin diagnostique du cas type, sans annotation",
+   "source": "tools/tests/pinets_cases/sources/p1_untyped_counter.pine",
+   "source_sha256": "b60cae1cc9e62e11725a31da342725e8876ee253ca32c37dd9b856c1018db596"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P1-typed-counter-in-function.expected.json",
+   "expected_sha256": "72e3a9cf52e5c5c8ae51b76f3cce4c7457e4a552efdf3bf08349086850ea3ab2",
+   "family": "P1",
+   "id": "P1-typed-counter-in-function",
+   "role": "compteur type dans une fonction, boucle gardee",
+   "source": "tools/tests/pinets_cases/sources/p1_typed_counter_in_function.pine",
+   "source_sha256": "df8029c9d7f77d7b339f4cc52f636b877c8a8492dd6309621bf9de0cc944e4e3"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P2-lazy-and.expected.json",
+   "expected_sha256": "8894d8ddcdd62c6e5488bbb72a4ade55d68e3c5ae2f63f8e418f4ead7d1528d4",
+   "family": "P2",
+   "id": "P2-lazy-and",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p2_lazy_and.pine",
+   "source_sha256": "1838556cd7ba04c809b003fcd7179b96b19e7a61fc71e2c9401f477d57451350"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P2-lazy-or.expected.json",
+   "expected_sha256": "8a0f92728e71aba2f570da3df3446a05e5944f1b29324ecb2454b00dc630cb34",
+   "family": "P2",
+   "id": "P2-lazy-or",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p2_lazy_or.pine",
+   "source_sha256": "4d3a85f33f85f8aaeff5490f93af1aa9478766ad88e0cea22af2aff9db128239"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P2-lazy-ternary.expected.json",
+   "expected_sha256": "ee2d7e318cabd00a9e4274fa0e6200b12a044ca6a1642621b76da8078f6b701f",
+   "family": "P2",
+   "id": "P2-lazy-ternary",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p2_lazy_ternary.pine",
+   "source_sha256": "7f6337b25bed2aad52c959b9acb7d65a2c493f68f7f5d126f590bf41ab630939"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P3-udt-collections.expected.json",
+   "expected_sha256": "3cfa52826dafeff418a7bc4f8e3aef790976f4d7b2b4a99e545113bb98606b6d",
+   "family": "P3",
+   "id": "P3-udt-collections",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p3_udt_collections.pine",
+   "source_sha256": "9401ae948c053fd7ef0e9047319e081bc6a1aa7ffdb05b347ccfadac8453eb9b"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P4-core-lcg60.expected.json",
+   "expected_sha256": "6b16ffd18b7eeeec2222bd6327c0f7b2c879fbcab858f312abeaa6384c27496b",
+   "family": "P4",
+   "id": "P4-core-lcg60",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p4_core_lengths.pine",
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/constant-30.json",
+   "dataset_sha256": "f96172aa8db31b54603b329da1d768538d6f2a85b867bf1b4467d9b0268865fa",
+   "expected": "tools/tests/pinets_cases/expected/P4-core-constant.expected.json",
+   "expected_sha256": "ca024689c5f5375a5de48ec1b831f9f31c22e56723427b4957f51aa2e75758a6",
+   "family": "P4",
+   "id": "P4-core-constant",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p4_core_lengths.pine",
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/monotone-30.json",
+   "dataset_sha256": "1766305c3d4d8d89a6bc88326a960d45aee50faf845dce696a8dc8f758347ba5",
+   "expected": "tools/tests/pinets_cases/expected/P4-core-monotone.expected.json",
+   "expected_sha256": "8edd41ec7bac5e22e24d02ba2e6f87e8c6101040d0f2cc2f89c590e5514196bd",
+   "family": "P4",
+   "id": "P4-core-monotone",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p4_core_lengths.pine",
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/gapped-30.json",
+   "dataset_sha256": "3929a60e19d345366b6780e8deddb6cb2a0d7d02823fbc826475b010a4860d16",
+   "expected": "tools/tests/pinets_cases/expected/P4-core-gapped.expected.json",
+   "expected_sha256": "9fcb415fab9d99bb2f918f1ff8b5b4d956f4192856a11165742caae188801ead",
+   "family": "P4",
+   "id": "P4-core-gapped",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p4_core_lengths.pine",
+   "source_sha256": "251ffa3dcbda3c5138f3eba6c51b7cce38311da93ddb6dbf135cf617852a5806"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P7-outputs.expected.json",
+   "expected_sha256": "1841b1f5bf5c2b3e40d0ea7f6fbbef5653a9ab64bea7bfbf02354e2082cc5b4e",
+   "family": "P7",
+   "id": "P7-outputs",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p7_outputs.pine",
+   "source_sha256": "2421c1748a8806814d2f64889756ef76da0ae2564b3382ecedccfcdfb9532751"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/gapped-30.json",
+   "dataset_sha256": "3929a60e19d345366b6780e8deddb6cb2a0d7d02823fbc826475b010a4860d16",
+   "expected": "tools/tests/pinets_cases/expected/P5-extrema-gapped.expected.json",
+   "expected_sha256": "56e99b8fe6079d4acf80242058af7c768e0208ba4d0f1ad74939c917ac57db17",
+   "family": "P5",
+   "id": "P5-extrema-gapped",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_extrema.pine",
+   "source_sha256": "ccd348a2353958bf463794455c7c4434c010d264e792c7c23f6f96ba519db22f"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/plateau-30.json",
+   "dataset_sha256": "daa3f06565cab2e41266cc628ffc80805747772464bd73bba46257f677444cc6",
+   "expected": "tools/tests/pinets_cases/expected/P5-extrema-plateau.expected.json",
+   "expected_sha256": "1b8bea2d900ebcc126133cd063dc7bc4a4a22a6e6a58b6ef1ba293fc02f30d39",
+   "family": "P5",
+   "id": "P5-extrema-plateau",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_extrema.pine",
+   "source_sha256": "ccd348a2353958bf463794455c7c4434c010d264e792c7c23f6f96ba519db22f"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/gapped-30.json",
+   "dataset_sha256": "3929a60e19d345366b6780e8deddb6cb2a0d7d02823fbc826475b010a4860d16",
+   "expected": "tools/tests/pinets_cases/expected/P5-pivots-gapped.expected.json",
+   "expected_sha256": "511ae7a7d3abe6f4c145961466ddb624cbecc4f4e49b71dc30589d750579c574",
+   "family": "P5",
+   "id": "P5-pivots-gapped",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_pivots.pine",
+   "source_sha256": "95dd6f16529aa727526a8bbe16ac9dbc7e5aa326d9210c8d54945eb592e11625"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/plateau-30.json",
+   "dataset_sha256": "daa3f06565cab2e41266cc628ffc80805747772464bd73bba46257f677444cc6",
+   "expected": "tools/tests/pinets_cases/expected/P5-pivots-plateau.expected.json",
+   "expected_sha256": "6089a488f731bf26fa64269fad970688a34ec6ec3fc9daae5a965a631c455fe0",
+   "family": "P5",
+   "id": "P5-pivots-plateau",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_pivots.pine",
+   "source_sha256": "95dd6f16529aa727526a8bbe16ac9dbc7e5aa326d9210c8d54945eb592e11625"
+  },
+  {
+   "dataset": "tools/tests/pinets_cases/datasets/gapped-30.json",
+   "dataset_sha256": "3929a60e19d345366b6780e8deddb6cb2a0d7d02823fbc826475b010a4860d16",
+   "expected": "tools/tests/pinets_cases/expected/P5-na-window.expected.json",
+   "expected_sha256": "6d6af518b440f676c5800632091db6c4595d26ab8b35858beb3381f516beec5a",
+   "family": "P5",
+   "id": "P5-na-window",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_na_window.pine",
+   "source_sha256": "7228b8ba02a11e1083f39e65a32d705de8f4fd07ee75c388c559f98ba0fb50fd"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P5-ties-synthetic.expected.json",
+   "expected_sha256": "38b59d0470c7887fbe1d7ce4235bdd72dbc1de1e9b9efcb89245519d14a02f10",
+   "family": "P5",
+   "id": "P5-ties-synthetic",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p5_ties_synthetic.pine",
+   "source_sha256": "09f3421ff8a4576ceaa11348a7343c844e7a8c3f2caa26734f73f0e015a1e01d"
+  },
+  {
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P6-inputs-defaults.expected.json",
+   "expected_sha256": "a974792ca20bbf15aafcfdc78c1b58c3c26646b847a88647ab47c0ac5587c194",
+   "family": "P6",
+   "id": "P6-inputs-defaults",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p6_inputs.pine",
+   "source_sha256": "abe9f9fe8fb5d552d772b77c393b4820f4529c174d5fbe68242e1c4b1584141f"
+  },
+  {
+   "config": "tools/tests/pinets_cases/configs/p6_overrides.json",
+   "config_sha256": "1cdd4d90566cfe61f26edec20701e2be535304fc502dbef572a714bc4a801a7f",
+   "dataset": "tools/pine_exec/calibration/datasets/lcg-42-60.json",
+   "dataset_sha256": "ff3a5ae872cc81b130d73636d21210fcee026f5883c9969473d8aef9661d9b36",
+   "expected": "tools/tests/pinets_cases/expected/P6-inputs-overridden.expected.json",
+   "expected_sha256": "d749e89fadf6056554854e9235f5222cf6529dbc581a7f8e0dfa59fe0e5c2f6e",
+   "family": "P6",
+   "id": "P6-inputs-overridden",
+   "role": "essai de capacite generique",
+   "source": "tools/tests/pinets_cases/sources/p6_inputs.pine",
+   "source_sha256": "abe9f9fe8fb5d552d772b77c393b4820f4529c174d5fbe68242e1c4b1584141f"
+  }
+ ],
+ "independence": "aucun attendu n'est produit par le moteur observe",
+ "purpose": "cas generiques d'essai de capacites PineTS, independants de tout produit ; aucun n'est un cas de calibration et aucun ne confere de statut gating",
+ "schema": "pws-pinets-cases-v1"
+}

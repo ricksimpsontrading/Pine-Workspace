@@ -1,0 +1,5 @@
+//@version=6
+indicator("P2 lazy or")
+var array<float> empty = array.new<float>(0)
+bool either = array.size(empty) == 0 or array.get(empty, 0) > 0
+plot(either ? 1 : 0, title = "EITHER")

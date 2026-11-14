@@ -1,0 +1,12 @@
+{"schema":"pws-dataset-v1",
+"descriptor":{"acquired_at":"2026-09-04","license_note":"Fixture rédigée à la main pour Pine Workspace — aucune donnée de marché réelle, aucune source externe, aucune contrainte de licence tierce.","price_scale":100,"provenance":"hand-authored-fixture: barres OHLCV fictives écrites à la main pour valider le chemin d'import local (spec §61.10.21). NE PROVIENT PAS d'un exchange ni d'un fournisseur de données.","symbol":"FIXTURE","timeframe_ms":3600000,"timezone":"UTC","type":"imported"},
+"bars":[
+{"t":1577836800000,"o":10000,"h":10120,"l":9950,"c":10080,"v":1500},
+{"t":1577840400000,"o":10080,"h":10200,"l":10020,"c":10150,"v":1720},
+{"t":1577844000000,"o":10150,"h":10160,"l":9990,"c":10010,"v":2100},
+{"t":1577847600000,"o":10010,"h":10090,"l":9940,"c":10055,"v":1330},
+{"t":1577851200000,"o":10055,"h":10230,"l":10050,"c":10210,"v":1990},
+{"t":1577854800000,"o":10210,"h":10280,"l":10130,"c":10160,"v":1610},
+{"t":1577858400000,"o":10160,"h":10190,"l":10040,"c":10070,"v":1450},
+{"t":1577862000000,"o":10070,"h":10150,"l":10030,"c":10120,"v":1580}
+]}

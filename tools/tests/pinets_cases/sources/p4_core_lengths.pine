@@ -1,0 +1,10 @@
+//@version=6
+indicator("P4 moving averages and history")
+plot(ta.sma(close, 1), title = "SMA1")
+plot(ta.sma(close, 5), title = "SMA5")
+plot(ta.sma(close, 20), title = "SMA20")
+plot(ta.ema(close, 1), title = "EMA1")
+plot(ta.ema(close, 5), title = "EMA5")
+plot(ta.ema(close, 20), title = "EMA20")
+plot(close[1], title = "PREV1")
+plot(close[3], title = "PREV3")
