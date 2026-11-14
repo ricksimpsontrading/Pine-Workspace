@@ -18,8 +18,8 @@ SHA_LINE_RE = re.compile(r"SHA-256[^0-9a-f]*([0-9a-f]{64})")
 # Routing: main operational consumers per top-level master section number.
 # Derived static map — regenerated with INDEX; not a second authority.
 CONSUMERS = {
-    0: "tous les workflows", 1: "pine-develop, pine-review", 2: "pine-develop, pine-audit",
-    3: "pine-research", 4: "CLAUDE.md, config (langue), toutes les skills",
+    0: "all workflows", 1: "pine-develop, pine-review", 2: "pine-develop, pine-audit",
+    3: "pine-research", 4: "CLAUDE.md, config (language), all skills",
     5: "pine-new, pine-onboard, scan, profiles, licensing",
     6: "guard, licensing, pine-new, pine-release", 7: "pine-research", 8: "pine-research",
     9: "pine-develop, pine-audit, pine-onboard, pws-pine-cartographer", 10: "pine-develop",
@@ -59,7 +59,10 @@ def parse_headings(text):
 
 def _keywords(title):
     words = re.findall(r"[A-Za-zÀ-ÿ0-9_.`/-]{4,}", title)
-    stop = {"pour", "avec", "sans", "dans", "les", "des", "leur", "tout", "tous", "toute"}
+    stop = {"with", "without", "from", "into", "their", "that", "this", "when", "what", "only",
+            "each", "every", "than", "then", "over", "under", "about", "after", "before",
+            # French words, kept for a master written in French
+            "pour", "avec", "sans", "dans", "les", "des", "leur", "tout", "tous", "toute"}
     return ", ".join(w.strip("`").lower() for w in words if w.lower() not in stop)[:120]
 
 
@@ -76,17 +79,17 @@ def generate_index(root, today=None):
     lines = [
         "# INDEX — PINE SCRIPT V6 STANDARD",
         "",
-        "Statut : dérivé, non normatif (spec §12). Généré automatiquement depuis les headings réels du master.",
-        "Ne jamais éditer à la main : régénérer avec `python3 -m tools.pws_workspace standard-index`.",
+        "Status: derived, non-normative (spec §12). Generated automatically from the real headings of the master.",
+        "Never edit by hand: regenerate with `python3 -m tools.pws_workspace standard-index`.",
         "",
-        "Master : `standards/PINE_SCRIPT_V6_STANDARD.md`",
-        "SHA-256 : %s" % sha,
-        "Généré le : %s" % today,
+        "Master: `standards/PINE_SCRIPT_V6_STANDARD.md`",
+        "SHA-256: %s" % sha,
+        "Generated on: %s" % today,
         "",
-        "Règle de fraîcheur : si le SHA du master diffère de celui ci-dessus, cet index est STALE",
-        "et ne doit plus être utilisé comme représentation fiable (`standard-status` le vérifie).",
+        "Freshness rule: if the SHA of the master differs from the one above, this index is STALE",
+        "and must no longer be used as a reliable representation (`standard-status` checks it).",
         "",
-        "| Niveau | Section | Lignes | Mots-clés de routage | Consommateurs principaux |",
+        "| Level | Section | Lines | Routing keywords | Main consumers |",
         "|---|---|---|---|---|",
     ]
     for idx, (level, title, line_no) in enumerate(headings):

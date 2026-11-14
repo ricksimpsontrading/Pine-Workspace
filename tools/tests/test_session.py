@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.pws_workspace import core, session
+from tools.pws_workspace import config, core, i18n, session
 from tools.tests import helpers
 
 
@@ -88,6 +88,29 @@ class TestSessionStart(unittest.TestCase):
         self.assertIn("Orphan.pine", text)
         self.assertLessEqual(len(text), session.STDOUT_BUDGET)
         self.assertEqual(status["counts"]["unregistered_pine"], 1)
+
+    def test_summary_states_the_configured_language_explicitly(self):
+        """The configured language is transmitted at session start as an
+        explicit line (2026-11-14), right after the title, in that language;
+        an explicit change is reflected by the next summary. No config file:
+        the default (English) is stated."""
+        from tools.pws_workspace import config, i18n
+        fr_line = i18n.t("summary.language", "fr")
+        en_line = i18n.t("summary.language", "en")
+        self.assertTrue(fr_line.startswith("Langue configurée : fr"), fr_line)
+        self.assertTrue(en_line.startswith("Configured language: en"), en_line)
+        text, _ = session.hook_session_start(self.root, {"session_id": "lang0", "source": "startup"})
+        self.assertEqual(text.split("\n")[:2], ["PWS", en_line])          # no config: default English
+        self.assertTrue(config.set_value(self.root, "language", "fr")["ok"])
+        text, status = session.hook_session_start(self.root, {"session_id": "lang1", "source": "startup"})
+        self.assertEqual(status["language"], "fr")
+        self.assertEqual(text.split("\n")[:2], ["PWS", fr_line])
+        self.assertNotIn(en_line, text)
+        self.assertTrue(config.set_value(self.root, "language", "en")["ok"])
+        text, status = session.hook_session_start(self.root, {"session_id": "lang1", "source": "compact"})
+        self.assertEqual(status["language"], "en")
+        self.assertEqual(text.split("\n")[:2], ["PWS", en_line])
+        self.assertNotIn(fr_line, text)
 
     def test_session_status_structure_for_menu(self):
         helpers.make_product(self.root)
@@ -175,6 +198,9 @@ class TestStopAttribution(unittest.TestCase):
         (self.root / core.LOCAL_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
         (self.root / core.LOCAL_SETTINGS_REL).write_text(json.dumps(
             {"env": {core.TV_MODE_ENV_KEY: "manual"}}), encoding="utf-8")
+        # these attribution tests read the French wording of the Stop hook
+        # (the language of the messages is tested in TestStopLanguage20261114)
+        self.assertTrue(config.set_value(self.root, "language", "fr")["ok"])
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -223,7 +249,7 @@ class TestStopAttribution(unittest.TestCase):
                        encoding="utf-8")
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("header-version" in i and "preexistant" in i for i in info), info)
+        self.assertTrue(any("header-version" in i and "préexistant" in i for i in info), info)
 
     def test_t3_introduced_anomaly_blocks(self):
         pdir = helpers.make_product(self.root)
@@ -275,10 +301,10 @@ class TestStopAttribution(unittest.TestCase):
         (pdir / "SCRIPT.json").write_text(json.dumps(manifest), encoding="utf-8")
         decision, info = self._stop()
         self.assertEqual(decision["decision"], "block")
-        introduced = decision["reason"].split("Signale sans blocage")[0]
+        introduced = decision["reason"].split("Signalé sans blocage")[0]
         self.assertIn("no-promo-urls", introduced)
         self.assertNotIn("header-version", introduced)
-        self.assertTrue(any("header-version" in i and "preexistant" in i for i in info), info)
+        self.assertTrue(any("header-version" in i and "préexistant" in i for i in info), info)
 
     def test_t6b_same_product_same_name_is_not_a_provenance(self):
         """Untracked move with modification: a shared product or file name
@@ -297,7 +323,7 @@ class TestStopAttribution(unittest.TestCase):
         (pdir / "SCRIPT.json").write_text(json.dumps(manifest), encoding="utf-8")
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("indeterminee" in i for i in info), info)
+        self.assertTrue(any("indéterminée" in i for i in info), info)
 
     def test_t7_no_correspondence_is_indeterminate(self):
         pdir = helpers.make_product(self.root)
@@ -307,7 +333,7 @@ class TestStopAttribution(unittest.TestCase):
                                      header=self.NO_VERSION_HEADER)
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("indeterminee" in i and "header-version" in i
+        self.assertTrue(any("indéterminée" in i and "header-version" in i
                             for i in info), info)
         self.assertTrue(other.is_dir())
 
@@ -320,10 +346,10 @@ class TestStopAttribution(unittest.TestCase):
                        encoding="utf-8")
         decision, info = self._stop()
         self.assertEqual(decision["decision"], "block")
-        introduced = decision["reason"].split("Signale sans blocage")[0]
+        introduced = decision["reason"].split("Signalé sans blocage")[0]
         self.assertIn("https://new.example.com", introduced)
         self.assertNotIn("https://old.example.com", introduced)
-        self.assertTrue(any("https://old.example.com" in i and "preexistant" in i
+        self.assertTrue(any("https://old.example.com" in i and "préexistant" in i
                             for i in info), info)
 
     def test_t10_old_snapshot_without_findings_never_blocks_retroactively(self):
@@ -349,7 +375,7 @@ class TestStopAttribution(unittest.TestCase):
                        encoding="utf-8")
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("preexistant" in i for i in info), info)
+        self.assertTrue(any("préexistant" in i for i in info), info)
 
     def test_t12_same_url_added_again_is_one_introduced_finding(self):
         pdir = helpers.make_product(
@@ -360,7 +386,7 @@ class TestStopAttribution(unittest.TestCase):
                        encoding="utf-8")
         decision, _ = self._stop()
         self.assertEqual(decision["decision"], "block")
-        introduced = decision["reason"].split("Signale sans blocage")[0]
+        introduced = decision["reason"].split("Signalé sans blocage")[0]
         self.assertEqual(introduced.count("https://dup.example.com"), 1)
 
     def test_info_is_handed_to_next_session_start_once(self):
@@ -369,11 +395,11 @@ class TestStopAttribution(unittest.TestCase):
         self._stop()
         text, status = session.hook_session_start(
             self.root, {"session_id": "s2", "source": "startup"})
-        self.assertIn("STOP HOOK", text)
+        self.assertIn(i18n.t("summary.list.stop", "fr"), text)          # French summary: "HOOK STOP — …"
         self.assertTrue(status["stop_info"])
         text2, _ = session.hook_session_start(
             self.root, {"session_id": "s3", "source": "startup"})
-        self.assertNotIn("STOP HOOK", text2)
+        self.assertNotIn(i18n.t("summary.list.stop", "fr"), text2)
 
 
     def test_ambiguous_git_rename_stays_indeterminate(self):
@@ -398,7 +424,7 @@ class TestStopAttribution(unittest.TestCase):
         (pdir / "SCRIPT.json").write_text(json.dumps(manifest), encoding="utf-8")
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("X.pine" in i and "indeterminee" in i for i in info), info)
+        self.assertTrue(any("X.pine" in i and "indéterminée" in i for i in info), info)
 
     def test_unevaluable_check_on_modified_content_is_not_called_a_context_effect(self):
         """Closing review I3: the label states facts only."""
@@ -515,13 +541,13 @@ class TestStopAttribution(unittest.TestCase):
         with self._fake_git_status(stream):
             decision, info = self._stop()
         self.assertEqual(decision["decision"], "block")
-        introduced = decision["reason"].split("Signale sans blocage")[0]
+        introduced = decision["reason"].split("Signalé sans blocage")[0]
         self.assertIn("scripts/copied/My Indicator.pine: [header-version]", introduced)
         self.assertIn("scripts/copied/My Indicator.pine: [no-promo-urls]", introduced)
         self.assertIn("nouveau fichier", introduced)
-        self.assertFalse(any("copied" in i and "preexistant" in i for i in info), info)
+        self.assertFalse(any("copied" in i and "préexistant" in i for i in info), info)
         # the untouched origin keeps its own pre-existing finding, unblocked
-        self.assertTrue(any("scripts/my-indicator/" in i and "preexistant" in i
+        self.assertTrue(any("scripts/my-indicator/" in i and "préexistant" in i
                             for i in info), info)
 
     def test_m12_u_real_git_rename_with_accents_and_spaces(self):
@@ -559,10 +585,10 @@ class TestStopAttribution(unittest.TestCase):
         self.assertNotIn('"', target)
         decision, info = self._stop()
         self.assertEqual(decision["decision"], "block")
-        introduced = decision["reason"].split("Signale sans blocage")[0]
+        introduced = decision["reason"].split("Signalé sans blocage")[0]
         self.assertIn("no-promo-urls", introduced)
         self.assertNotIn("header-version", introduced)
-        self.assertTrue(any("header-version" in i and "preexistant" in i
+        self.assertTrue(any("header-version" in i and "préexistant" in i
                             and "Indicateur " in i for i in info), info)
 
     def _twin_baseline(self, second_registered):
@@ -601,7 +627,7 @@ class TestStopAttribution(unittest.TestCase):
         gamma = [i for i in info if "scripts/gamma/" in i]
         self.assertEqual(len(gamma), 1, info)
         self.assertIn("header-version", gamma[0])
-        self.assertIn("preexistant", gamma[0])
+        self.assertIn("préexistant", gamma[0])
 
     def test_m12_b_identical_baseline_files_with_different_guard_states(self):
         """T-M12-B, variant 2: one candidate was evaluable at start, the
@@ -614,8 +640,8 @@ class TestStopAttribution(unittest.TestCase):
         self.assertIsNone(decision)
         gamma = [i for i in info if "scripts/gamma/" in i]
         self.assertEqual(len(gamma), 1, info)
-        self.assertIn("indeterminee", gamma[0])
-        self.assertNotIn("preexistant", gamma[0])
+        self.assertIn("indéterminée", gamma[0])
+        self.assertNotIn("préexistant", gamma[0])
 
     def test_m12_b_order_of_the_candidates_does_not_matter(self):
         """T-M12-B: same outcome whatever the lexical order of the twins."""
@@ -629,7 +655,7 @@ class TestStopAttribution(unittest.TestCase):
         helpers.make_product(self.root, slug="gamma", header=self.NO_VERSION_HEADER)
         decision, info = self._stop()
         self.assertIsNone(decision)
-        self.assertTrue(any("scripts/gamma/" in i and "indeterminee" in i
+        self.assertTrue(any("scripts/gamma/" in i and "indéterminée" in i
                             for i in info), info)
 
 
@@ -646,6 +672,9 @@ class TestImportRecord(unittest.TestCase):
         (self.root / core.LOCAL_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
         (self.root / core.LOCAL_SETTINGS_REL).write_text(json.dumps(
             {"env": {core.TV_MODE_ENV_KEY: "manual"}}), encoding="utf-8")
+        # these attribution tests read the French wording of the Stop hook
+        # (the language of the messages is tested in TestStopLanguage20261114)
+        self.assertTrue(config.set_value(self.root, "language", "fr")["ok"])
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -686,7 +715,7 @@ class TestImportRecord(unittest.TestCase):
         self.assertTrue(res["registered"], res)
         reason, info = self._stop()
         self.assertIsNone(reason)
-        self.assertTrue(any("import declare" in i for i in info), info)
+        self.assertTrue(any("import déclaré" in i for i in info), info)
 
     def test_scenario_b_without_record_still_blocks_as_new_file(self):
         self._start()
@@ -703,7 +732,7 @@ class TestImportRecord(unittest.TestCase):
         self.assertEqual(core.sha256_file(target), sha)
         reason, info = self._stop()
         self.assertIsNone(reason)
-        self.assertTrue(any("header-version" in i and "preexistant a l'import" in i
+        self.assertTrue(any("header-version" in i and "préexistant à l'import" in i
                             for i in info), info)
 
     def test_scenario_c_file_present_at_start_needs_no_record(self):
@@ -726,10 +755,10 @@ class TestImportRecord(unittest.TestCase):
         target.write_text(target.read_text(encoding="utf-8") +
                           "// https://promo.example.com\n", encoding="utf-8")
         reason, info = self._stop()
-        introduced = reason.split("Signale sans blocage")[0]
+        introduced = reason.split("Signalé sans blocage")[0]
         self.assertIn("no-promo-urls", introduced)
         self.assertNotIn("header-version", introduced)
-        self.assertTrue(any("header-version" in i and "preexistant a l'import" in i
+        self.assertTrue(any("header-version" in i and "préexistant à l'import" in i
                             for i in info), info)
 
     def test_relocation_is_followed_by_the_hook_without_explicit_call(self):
@@ -741,7 +770,7 @@ class TestImportRecord(unittest.TestCase):
         target.write_text(target.read_text(encoding="utf-8") +
                           "// https://promo.example.com\n", encoding="utf-8")
         reason, _ = self._stop()
-        self.assertIn("no-promo-urls", reason.split("Signale sans blocage")[0])
+        self.assertIn("no-promo-urls", reason.split("Signalé sans blocage")[0])
 
     def test_record_is_never_renewed_after_modification(self):
         self._start()
@@ -800,9 +829,9 @@ class TestImportRecord(unittest.TestCase):
                          "the initial record is kept untouched")
         reason, info = self._stop()
         self.assertIsNotNone(reason)
-        introduced = reason.split("Signale sans blocage")[0]
+        introduced = reason.split("Signalé sans blocage")[0]
         self.assertIn("no-promo-urls", introduced)
-        self.assertFalse(any("preexistant a l'import" in i for i in info), info)
+        self.assertFalse(any("préexistant à l'import" in i for i in info), info)
         # a third attempt changes nothing either
         self.assertTrue(session.register_import(self.root, target).get("refused"))
         self.assertIn("no-promo-urls", self._stop()[0])
@@ -841,7 +870,7 @@ class TestImportRecord(unittest.TestCase):
         self.assertTrue(session.register_import(self.root, c)["registered"])
         reason, info = self._stop()
         self.assertIsNone(reason)
-        self.assertTrue(any("prod-a" in i and "preexistant a l'import" in i
+        self.assertTrue(any("prod-a" in i and "préexistant à l'import" in i
                             for i in info), info)
 
     def test_equal_fingerprint_does_not_exempt_a_copy(self):
@@ -866,7 +895,7 @@ class TestImportRecord(unittest.TestCase):
             (pdir / "My Indicator.pine").write_bytes(data)
         reason, info = self._stop()
         self.assertIsNone(reason)
-        self.assertEqual(sum(1 for i in info if "indeterminee" in i), 2, info)
+        self.assertEqual(sum(1 for i in info if "indéterminée" in i), 2, info)
 
     def test_guard_runs_in_the_current_context_on_an_imported_file(self):
         """A check not evaluable at import (distribution unknown) becomes
@@ -877,7 +906,7 @@ class TestImportRecord(unittest.TestCase):
         self._onboard(orphan, distribution="paid-closed-source")
         reason, info = self._stop()
         self.assertIsNone(reason)
-        self.assertTrue(any("header-structure" in i and "non evaluable a l'import" in i
+        self.assertTrue(any("header-structure" in i and "non évaluable à l'import" in i
                             for i in info), info)
 
     def test_registration_boundaries(self):
@@ -942,6 +971,9 @@ class TestSessionIsolation20261113(unittest.TestCase):
         (self.root / core.LOCAL_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
         (self.root / core.LOCAL_SETTINGS_REL).write_text(json.dumps(
             {"env": {core.TV_MODE_ENV_KEY: "manual"}}), encoding="utf-8")
+        # these attribution tests read the French wording of the Stop hook
+        # (the language of the messages is tested in TestStopLanguage20261114)
+        self.assertTrue(config.set_value(self.root, "language", "fr")["ok"])
 
     def tearDown(self):
         self.tmp.cleanup()
@@ -971,14 +1003,14 @@ class TestSessionIsolation20261113(unittest.TestCase):
         orphan.unlink()                                    # onboarding moves it
         reason, info = self._stop("A")
         self.assertIsNone(reason, "an import is never taken for a creation")
-        self.assertTrue(any("header-version" in i and "a l'import" in i for i in info), info)
+        self.assertTrue(any("header-version" in i and "à l'import" in i for i in info), info)
 
     def test_c2_the_stop_of_another_session_never_erases_pending_information(self):
         pdir = helpers.make_product(self.root, header=self.NO_VERSION)
         self._start("A")
         self._start("B")
         _, info_a = self._stop("A")
-        self.assertTrue(any("header-version" in i and "preexistant" in i for i in info_a))
+        self.assertTrue(any("header-version" in i and "préexistant" in i for i in info_a))
         src = pdir / "My Indicator.pine"
         src.write_text(helpers.FREE_HEADER + helpers.MINIMAL_BODY, encoding="utf-8")
         _, info_b = self._stop("B")                        # nothing to report for B
@@ -1007,7 +1039,7 @@ class TestSessionIsolation20261113(unittest.TestCase):
         self.assertEqual(snap["lineage"], {"established": False, "pointer": "B"})
         reason, info = self._stop("A-resumed")
         self.assertIsNone(reason)
-        self.assertTrue(any("no-promo-urls" in i and "lignee de session non etablie" in i
+        self.assertTrue(any("no-promo-urls" in i and "lignée de session non établie" in i
                             for i in info), info)
 
     def test_c3_a_resume_without_concurrent_activity_still_carries(self):
@@ -1033,7 +1065,7 @@ class TestSessionIsolation20261113(unittest.TestCase):
         self.assertEqual(snap["lineage"], {"established": False, "pointer": "A"})
         reason, info = self._stop("F")
         self.assertIsNone(reason)
-        self.assertTrue(any("lignee de session non etablie" in i for i in info), info)
+        self.assertTrue(any("lignée de session non établie" in i for i in info), info)
 
     def test_d07_a_hook_failure_is_traced_and_announced_once(self):
         helpers.make_product(self.root)
@@ -1084,6 +1116,170 @@ class TestSessionIsolation20261113(unittest.TestCase):
         reason, _ = self._stop("A")
         self.assertIn("header-version", reason)
         self.assertNotIn("notice de licence", reason)
+
+
+class TestStopLanguage20261114(unittest.TestCase):
+    """2026-11-14: every text of the Stop path — blocking reason, non-blocking
+    information, categories, warning on legal mentions, information handed
+    to the next summary — follows the language in force when it is shown;
+    the verdict never depends on the language; paths, check identifiers and
+    guard details are reproduced exactly; information recorded by an earlier
+    version is shown as recorded, never reinterpreted. These tests check the
+    text the tooling transmits, not its rendering in Claude Code."""
+
+    NO_VERSION = helpers.FREE_HEADER.replace("// Version: 1.0.0\n", "")
+    ITEM_RE = __import__("re").compile(r"^- (\S+?): (\[[\w-]+\] )?", __import__("re").M)
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def _workspace(self, name, lang):
+        holder = Path(self.tmp.name) / name
+        holder.mkdir()
+        root = helpers.make_workspace(str(holder))
+        (root / core.LOCAL_SETTINGS_REL).parent.mkdir(parents=True, exist_ok=True)
+        (root / core.LOCAL_SETTINGS_REL).write_text(json.dumps(
+            {"env": {core.TV_MODE_ENV_KEY: "manual"}}), encoding="utf-8")
+        if lang is not None:
+            self.assertTrue(config.set_value(root, "language", lang)["ok"])
+        return root
+
+    def _stop(self, root, sid):
+        code, out = session.hook_stop(root, {"session_id": sid})
+        self.assertEqual(code, 0)
+        return json.loads(out) if out else None
+
+    def _unregistered_event(self, root):
+        """A script created during the session outside any product."""
+        session.hook_session_start(root, {"session_id": "s1", "source": "startup"})
+        new = root / "scripts" / "fresh" / "Fresh.pine"
+        new.parent.mkdir(parents=True, exist_ok=True)
+        new.write_text("//@version=6\nindicator('Fresh')\nplot(close)\n", encoding="utf-8")
+        return self._stop(root, "s1")
+
+    def _licence_event(self, root):
+        """A pre-existing finding (no Version line) and an introduced licence URL."""
+        pdir = helpers.make_product(root, header=self.NO_VERSION)
+        session.hook_session_start(root, {"session_id": "s1", "source": "startup"})
+        src = pdir / "My Indicator.pine"
+        src.write_text(src.read_text(encoding="utf-8") + "// https://example.org/LICENSE\n",
+                       encoding="utf-8")
+        return self._stop(root, "s1")
+
+    def _shape(self, decision):
+        """Language-independent shape of a decision: verdict, keys, items."""
+        reason = decision["reason"]
+        return (decision["decision"], sorted(decision),
+                [(m.group(1), m.group(2)) for m in self.ITEM_RE.finditer(reason)])
+
+    def test_unregistered_script_blocks_in_the_configured_language_with_the_same_verdict(self):
+        en = self._unregistered_event(self._workspace("en", "en"))
+        fr = self._unregistered_event(self._workspace("fr", "fr"))
+        self.assertTrue(en["reason"].startswith(i18n.t("stop.reason.introduced", "en")), en["reason"])
+        self.assertIn("scripts/fresh/Fresh.pine: modified during the session but UNREGISTERED — run pine-onboard",
+                      en["reason"])
+        self.assertIsNone(__import__("re").search(r"[éèêàùç]|pendant|exécuter", en["reason"]), en["reason"])
+        self.assertTrue(fr["reason"].startswith(i18n.t("stop.reason.introduced", "fr")), fr["reason"])
+        self.assertIn("scripts/fresh/Fresh.pine: modifié pendant la session mais UNREGISTERED — exécuter pine-onboard",
+                      fr["reason"])
+        self.assertEqual(self._shape(en), self._shape(fr))          # same verdict, same protocol, same items
+        self.assertEqual(self._shape(en)[:2], ("block", ["decision", "reason"]))
+
+    def test_non_blocking_information_and_legal_warning_in_both_languages(self):
+        decisions = {}
+        for lang, preexisting in (("en", "pre-existing"), ("fr", "préexistant")):
+            root = self._workspace("ws-" + lang, lang)
+            d = self._licence_event(root)
+            decisions[lang] = d
+            reason = d["reason"]
+            self.assertIn(i18n.t("stop.reason.legal", lang), reason)
+            self.assertIn(i18n.t("stop.reason.info", lang), reason)
+            introduced, informed = reason.split(i18n.t("stop.reason.info", lang))
+            self.assertIn("[no-promo-urls] https://example.org/LICENSE", introduced)  # detail reproduced exactly
+            self.assertIn("[header-version]", informed)
+            self.assertIn(preexisting, informed)
+            record = json.loads(session._stop_info_path(root, "s1").read_text(encoding="utf-8"))
+            self.assertEqual((record["format"], record["language"]), (session.STOP_INFO_FORMAT, lang))
+            self.assertEqual([i["k"] for i in record["items"]], ["note"])
+            self.assertEqual(record["items"][0]["label"], {"k": "preexisting"})
+            self.assertEqual(record["info"], [session._render_stop_item(record["items"][0], lang)])
+        self.assertEqual(self._shape(decisions["en"]), self._shape(decisions["fr"]))
+        self.assertNotIn("Ne jamais", decisions["en"]["reason"])
+        self.assertNotIn("Never remove", decisions["fr"]["reason"])
+
+    def test_recorded_information_is_worded_in_the_language_in_force_when_shown(self):
+        for recorded, shown, word, other in (("fr", "en", "pre-existing", "préexistant"),
+                                             ("en", "fr", "préexistant", "pre-existing")):
+            root = self._workspace("switch-" + recorded, recorded)
+            self._licence_event(root)
+            self.assertTrue(config.set_value(root, "language", shown)["ok"])   # explicit change after the record
+            text, status = session.hook_session_start(root, {"session_id": "s2", "source": "startup"})
+            self.assertEqual(len(status["stop_info"]), 1, status["stop_info"])
+            line = status["stop_info"][0]
+            self.assertTrue(line.startswith("[session s1] "), line)
+            self.assertIn(word, line)
+            self.assertNotIn(other, line)
+            self.assertIn(i18n.t("summary.list.stop", shown), text)
+            text2, status2 = session.hook_session_start(root, {"session_id": "s3", "source": "startup"})
+            self.assertEqual(status2["stop_info"], [])                         # still shown once
+
+    def test_information_of_earlier_versions_is_shown_as_recorded(self):
+        root = self._workspace("legacy", "en")
+        sdir = root / session.SESSION_DIR_REL
+        (sdir / session.STOP_INFO_DIR).mkdir(parents=True, exist_ok=True)
+        old_single = "scripts/x/X.pine: [header-version] no '// Version: X.Y.Z' line in header — preexistant"
+        old_session = ("scripts/y/Y.pine: UNREGISTERED — executer pine-onboard — deplace sans modification, "
+                       "deja non enregistre")
+        (sdir / "stop-info.json").write_text(json.dumps({"info": [old_single]}), encoding="utf-8")
+        (sdir / session.STOP_INFO_DIR / "oldsession.json").write_text(
+            json.dumps({"session_id": "oldsession", "info": [old_session]}), encoding="utf-8")
+        (sdir / session.STOP_INFO_DIR / "future01.json").write_text(json.dumps(
+            {"session_id": "future01", "format": 3, "items": [{"k": "unknown-kind", "rel": "scripts/z/Z.pine"}],
+             "info": ["recorded line of an unknown kind"]}), encoding="utf-8")
+        text, status = session.hook_session_start(root, {"session_id": "now", "source": "startup"})
+        marker = i18n.t("stop.recorded", "en")
+        self.assertIn(marker + old_single, status["stop_info"])
+        self.assertIn("[session oldsessi] " + marker + old_session, status["stop_info"])
+        self.assertIn("[session future01] " + marker + "recorded line of an unknown kind", status["stop_info"])
+        self.assertEqual(len(status["stop_info"]), 3, status["stop_info"])
+        _, again = session.hook_session_start(root, {"session_id": "later", "source": "startup"})
+        self.assertEqual(again["stop_info"], [])
+        # the same records shown in French keep their words, only the marker follows the language
+        root_fr = self._workspace("legacy-fr", "fr")
+        sdir = root_fr / session.SESSION_DIR_REL
+        sdir.mkdir(parents=True, exist_ok=True)
+        (sdir / "stop-info.json").write_text(json.dumps({"info": [old_single]}), encoding="utf-8")
+        _, status = session.hook_session_start(root_fr, {"session_id": "now", "source": "startup"})
+        self.assertEqual(status["stop_info"], [i18n.t("stop.recorded", "fr") + old_single])
+
+    def test_fallback_without_configuration_or_with_an_unknown_language_is_english(self):
+        absent = self._workspace("absent", None)
+        self.assertFalse((absent / "pws.config.json").exists())
+        d = self._unregistered_event(absent)
+        self.assertTrue(d["reason"].startswith(i18n.t("stop.reason.introduced", i18n.DEFAULT_LANGUAGE)))
+        self.assertEqual(i18n.DEFAULT_LANGUAGE, "en")
+        unknown = self._workspace("unknown", "fr")
+        cfg = json.loads((unknown / "pws.config.json").read_text(encoding="utf-8"))
+        cfg["language"] = "de"
+        (unknown / "pws.config.json").write_text(json.dumps(cfg), encoding="utf-8")
+        d = self._unregistered_event(unknown)
+        self.assertTrue(d["reason"].startswith(i18n.t("stop.reason.introduced", "en")), d["reason"])
+
+    def test_every_stop_text_exists_in_both_languages(self):
+        keys = [k for k in i18n._CATALOGUE if k.startswith("stop.")]
+        self.assertGreaterEqual(len(keys), 20)
+        for k in keys:
+            self.assertEqual(sorted(i18n._CATALOGUE[k]), ["en", "fr"], k)
+        for item in ({"k": "unregistered", "rel": "a.pine", "cat": c}
+                     for c in ("moved-unchanged", "imported-unchanged", "indeterminate")):
+            for lang in ("en", "fr"):
+                self.assertIsNotNone(session._render_stop_item(item, lang), item)
+        self.assertIsNone(session._render_stop_item({"k": "unregistered", "rel": "a.pine", "cat": "?"}, "en"))
+        self.assertIsNone(session._render_stop_item({"k": "note", "rel": "a.pine", "check": "c", "text": "t",
+                                                     "label": {"k": "visible"}}, "en"))   # no moment: not worded
 
 
 if __name__ == "__main__":

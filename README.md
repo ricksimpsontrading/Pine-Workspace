@@ -40,10 +40,10 @@ Pine Workspace runs inside Claude Code. Install and configure Claude Code before
 
 From the [Releases page](https://github.com/ricksimpsontrading/Pine-Workspace/releases), download the packaged ZIP and its matching `.sha256` file.
 
-For version 2.1.0, place both files in the same folder and run this command from that folder:
+For version 2.1.1, place both files in the same folder and run this command from that folder:
 
 ```bash
-shasum -a 256 -c pine-workspace-2.1.0.zip.sha256
+shasum -a 256 -c pine-workspace-2.1.1.zip.sha256
 ```
 
 The result should report `OK`. This checks download integrity; the release does not include a cryptographic signature.
@@ -190,7 +190,7 @@ The legal scope of the boundary between the Apache-licensed core and the AGPL-li
 | [Standard index](standards/INDEX.md) | Navigation through the standard |
 | [Licensing](docs/licensing/LICENSING.md) | Component licenses, notices, and documented uncertainties |
 
-Some internal reference documents are currently written in French or contain both languages.
+The reference documentation under `docs/` and `standards/` is written in English. The Claude Code instruction files (`CLAUDE.md` and the skills, rules and agents under `.claude/`) and a few internal notes are currently written in French, and the Template Permission is provided in English and French. Whatever the language of a file, Claude Code is instructed to answer in the language you configured.
 
 ## Reporting an issue
 

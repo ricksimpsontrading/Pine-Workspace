@@ -54,7 +54,8 @@ python3 install.py --target "~/My Pine Workspace" --language en --yes   # non-in
 
 The installer runs the first configuration (`python3 -m tools.pws_workspace init`):
 
-- **language** of menus, explanations and diagnostics: `en` (default) or `fr` — changeable
+- **language** of the conversation and of the menus (menus, explanations, questions, confirmations,
+  reports): `en` (default) or `fr` — changeable
   later with `config set language fr`;
 - **identity**: the copyright holder of **your** scripts (`identity.copyright_holder`). It is
   used by the licence header templates and by the header checks. Leave it empty to set it

@@ -53,12 +53,14 @@ licence analysis (spec §24.4.13).
 ## PINE-WORKSPACE banner — text constants prepared once, nothing shipped
 
 `tools/pws_workspace/banner.py` stores text constants: the three PINE-WORKSPACE variants of the
-`banner` subcommand and the fixed "Pine-WS" banner of the /pws menu. The artistic ones were rendered
-**once**, while preparing the module (2026-11-07 and 2026-11-08), with two fonts of the FIGlet
-distribution: "Standard" (`standard.flf`, Glenn Chappell & Ian Chai, March 1993, FIGlet release 2.1)
-for the large PINE-WORKSPACE variant and the Pine-WS banner, and "Small" (`small.flf`, Glenn
-Chappell, April 1993, based on Standard) for the compact variant, through pyfiglet 1.0.4 (MIT
-licence, a Python port of FIGlet) reading the official, unmodified font files. The FIGlet distribution (figlet 2.2.5,
+`banner` subcommand and the fixed "PWS" banner of the /pws menu. The adaptive artistic variants and
+the former "Pine-WS" menu banner were rendered **once**, while preparing the module (2026-11-07 and
+2026-11-08), with two fonts of the FIGlet distribution: "Standard" (`standard.flf`, Glenn Chappell &
+Ian Chai, March 1993, FIGlet release 2.1) for the large PINE-WORKSPACE variant and the former
+Pine-WS banner, and "Small" (`small.flf`, Glenn Chappell, April 1993, based on Standard) for the
+compact variant, through pyfiglet 1.0.4 (MIT licence, a Python port of FIGlet) reading the official,
+unmodified font files. The "PWS" banner (2026-11-14) was composed without running any tool, from
+the same "Standard" glyph shapes (P, W, S) joined by that font's horizontal smushing rules. The FIGlet distribution (figlet 2.2.5,
 https://github.com/cmatsuoka/figlet) is published under the BSD-3-Clause licence — "Copyright (C)
 1991, 1993, 1994 Glenn Chappell and Ian Chai; Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001 John
 Cowan; Copyright (C) 2002 Christiaan Keet; Copyright (C) 2011 Claudio Matsuoka. All rights

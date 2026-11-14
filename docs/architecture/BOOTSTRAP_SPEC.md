@@ -1,225 +1,227 @@
 # PINE WORKSPACE
 # CLAUDE CODE PINE WORKSPACE — FINAL BOOTSTRAP SPECIFICATION
 
-Document de construction du workspace Claude Code dédié au développement Pine Script V6.
+Construction document of the Claude Code workspace dedicated to Pine Script V6 development.
 
-Date de référence de la spécification : 2026-09-04  
-Périmètre : environnement local Claude Code + Git local + développement Pine Script + exécution comportementale locale PineTS + validation TradingView  
-Mode de validation TradingView initial : `manual`  
-Amendement PineTS ratifié : 2026-08-23  
-Amendement apprentissage opérationnel contrôlé `chrome-experimental` ratifié : 2026-08-24  
-Amendement menu contextuel PWS ratifié : 2026-08-24  
-Amendement autorité locale PineTS, granularité des capabilities et datasets reproductibles ratifié : 2026-08-27  
-Amendement correctif global pré-bootstrap ratifié : 2026-08-28  
-Amendement d’indépendance du projet ratifié : 2026-09-04  
-Amendement §19.3 / §61.8 (portée des garanties de `settings.local.json` face à un écrivain externe non coordonné) ratifié : 2026-09-06  
-Amendement de maintenance (attribution des findings du hook Stop, rapports de run version 2, confirmations par groupe, compilation minimale, relectures proportionnées, provenances, artefact de suivi, recherches reconstituées, tests du tooling) ratifié : 2026-09-27  
-Complément de maintenance (alignement des relectures en §35.3 et des statuts en §50.4, enregistrement d’import, enregistrement et promotion d’une compilation minimale, correspondance §24.2) ratifié : 2026-09-27  
-Amendement d’évolution consolidée (configuration personnelle `pws.config.json` §19A, profils de licence et manifeste schéma 2 §45, niveaux de vérification §24.2/§26, langue configurée, menu déterministe, outils PineTS, parcours d’export GitHub §43.5, archives et entretien, distribution publique et migrations §55, édition neutre : le « titulaire » remplace l’identité nominative) ratifié : 2026-11-06  
-Amendement d’alignement des niveaux de vérification (§24.2 étapes 15-16, §26.1, §35.3, §41.1, flux §68 et §69 ; master §9.2 ; constats D-02 à D-04 de l’audit du 2026-11-12/13) autorisé par le titulaire : 2026-11-13  
-Amendement de licence de l’adaptateur PineTS (§24.4.13 : adaptateur sous AGPL-3.0-only, cœur sous Apache-2.0 ; constat G-09) décidé par le titulaire : 2026-11-13  
-Amendement du mode TradingView hérité (§19A : provenance d’un choix explicite ; conflit sans provenance bloqué jusqu’au choix du titulaire ; constat F-14) décidé par le titulaire : 2026-11-13  
-Amendement des licences des scripts importés (§45.2, §45.4, §45.4bis : extension compatible du schéma 3, constat C-19) et du contrôle de visibilité réelle avant l’envoi d’un source fermé (parcours d’export GitHub, constat I-06) décidés par le titulaire : 2026-11-13  
-Amendement des documents juridiques d’origine des scripts importés (§45.2, §45.4, §45.4bis, parcours d’export GitHub : `license.documents`, extension compatible du schéma 3, export à l’identique) et du contrôle d’identité de la destination pour tout envoi (parcours d’export GitHub) demandés par le titulaire : 2026-11-14
-
----
-
-## 0. OBJET DE CE DOCUMENT
-
-Ce document est la spécification de bootstrap du workspace Claude Code utilisé pour développer, maintenir, documenter, valider et préparer les publications des scripts Pine Script du titulaire du workspace (identité et langue configurées dans `pws.config.json`).
-
-Il ne remplace pas le standard maître Pine Script.
-
-Le standard maître Pine Script reste l’autorité canonique sur les conventions de développement des scripts.
-
-Cette spécification gouverne autre chose :
-
-- comment Claude Code doit organiser le workspace ;
-- quelles primitives Claude Code doivent être utilisées ;
-- comment le contexte doit être chargé ;
-- comment un script existant doit être onboardé ;
-- comment un nouveau script doit être conçu ;
-- comment les informations persistantes doivent être stockées ;
-- quels contrôles peuvent être déterministes ;
-- comment une couche locale d’exécution comportementale PineTS doit être séparée des contrôles déterministes et de TradingView ;
-- comment la validation TradingView réelle doit être reliée au code testé ;
-- comment préserver l’autonomie sans créer un système inutilement complexe.
-
-Le bootstrap doit être exécuté avec une règle centrale :
-
-> Concevoir avant d’écrire.
-
-La présence d’un fichier dans l’architecture cible définit une responsabilité à satisfaire, pas un texte générique à recopier.
-
-Aucun fichier opérationnel ne doit être créé simplement pour compléter visuellement une arborescence.
-
-Chaque fichier créé doit avoir une fonction démontrable.
+Specification reference date: 2026-09-04  
+Scope: local Claude Code environment + local Git + Pine Script development + PineTS local behavioural execution + TradingView validation  
+Initial TradingView validation mode: `manual`  
+PineTS amendment ratified: 2026-08-23  
+Controlled `chrome-experimental` operational learning amendment ratified: 2026-08-24  
+PWS contextual menu amendment ratified: 2026-08-24  
+PineTS local authority, capability granularity and reproducible datasets amendment ratified: 2026-08-27  
+Global pre-bootstrap corrective amendment ratified: 2026-08-28  
+Project independence amendment ratified: 2026-09-04  
+§19.3 / §61.8 amendment (scope of the guarantees of `settings.local.json` against an uncoordinated external writer) ratified: 2026-09-06  
+Maintenance amendment (attribution of the Stop hook findings, run reports version 2, group confirmations, minimal compilation, proportionate re-readings, provenances, tracking artefact, reconstructed research, tooling tests) ratified: 2026-09-27  
+Maintenance supplement (alignment of the re-readings in §35.3 and of the statuses in §50.4, import recording, recording and promotion of a minimal compilation, §24.2 correspondence) ratified: 2026-09-27  
+Consolidated evolution amendment (personal configuration `pws.config.json` §19A, licence profiles and schema 2 manifest §45, verification levels §24.2/§26, configured language, deterministic menu, PineTS tools, guided GitHub export path §43.5, archives and cleanup, public distribution and migrations §55, neutral edition: the "holder" replaces the named identity) ratified: 2026-11-06  
+Verification levels alignment amendment (§24.2 steps 15-16, §26.1, §35.3, §41.1, flows §68 and §69; master §9.2; findings D-02 to D-04 of the audit of 2026-11-12/13) authorized by the holder: 2026-11-13  
+PineTS adapter licence amendment (§24.4.13: adapter under AGPL-3.0-only, core under Apache-2.0; finding G-09) decided by the holder: 2026-11-13  
+Legacy TradingView mode amendment (§19A: provenance of an explicit choice; conflict without provenance blocked until the holder's choice; finding F-14) decided by the holder: 2026-11-13  
+Amendment of the licences of imported scripts (§45.2, §45.4, §45.4bis: compatible extension of schema 3, finding C-19) and of the actual-visibility check before sending a closed source (guided GitHub export path, finding I-06) decided by the holder: 2026-11-13  
+Amendment of the original legal documents of imported scripts (§45.2, §45.4, §45.4bis, guided GitHub export path: `license.documents`, compatible extension of schema 3, export as is) and of the destination identity check for every send (guided GitHub export path) requested by the holder: 2026-11-14  
+Reference-documentation language amendment (this specification translated into English, faithfully: requirements, section numbers, identifiers and decision references unchanged) and explicit statement of the configured language at session start (§40.2, §40.3) requested by the holder: 2026-11-14  
+Amendment aligning the PWS menu description on the generated menu (§1.3, §40.5, with the TradingView mode route in the `tv-mode` section and §61) and wording the Stop hook messages in the configured language (§41.3) requested by the holder: 2026-11-14
 
 ---
 
-## 1. RÉSULTAT ATTENDU
+## 0. PURPOSE OF THIS DOCUMENT
 
-À la fin du bootstrap, le workspace doit permettre deux workflows produit principaux, accessibles directement ou par une façade guidée PWS.
+This document is the bootstrap specification of the Claude Code workspace used to develop, maintain, document, validate and prepare the publications of the Pine Script scripts of the workspace holder (identity and language configured in `pws.config.json`).
 
-### 1.1 Script Pine existant
+It does not replace the Pine Script master standard.
 
-Le titulaire crée par exemple :
+The Pine Script master standard remains the canonical authority on the development conventions of the scripts.
+
+This specification governs something else:
+
+- how Claude Code must organize the workspace;
+- which Claude Code primitives must be used;
+- how the context must be loaded;
+- how an existing script must be onboarded;
+- how a new script must be designed;
+- how persistent information must be stored;
+- which checks can be deterministic;
+- how a local PineTS behavioural execution layer must be separated from the deterministic checks and from TradingView;
+- how the real TradingView validation must be linked to the tested code;
+- how to preserve autonomy without creating an unnecessarily complex system.
+
+The bootstrap must be executed with one central rule:
+
+> Design before writing.
+
+The presence of a file in the target architecture defines a responsibility to fulfil, not a generic text to copy.
+
+No operational file must be created simply to visually complete a directory tree.
+
+Every file created must have a demonstrable function.
+
+---
+
+## 1. EXPECTED RESULT
+
+At the end of the bootstrap, the workspace must enable two main product workflows, accessible directly or through a guided PWS facade.
+
+### 1.1 Existing Pine script
+
+The holder creates, for example:
 
 ```text
 scripts/zigzag-orderblock/
 └── ZigZag OrderBlock Retracement.pine
 ```
 
-Au démarrage suivant, Claude Code détecte automatiquement que le `.pine` n’est pas onboardé.
+At the next startup, Claude Code automatically detects that the `.pine` is not onboarded.
 
-Claude Code déclenche le workflow approprié, analyse réellement le script, puis crée seulement le contexte spécifique nécessaire à CE script.
+Claude Code triggers the appropriate workflow, actually analyses the script, then creates only the specific context needed for THIS script.
 
-Le contenu de ce contexte doit être dérivé :
+The content of this context must be derived:
 
-- du code réel ;
-- du standard maître ;
-- des décisions le titulaire déjà connues ;
-- de la documentation officielle actuelle lorsque nécessaire.
+- from the real code;
+- from the master standard;
+- from the holder's decisions already known;
+- from the current official documentation when necessary.
 
-Il ne doit pas être produit à partir d’un template générique rempli mécaniquement.
+It must not be produced from a generic template filled in mechanically.
 
-### 1.2 Nouveau script
+### 1.2 New script
 
-Le titulaire décrit l’objectif du nouveau produit.
+The holder describes the objective of the new product.
 
-Claude Code doit utiliser un workflow distinct de l’onboarding.
+Claude Code must use a workflow distinct from onboarding.
 
-Il doit :
+It must:
 
-1. comprendre l’objectif ;
-2. clarifier seulement les décisions produit impossibles à déterminer ;
-3. déterminer le modèle de distribution ;
-4. effectuer la recherche Pine actuelle ;
-5. effectuer le benchmark TradingView requis ;
-6. définir comment la solution le titulaire peut dépasser les meilleures références pertinentes sans les copier ;
-7. concevoir le produit ;
-8. concevoir son architecture ;
-9. créer son contexte spécifique ;
-10. seulement ensuite commencer le code Pine ;
-11. développer ;
-12. revoir ;
-13. exécuter les checks locaux déterministes ;
-14. exécuter les tests comportementaux PineTS applicables selon leur niveau de preuve ;
-15. valider réellement dans TradingView.
+1. understand the objective;
+2. clarify only the product decisions that are impossible to determine;
+3. determine the distribution model;
+4. carry out the current Pine research;
+5. carry out the required TradingView benchmark;
+6. define how the holder's solution can surpass the best relevant references without copying them;
+7. design the product;
+8. design its architecture;
+9. create its specific context;
+10. only then start the Pine code;
+11. develop;
+12. review;
+13. run the deterministic local checks;
+14. run the applicable PineTS behavioural tests according to their level of evidence;
+15. actually validate in TradingView.
 
-Un nouveau produit ne doit donc pas commencer normalement par un fichier `.pine` vide créé manuellement.
+A new product must therefore not normally start with an empty `.pine` file created manually.
 
-### 1.3 Menu contextuel PWS
+### 1.3 PWS contextual menu
 
-Le workspace doit également fournir une entrée guidée, à l'intérieur d'une session Claude Code interactive, sous la forme d'un menu contextuel PWS.
+The workspace must also provide a guided entry point, inside an interactive Claude Code session, in the form of a PWS contextual menu.
 
-Ce menu :
+This menu:
 
-- utilise en priorité la primitive native `AskUserQuestion` lorsque la surface Claude Code courante la fournit ;
-- se navigue avec l'interface clavier native de Claude Code ;
-- ouvre des sous-menus lorsque plusieurs décisions structurées sont nécessaires ;
-- adapte ses choix à l'état réel du workspace ;
-- route vers les mêmes skills et contrats que les commandes directes ; pour une action user-only que Claude ne peut pas invoquer, transmet le choix explicite au contrôleur déterministe partagé prévu par le contrat ;
-- ne duplique aucune logique Pine, produit, validation ou release ;
-- ne devient jamais une seconde source de vérité.
+- uses, as a priority, the native `AskUserQuestion` primitive when the current Claude Code surface provides it;
+- is navigated with the native keyboard interface of Claude Code;
+- opens submenus when several structured decisions are needed;
+- adapts its choices to the real state of the workspace;
+- routes to the same skills and contracts as the direct commands; for a user-only action that Claude cannot invoke, passes the explicit choice to the shared deterministic controller provided for by the contract;
+- duplicates no Pine, product, validation or release logic;
+- never becomes a second source of truth.
 
-Exemple conceptuel :
+Conceptual example:
 
 ```text
 PWS
   ↓
-Nouveau script
+New script
   ↓
 Indicator / Strategy / Library
   ↓
-Gratuit / open-source  |  Payant / closed-source
+FREE  |  FREE with closed source  |  PRIVATE  |  COMMERCIAL
   ↓
-Library → Gratuit / open-source dérivé automatiquement
+Library → FREE with public source derived automatically
   ↓
-confirmation
+summary and confirmation (Start / Modify / Cancel)
   ↓
 pine-new
 ```
 
-Le menu reste réouvrable explicitement pendant la session.
+The menu remains explicitly reopenable during the session.
 
 ---
 
-## 2. PRINCIPES NON NÉGOCIABLES
+## 2. NON-NEGOTIABLE PRINCIPLES
 
-### 2.1 Une seule constitution Pine
+### 2.1 A single Pine constitution
 
-Le standard maître existe en une seule copie canonique :
+The master standard exists in a single canonical copy:
 
 ```text
 standards/PINE_SCRIPT_V6_STANDARD.md
 ```
 
-Ne pas recopier son contenu dans :
+Do not copy its content into:
 
-- `CLAUDE.md` ;
-- les rules ;
-- les skills ;
-- les agents ;
-- les fichiers de contexte des scripts ;
-- les outils déterministes.
+- `CLAUDE.md`;
+- the rules;
+- the skills;
+- the agents;
+- the context files of the scripts;
+- the deterministic tools.
 
-Les autres éléments du workspace doivent appliquer, router, résumer localement ou contrôler des sous-ensembles de ce standard sans devenir des autorités concurrentes.
+The other elements of the workspace must apply, route, summarize locally or check subsets of this standard without becoming competing authorities.
 
-### 2.2 Pas de gigantesque `CLAUDE.md`
+### 2.2 No gigantic `CLAUDE.md`
 
-Le `CLAUDE.md` racine doit rester concis.
+The root `CLAUDE.md` must remain concise.
 
-La documentation Claude Code actuelle recommande de viser moins de 200 lignes par `CLAUDE.md`.
+The current Claude Code documentation recommends aiming for fewer than 200 lines per `CLAUDE.md`.
 
-Les procédures multi-étapes vont dans des skills.
+Multi-step procedures go into skills.
 
-Les instructions dépendant de chemins vont dans `.claude/rules/`.
+Path-dependent instructions go into `.claude/rules/`.
 
-Les gros travaux de lecture/recherche/revue peuvent être isolés dans des subagents.
+Large reading/research/review tasks may be isolated in subagents.
 
-### 2.3 Pas d’import `@` du standard maître
+### 2.3 No `@` import of the master standard
 
-Ne pas importer le master standard depuis `CLAUDE.md` avec `@`.
+Do not import the master standard from `CLAUDE.md` with `@`.
 
-Un import est chargé dans le contexte ; il n’économise pas le coût contextuel.
+An import is loaded into the context; it does not save the context cost.
 
-Le standard maître est consulté à la demande à travers son index et les workflows.
+The master standard is consulted on demand through its index and the workflows.
 
-### 2.4 Aucun fichier générique décoratif
+### 2.4 No decorative generic files
 
-Interdictions :
+Prohibitions:
 
-- faux scripts d’exemple ;
-- `.gitkeep` ajouté uniquement pour matérialiser un dossier ;
-- `TODO.md` vide ;
-- `CHANGELOG_TEMPLATE.md` sans release réelle ;
-- dossier `release/` vide ;
-- dossier `docs/` vide ;
-- dossier `research/` vide ;
-- squelette `PRODUCT.md` identique pour tous les scripts ;
-- `ARCHITECTURE.md` rempli de rubriques sans contenu réel ;
-- placeholders destinés à être « remplis plus tard » sans besoin immédiat.
+- fake example scripts;
+- `.gitkeep` added only to materialize a folder;
+- empty `TODO.md`;
+- `CHANGELOG_TEMPLATE.md` without a real release;
+- empty `release/` folder;
+- empty `docs/` folder;
+- empty `research/` folder;
+- `PRODUCT.md` skeleton identical for all scripts;
+- `ARCHITECTURE.md` filled with headings without real content;
+- placeholders intended to be "filled in later" without an immediate need.
 
 ### 2.5 Git local-first
 
-Le workspace utilise Git local.
+The workspace uses local Git.
 
-Le bootstrap :
+The bootstrap:
 
-- initialise Git local si nécessaire ;
-- ne crée aucun remote ;
-- ne configure pas GitHub ni GitHub Actions ;
-- ne dépend pas du CLI `gh` ;
-- ne pousse rien vers un service distant.
+- initializes local Git if necessary;
+- creates no remote;
+- does not configure GitHub or GitHub Actions;
+- does not depend on the `gh` CLI;
+- pushes nothing to a remote service.
 
-GitHub n’est jamais une dépendance par défaut. Depuis la décision ratifiée du 2026-11-06, un **parcours d’export explicite** existe (§43.5) : destinations configurées dans `pws.config.json`, liste de contenus autorisés par profil de licence, plan et aperçu des fichiers inclus/exclus, publication ou mise à jour seulement après autorisation explicite du titulaire ; `gh` sert en lecture (`auth status`, `repo view`) et jamais pour un acte destructif ; aucun jeton n’est stocké par le workspace. Ce parcours n’introduit ni remote dans le workspace, ni CI distante, ni push implicite.
+GitHub is never a default dependency. Since the ratified decision of 2026-11-06, an **explicit guided export path** exists (§43.5): destinations configured in `pws.config.json`, list of contents allowed per licence profile, plan and preview of the included/excluded files, publication or update only after explicit authorization from the holder; `gh` is used for reading (`auth status`, `repo view`) and never for a destructive act; no token is stored by the workspace. This guided path introduces neither a remote in the workspace, nor remote CI, nor implicit push.
 
-### 2.6 TradingView reste la vérité empirique finale pour TradingView
+### 2.6 TradingView remains the final empirical truth for TradingView
 
-Aucune vérification locale ne constitue une validation TradingView.
+No local verification constitutes a TradingView validation.
 
-Le workspace distingue strictement trois couches :
+The workspace strictly distinguishes three layers:
 
 ```text
 STATIC / DETERMINISTIC CHECKS
@@ -229,445 +231,445 @@ LOCAL BEHAVIORAL EXECUTION
 TRADINGVIEW VALIDATION
 ```
 
-`STATIC / DETERMINISTIC CHECKS` vérifie uniquement ce qui peut être établi localement de manière mécanique et fiable.
+`STATIC / DETERMINISTIC CHECKS` verifies only what can be established locally in a mechanical and reliable way.
 
-`LOCAL BEHAVIORAL EXECUTION` exécute le source Pine hors de TradingView afin d’observer son comportement sur des données contrôlées et reproductibles. Cette couche peut notamment détecter des erreurs d’exécution, divergences comportementales, régressions, anomalies de stabilité ou edge cases selon les capabilities réellement qualifiées par son moteur.
+`LOCAL BEHAVIORAL EXECUTION` executes the Pine source outside TradingView in order to observe its behaviour on controlled and reproducible data. This layer can in particular detect execution errors, behavioural divergences, regressions, stability anomalies or edge cases according to the capabilities actually qualified by its engine.
 
-PineTS est le backend initial retenu pour cette couche.
+PineTS is the initial backend selected for this layer.
 
-PineTS est un laboratoire local d’exécution comportementale. Il n’est ni une autorité normative sur la syntaxe ou la sémantique officielle Pine Script, ni une implémentation officielle TradingView, ni une preuve générale de compatibilité TradingView.
+PineTS is a local behavioural execution laboratory. It is neither a normative authority on the official Pine Script syntax or semantics, nor an official TradingView implementation, nor general evidence of TradingView compatibility.
 
-Dans un contrat local strictement borné, PineTS peut toutefois produire une conclusion comportementale localement gating lorsque toutes les capabilities matériellement nécessaires sont `GATING`, que leur calibration est `CURRENT`, et que le source, le dataset, la configuration et l’environnement d’exécution sont exactement identifiés.
+Within a strictly bounded local contract, PineTS can nevertheless produce a locally gating behavioural conclusion when all the materially necessary capabilities are `GATING`, their calibration is `CURRENT`, and the source, the dataset, the configuration and the execution environment are exactly identified.
 
-`TRADINGVIEW VALIDATION` reste la validation empirique finale de tout comportement propre à la plateforme TradingView et de toute étape `tv-validate`.
+`TRADINGVIEW VALIDATION` remains the final empirical validation of any behaviour specific to the TradingView platform and of any `tv-validate` step.
 
-Aucun résultat PineTS, quelle que soit sa qualité, ne peut :
+No PineTS result, whatever its quality, can:
 
-- devenir une validation TradingView ;
-- satisfaire à lui seul une étape `tv-validate` ;
-- transformer un état persisté `unverified` ou `in-progress` en validation réussie ;
-- prouver une parité TradingView qui n’a pas été observée réellement dans TradingView.
+- become a TradingView validation;
+- satisfy a `tv-validate` step on its own;
+- turn a persisted `unverified` or `in-progress` state into a successful validation;
+- prove a TradingView parity that has not actually been observed in TradingView.
 
-Inversement, une conclusion PineTS localement gating n’est pas annulée du seul fait qu’elle n’est pas une validation TradingView : elle peut bloquer le cycle local tant que le contrat comportemental local concerné n’est pas résolu, requalifié ou explicitement rendu non gating selon les règles de cette spécification.
+Conversely, a locally gating PineTS conclusion is not cancelled merely because it is not a TradingView validation: it can block the local cycle as long as the local behavioural contract concerned is not resolved, requalified or explicitly made non-gating according to the rules of this specification.
 
-Claude Code ne doit jamais déclarer un script validé dans TradingView lorsqu’aucune validation réelle n’a été exécutée sur le source exact concerné.
+Claude Code must never declare a script validated in TradingView when no real validation has been run on the exact source concerned.
 
-### 2.7 Deux modes TradingView
+### 2.7 Two TradingView modes
 
-Le workspace doit supporter :
+The workspace must support:
 
 ```text
 manual
 chrome-experimental
 ```
 
-`manual` est le mode initial et stable.
+`manual` is the initial and stable mode.
 
-`chrome-experimental` automatise autant que possible le même protocole de validation dans TradingView via les capacités navigateur de Claude Code.
+`chrome-experimental` automates as much as possible the same validation protocol in TradingView through the browser capabilities of Claude Code.
 
-En cas d’ambiguïté, d’échec, de login, de CAPTCHA, de changement d’interface, d’action non vérifiable ou de résultat visuel incertain :
+In case of ambiguity, failure, login, CAPTCHA, interface change, unverifiable action or uncertain visual result:
 
 ```text
 chrome-experimental
         ↓
-fallback du run
+run fallback
         ↓
 manual
 ```
 
-Le fallback d’un run ne modifie pas automatiquement le mode enregistré.
+The fallback of a run does not automatically modify the recorded mode.
 
-Seul le titulaire change le mode persistant.
+Only the holder changes the persistent mode.
 
-### 2.8 Publication jamais implicite
+### 2.8 Publication never implicit
 
-La validation automatisée du Pine Editor ne donne pas à Claude l’autorisation de publier.
+Automated Pine Editor validation does not give Claude the authorization to publish.
 
-Le bootstrap initial ne doit créer aucune automatisation qui :
+The initial bootstrap must not create any automation that:
 
-- clique automatiquement sur une publication publique ;
-- publie une nouvelle version ;
-- modifie un accès `invite-only` ;
-- modifie une relation commerciale ;
-- change une visibilité ;
-- effectue une action difficilement réversible.
+- automatically clicks on a public publication;
+- publishes a new version;
+- modifies an `invite-only` access;
+- modifies a commercial relationship;
+- changes a visibility;
+- performs an action that is hard to reverse.
 
-La publication reste sous contrôle explicite du titulaire.
+Publication remains under the explicit control of the holder.
 
-### 2.9 Mémoire automatique non normative
+### 2.9 Non-normative automatic memory
 
-Si l’auto-memory Claude Code est active, elle peut retenir :
+If Claude Code auto-memory is active, it may retain:
 
-- apprentissages de debug ;
-- particularités pratiques du repo ;
-- commandes utiles ;
-- observations non normatives.
+- debugging learnings;
+- practical particularities of the repo;
+- useful commands;
+- non-normative observations.
 
-Elle ne devient jamais l’unique source de :
+It never becomes the sole source of:
 
-- décision produit ;
-- contrat de signal ;
-- modèle de distribution ;
-- règle de release ;
-- Convention Personnelle ;
-- décision de licence ;
-- invariant métier durable.
+- product decision;
+- signal contract;
+- distribution model;
+- release rule;
+- Personal Convention;
+- licence decision;
+- durable business invariant.
 
-Toute information durable de cette nature doit être promue dans un fichier versionné approprié.
+Any durable information of this nature must be promoted into an appropriate versioned file.
 
-Les apprentissages opérationnels liés à `chrome-experimental` suivent en plus le contrat de §31.9. L’auto-memory peut retenir temporairement une observation candidate, mais toute connaissance opérationnelle destinée à être réutilisée durablement doit être explicitement qualifiée puis promue dans `.claude/skills/tv-validate/CHROME_EXPERIMENTAL.md`.
+Operational learnings related to `chrome-experimental` additionally follow the contract of §31.9. The auto-memory may temporarily retain a candidate observation, but any operational knowledge intended to be reused durably must be explicitly qualified, then promoted into `.claude/skills/tv-validate/CHROME_EXPERIMENTAL.md`.
 
-Une observation non promue reste non normative et ne doit pas être supposée vraie lors d’un run futur.
+An observation that has not been promoted remains non-normative and must not be assumed to be true during a future run.
 
-Le bootstrap ne doit pas forcer l’activation ou la désactivation de l’auto-memory de l’utilisateur.
+The bootstrap must not force the activation or deactivation of the user's auto-memory.
 
 ### 2.10 PINE WORKSPACE PROJECT-INDEPENDENCE INVARIANT
 
-Pine Workspace est un environnement de développement Pine Script V6 autonome.
+Pine Workspace is an autonomous Pine Script V6 development environment.
 
-Son bootstrap, son fonctionnement, sa validation, ses outils, sa documentation et son organisation ne doivent dépendre de l’existence, du nom, du chemin ou de l’état d’un autre projet externe.
+Its bootstrap, its operation, its validation, its tools, its documentation and its organization must not depend on the existence, the name, the path or the state of another external project.
 
-Pine Workspace peut coexister avec d’autres projets dans un même répertoire parent, mais cette coexistence ne constitue ni une dépendance ni une autorisation de scanner, modifier ou suivre des symlinks vers ces autres projets.
-
----
-
-## 3. SOURCES D’AUTORITÉ
-
-Ne pas réduire ces sources à une hiérarchie simpliste qui détruirait leur rôle propre.
-
-Leurs responsabilités sont complémentaires :
-
-- l'objectif produit explicite et les décisions ratifiées définissent le résultat recherché ;
-- la documentation officielle actuelle est l'autorité technique pour Claude Code, Pine Script et TradingView dans leurs périmètres respectifs ;
-- cette spécification ratifiée est le contrat de construction du workspace ;
-- le standard maître définit la méthode, la qualité, les conventions, l'UX, la documentation et l'identité produit Pine ;
-- le contexte spécifique du script définit l'applicabilité locale et les invariants du produit concerné.
-
-Une source ne doit pas être utilisée pour usurper la responsabilité d'une autre. Tout conflit réel ou apparent doit être signalé explicitement au titulaire avec les passages concernés ; il ne doit jamais être résolu silencieusement par un ordre de priorité inventé.
-
-### 3.1 Objectif du titulaire
-
-Définit CE QUE le produit doit accomplir.
-
-### 3.2 Documentation officielle TradingView / Pine Script actuelle
-
-Autorité technique pour :
-
-- syntaxe ;
-- APIs ;
-- sémantique ;
-- limitations ;
-- runtime ;
-- historical/realtime ;
-- requests ;
-- MTF ;
-- publication ;
-- règles techniques actuelles.
-
-### 3.3 Standard maître le titulaire Pine Script
-
-Définit les conventions de développement, qualité, UX, architecture, documentation et produit.
-
-### 3.4 Contexte spécifique du script
-
-Décrit la réalité et les invariants propres au produit concerné.
-
-### 3.5 Décisions explicites du titulaire
-
-Gouvernent les décisions produit ratifiées qui ne sont pas déductibles du code ou de la documentation technique.
-
-En cas de conflit Pine/TradingView, appliquer la méthode de résolution définie dans le standard maître. Pour un conflit de construction du workspace ou de primitive Claude Code, confronter la spécification à la documentation officielle actuelle, signaler l'écart et demander une décision lorsqu'il ne peut pas être résolu sans modifier le contrat ratifié.
+Pine Workspace can coexist with other projects in the same parent directory, but this coexistence constitutes neither a dependency nor an authorization to scan, modify or follow symlinks to these other projects.
 
 ---
 
-## 4. CATÉGORIES DE FICHIERS
+## 3. SOURCES OF AUTHORITY
 
-Le bootstrap doit attribuer explicitement une catégorie à chaque artefact durable.
+Do not reduce these sources to a simplistic hierarchy that would destroy their own role.
 
-### 4.1 Normatif Pine
+Their responsibilities are complementary:
 
-Exemple :
+- the explicit product objective and the ratified decisions define the desired result;
+- the current official documentation is the technical authority for Claude Code, Pine Script and TradingView within their respective scopes;
+- this ratified specification is the construction contract of the workspace;
+- the master standard defines the method, the quality, the conventions, the UX, the documentation and the Pine product identity;
+- the specific context of the script defines the local applicability and the invariants of the product concerned.
+
+A source must not be used to usurp the responsibility of another. Any real or apparent conflict must be reported explicitly to the holder with the passages concerned; it must never be resolved silently by an invented priority order.
+
+### 3.1 Holder's objective
+
+Defines WHAT the product must accomplish.
+
+### 3.2 Current official TradingView / Pine Script documentation
+
+Technical authority for:
+
+- syntax;
+- APIs;
+- semantics;
+- limitations;
+- runtime;
+- historical/realtime;
+- requests;
+- MTF;
+- publication;
+- current technical rules.
+
+### 3.3 The holder's Pine Script master standard
+
+Defines the development, quality, UX, architecture, documentation and product conventions.
+
+### 3.4 Specific context of the script
+
+Describes the reality and the invariants specific to the product concerned.
+
+### 3.5 Explicit decisions of the holder
+
+Govern the ratified product decisions that cannot be deduced from the code or from the technical documentation.
+
+In case of a Pine/TradingView conflict, apply the resolution method defined in the master standard. For a conflict concerning the construction of the workspace or a Claude Code primitive, compare the specification with the current official documentation, report the gap and request a decision when it cannot be resolved without modifying the ratified contract.
+
+---
+
+## 4. FILE CATEGORIES
+
+The bootstrap must explicitly assign a category to each durable artefact.
+
+### 4.1 Pine normative
+
+Example:
 
 ```text
 standards/PINE_SCRIPT_V6_STANDARD.md
 ```
 
-Ne peut pas être régénéré depuis un résumé.
+Cannot be regenerated from a summary.
 
-### 4.2 Normatif architecture workspace
+### 4.2 Workspace architecture normative
 
-Cette spécification de bootstrap constitue le contrat de construction du workspace.
+This bootstrap specification constitutes the construction contract of the workspace.
 
-L'instance canonique est conservée sous :
+The canonical instance is kept under:
 
 ```text
 docs/architecture/BOOTSTRAP_SPEC.md
 ```
 
-Elle n’est pas chargée automatiquement dans chaque session.
+It is not loaded automatically in every session.
 
-### 4.3 Dérivé
+### 4.3 Derived
 
-Exemples :
+Examples:
 
-- `standards/INDEX.md` ;
-- `standards/TRACEABILITY.md` ;
-- synthèses de recherche ;
-- états de validation ;
-- cartographies produites à partir du code.
+- `standards/INDEX.md`;
+- `standards/TRACEABILITY.md`;
+- research syntheses;
+- validation states;
+- maps produced from the code.
 
-Un artefact dérivé doit pouvoir être déclaré périmé.
+A derived artefact must be able to be declared stale.
 
-### 4.4 Opérationnel
+### 4.4 Operational
 
-Exemples :
+Examples:
 
-- `CLAUDE.md` ;
-- rules ;
-- skills ;
-- agents ;
-- settings ;
-- outils déterministes.
+- `CLAUDE.md`;
+- rules;
+- skills;
+- agents;
+- settings;
+- deterministic tools.
 
-Un artefact opérationnel matérialise une procédure ou un mécanisme.
+An operational artefact materializes a procedure or a mechanism.
 
-Il ne doit pas devenir une deuxième constitution.
+It must not become a second constitution.
 
-### 4.5 Preuve
+### 4.5 Evidence
 
-Exemples :
+Examples:
 
-- rapport de validation TradingView ;
-- capture d’écran utile ;
-- journal de test ;
-- hash du source réellement testé.
+- TradingView validation report;
+- useful screenshot;
+- test log;
+- hash of the source actually tested.
 
-Une preuve décrit une observation réelle.
+Evidence describes a real observation.
 
-Elle n’est pas une opinion.
+It is not an opinion.
 
-### 4.6 Éphémère
+### 4.6 Ephemeral
 
-Exemples :
+Examples:
 
-- état de session d’un hook ;
-- cache local ;
-- fichiers temporaires.
+- session state of a hook;
+- local cache;
+- temporary files.
 
-Ces éléments sont gitignored et ne deviennent jamais une autorité durable.
+These elements are gitignored and never become a durable authority.
 
 ---
 
-## 5. ÉTAT INITIAL MINIMAL
+## 5. MINIMAL INITIAL STATE
 
-Le bootstrap doit accepter un projet presque vide.
+The bootstrap must accept an almost empty project.
 
-Entrées nécessaires :
+Required inputs:
 
-1. cette spécification ;
-2. le fichier maître le titulaire Pine Script ;
-3. Claude Code installé ;
-4. Git disponible ou installable localement ;
-5. un runtime local approprié pour les petits outils déterministes.
+1. this specification;
+2. the holder's Pine Script master file;
+3. Claude Code installed;
+4. Git available or installable locally;
+5. an appropriate local runtime for the small deterministic tools.
 
-Le bootstrap doit identifier sans ambiguïté le fichier maître.
+The bootstrap must identify the master file unambiguously.
 
-S’il trouve plusieurs candidats plausibles, il demande au titulaire lequel est canonique.
+If it finds several plausible candidates, it asks the holder which one is canonical.
 
-Il ne choisit pas silencieusement.
+It does not choose silently.
 
-Le fichier maître est ensuite déplacé explicitement, sans duplication normative, à :
+The master file is then moved explicitly, without normative duplication, to:
 
 ```text
 standards/PINE_SCRIPT_V6_STANDARD.md
 ```
 
-Calculer son SHA-256 avant et après déplacement et vérifier l’identité du contenu.
+Compute its SHA-256 before and after the move and verify that the content is identical.
 
-La présente spécification est de même déplacée explicitement vers :
+This specification is likewise moved explicitly to:
 
 ```text
 docs/architecture/BOOTSTRAP_SPEC.md
 ```
 
-Calculer son SHA-256 avant et après déplacement et vérifier l'identité du contenu.
+Compute its SHA-256 before and after the move and verify that the content is identical.
 
-Consigner dans `BOOTSTRAP_REPORT.md` les deux mappings `ancien chemin → chemin canonique`, les hashes avant/après et toute raison empêchant exceptionnellement un déplacement. Une copie d'entrée conservée pour une nécessité démontrée doit être explicitement marquée non normative ; aucune double autorité silencieuse n'est admise.
+Record in `BOOTSTRAP_REPORT.md` the two `old path → canonical path` mappings, the before/after hashes and any reason exceptionally preventing a move. An input copy kept for a demonstrated necessity must be explicitly marked non-normative; no silent double authority is allowed.
 
 ---
 
-## 6. DISCOVERY AVANT TOUTE ÉCRITURE
+## 6. DISCOVERY BEFORE ANY WRITING
 
-Avant de créer l’arborescence finale, Claude Code doit effectuer une vraie phase de discovery.
+Before creating the final directory tree, Claude Code must carry out a genuine discovery phase.
 
-### 6.1 Environnement
+### 6.1 Environment
 
-Détecter notamment :
+Detect in particular:
 
-- OS ;
-- shell ;
-- présence éventuelle de WSL ;
-- version Claude Code ;
-- chemin du projet ;
-- version Git ;
-- état Git ;
-- branche courante ;
-- remotes existants ;
-- runtime Python 3 ou alternative locale ;
-- runtime Node.js et gestionnaire de paquets disponibles pour la couche PineTS ;
-- présence éventuelle d’une installation, configuration ou version PineTS préexistante dans le workspace ;
-- capacités navigateur Claude Code réellement disponibles ;
-- configuration locale Claude déjà existante ;
-- fichiers `.claude/` déjà présents.
+- OS;
+- shell;
+- possible presence of WSL;
+- Claude Code version;
+- project path;
+- Git version;
+- Git state;
+- current branch;
+- existing remotes;
+- Python 3 runtime or local alternative;
+- Node.js runtime and package manager available for the PineTS layer;
+- possible presence of a pre-existing PineTS installation, configuration or version in the workspace;
+- Claude Code browser capabilities actually available;
+- already existing local Claude configuration;
+- `.claude/` files already present.
 
-Avant toute écriture, établir aussi la frontière physique du workspace :
+Before any writing, also establish the physical boundary of the workspace:
 
-1. résoudre le chemin physique du workspace sans perdre la prise en charge des espaces ;
-2. déterminer la racine Git effective, notamment par `git rev-parse --show-toplevel` lorsqu'applicable ;
-3. rechercher si un repository parent englobe le dossier `pine workspace` ;
-4. si une racine Git englobante existe au-dessus du workspace attendu, arrêter avant mutation et demander une décision au titulaire ;
-5. refuser tout scan récursif, toute mutation ou tout suivi de symlink depuis le workspace vers le contenu d’un autre projet ou vers un emplacement extérieur à sa racine physique ;
-6. manipuler les chemins par des objets de chemin ou des arguments structurés, jamais par concaténation shell fragile.
+1. resolve the physical path of the workspace without losing support for spaces;
+2. determine the effective Git root, in particular with `git rev-parse --show-toplevel` when applicable;
+3. check whether a parent repository encloses the `pine workspace` folder;
+4. if an enclosing Git root exists above the expected workspace, stop before any mutation and ask the holder for a decision;
+5. refuse any recursive scan, any mutation or any symlink following from the workspace to the content of another project or to a location outside its physical root;
+6. handle paths through path objects or structured arguments, never through fragile shell concatenation.
 
-La discovery et les tests doivent couvrir une racine de workspace et un nom de source contenant des espaces.
+The discovery and the tests must cover a workspace root and a source name containing spaces.
 
-L’absence de Node.js ou de PineTS ne doit jamais être interprétée comme un défaut du source Pine.
+The absence of Node.js or PineTS must never be interpreted as a defect of the Pine source.
 
-Si la couche PineTS ne peut pas être initialisée proprement, le workspace reste fonctionnel et les validations TradingView restent disponibles selon leur workflow normal.
+If the PineTS layer cannot be initialized cleanly, the workspace remains functional and TradingView validations remain available according to their normal workflow.
 
-Avant toute installation initiale ou mise à niveau de PineTS, vérifier la version, la documentation, la licence et les limitations actuelles du projet upstream. Le choix de version doit partir du registry npm actuel et de l'artefact exact réellement installable, puis être confirmé par les métadonnées du paquet, le tarball installé et le lockfile ; ne pas déduire la version depuis `main`, un README, un badge ou la page Releases seuls.
+Before any initial installation or upgrade of PineTS, check the current version, documentation, licence and limitations of the upstream project. The version choice must start from the current npm registry and from the exact artefact actually installable, then be confirmed by the package metadata, the installed tarball and the lockfile; do not deduce the version from `main`, a README, a badge or the Releases page alone.
 
-### 6.2 Documentation Claude Code actuelle
+### 6.2 Current Claude Code documentation
 
-Vérifier dans la documentation officielle actuelle les primitives réellement disponibles avant de générer leur configuration.
+Check in the current official documentation which primitives are actually available before generating their configuration.
 
-Au minimum :
+At a minimum:
 
-- `CLAUDE.md` ;
-- `.claude/rules/` ;
-- project skills ;
-- custom subagents ;
-- hooks ;
-- project/local settings ;
-- permission rules ;
-- worktrees ;
-- `.worktreeinclude` ;
-- Chrome integration ;
-- diagnostics de configuration.
+- `CLAUDE.md`;
+- `.claude/rules/`;
+- project skills;
+- custom subagents;
+- hooks;
+- project/local settings;
+- permission rules;
+- worktrees;
+- `.worktreeinclude`;
+- Chrome integration;
+- configuration diagnostics.
 
-Vérifier également la résolution effective des noms de skills critiques et la précédence actuelle entre skills personnelles, projet et autres sources afin de détecter toute collision qui détournerait `/pws`, `/tv-mode` ou une autre commande critique.
+Also check the effective resolution of critical skill names and the current precedence between personal skills, project skills and other sources in order to detect any collision that would hijack `/pws`, `/tv-mode` or another critical command.
 
-Ne pas se fier uniquement à cette spécification si Claude Code a évolué.
+Do not rely only on this specification if Claude Code has evolved.
 
-### 6.3 Documentation TradingView actuelle
+### 6.3 Current TradingView documentation
 
-Vérifier au minimum que la documentation Pine V6 actuelle est accessible.
+Check at a minimum that the current Pine V6 documentation is accessible.
 
-La construction du workspace ne doit pas figer des limites numériques Pine qui peuvent évoluer.
+The construction of the workspace must not freeze Pine numerical limits that can evolve.
 
-### 6.4 Analyse complète du standard maître
+### 6.4 Complete analysis of the master standard
 
-Lire intégralement le standard maître avant de concevoir :
+Read the master standard in full before designing:
 
-- rules ;
-- skills ;
-- agents ;
-- checks ;
+- rules;
+- skills;
+- agents;
+- checks;
 - workflows.
 
-Construire une matrice interne :
+Build an internal matrix:
 
 ```text
-exigence
+requirement
 → permanence
-→ contexte d’application
-→ primitive Claude Code adaptée
-→ type de contrôle
-→ artefact responsable
+→ application context
+→ suitable Claude Code primitive
+→ type of check
+→ responsible artefact
 ```
 
-Exemples conceptuels :
+Conceptual examples:
 
 ```text
-Recherche Pine actuelle
-→ par tâche
-→ développement Pine
+Current Pine research
+→ per task
+→ Pine development
 → skill + researcher
-→ sémantique
+→ semantic
 
-Interdiction shorttitle
-→ règle mécanique
-→ source Pine
+Prohibition of shorttitle
+→ mechanical rule
+→ Pine source
 → local guard
-→ déterministe
+→ deterministic
 
-Exécution comportementale locale
-→ selon applicabilité
-→ source Pine modifié
+Local behavioural execution
+→ depending on applicability
+→ modified Pine source
 → pine-local-test + thin adapter PineTS
-→ comportemental local capability-gated
+→ local behavioural, capability-gated
 
-Validation TradingView
-→ fin de cycle
-→ source Pine modifié
+TradingView validation
+→ end of cycle
+→ modified Pine source
 → tv-validate
-→ empirique
+→ empirical
 ```
 
 ---
 
-## 7. DESIGN GATE AVANT CRÉATION DES FICHIERS
+## 7. DESIGN GATE BEFORE CREATING THE FILES
 
-Avant d’écrire l’architecture finale, Claude Code doit justifier chaque artefact envisagé.
+Before writing the final architecture, Claude Code must justify each artefact considered.
 
-Pour chaque fichier ou dossier :
+For each file or folder:
 
-1. Quelle responsabilité possède-t-il ?
-2. Quelle source d’autorité alimente son contenu ?
-3. Qui le lit ?
-4. Quand est-il chargé ?
-5. Qui le modifie ?
-6. Est-il normatif, dérivé, opérationnel, preuve ou éphémère ?
-7. Son contenu existe-t-il déjà ailleurs ?
-8. Une primitive Claude Code native est-elle meilleure ?
-9. Peut-il être créé seulement au moment où il devient nécessaire ?
-10. Comment détecter qu’il est périmé ?
-11. Quel défaut concret apparaît s’il n’existe pas ?
+1. What responsibility does it hold?
+2. Which source of authority feeds its content?
+3. Who reads it?
+4. When is it loaded?
+5. Who modifies it?
+6. Is it normative, derived, operational, evidence or ephemeral?
+7. Does its content already exist elsewhere?
+8. Is a native Claude Code primitive better?
+9. Can it be created only at the moment it becomes necessary?
+10. How can one detect that it is stale?
+11. What concrete defect appears if it does not exist?
 
-Si les réponses ne justifient pas l’artefact, ne pas le créer.
-
----
-
-## 8. CRITIQUE INDÉPENDANTE AVANT IMPLÉMENTATION
-
-Avant la création définitive, exécuter une revue indépendante de l’architecture proposée.
-
-Cette revue doit rechercher :
-
-- duplication du standard maître ;
-- règles contradictoires ;
-- règles toujours chargées alors qu’elles pourraient être conditionnelles ;
-- skills trop longues ;
-- agents inutiles ;
-- hooks qui tentent de juger de la sémantique ;
-- fichiers génériques ;
-- états dupliqués ;
-- registres centraux qui pourraient dériver ;
-- dépendances externes inutiles ;
-- sur-automatisation ;
-- fonctions Claude Code inventées ou obsolètes ;
-- responsabilités sans propriétaire ;
-- conventions du standard non opérationnalisées.
-
-Corriger l’architecture avant écriture.
+If the answers do not justify the artefact, do not create it.
 
 ---
 
-## 9. ARCHITECTURE CIBLE
+## 8. INDEPENDENT CRITIQUE BEFORE IMPLEMENTATION
 
-L’architecture ci-dessous est le résultat attendu à maturité.
+Before the definitive creation, run an independent review of the proposed architecture.
 
-Les dossiers marqués « à la demande » ne doivent pas être créés tant qu’ils ne servent pas.
+This review must look for:
+
+- duplication of the master standard;
+- contradictory rules;
+- rules always loaded when they could be conditional;
+- skills that are too long;
+- unnecessary agents;
+- hooks that attempt to judge semantics;
+- generic files;
+- duplicated states;
+- central registries that could drift;
+- unnecessary external dependencies;
+- over-automation;
+- invented or obsolete Claude Code features;
+- responsibilities without an owner;
+- conventions of the standard that are not operationalized.
+
+Correct the architecture before writing.
+
+---
+
+## 9. TARGET ARCHITECTURE
+
+The architecture below is the expected result at maturity.
+
+Folders marked "on demand" must not be created as long as they serve no purpose.
 
 ```text
 <workspace-root>/
@@ -728,27 +730,27 @@ Les dossiers marqués « à la demande » ne doivent pas être créés tant qu�
 │   └── TRACEABILITY.md
 │
 ├── scripts/
-│   └── <script-slug>/                   # seulement pour un vrai produit
+│   └── <script-slug>/                   # only for a real product
 │       ├── CLAUDE.md
 │       ├── SCRIPT.json
 │       ├── <actual-source>.pine
 │       ├── PRODUCT.md
 │       ├── ARCHITECTURE.md
-│       ├── DECISIONS.md                 # à la demande
-│       ├── research/                    # à la demande
+│       ├── DECISIONS.md                 # on demand
+│       ├── research/                    # on demand
 │       │   ├── CURRENT.md
 │       │   └── runs/
-│       ├── tests/                       # à la demande
-│       │   └── behavioral/              # à la demande
-│       │       ├── config.json          # seulement si un contrat de test existe
-│       │       ├── fixtures/            # seulement si spécifiques au produit
-│       │       └── baselines/           # seulement pour des baselines acceptées
+│       ├── tests/                       # on demand
+│       │   └── behavioral/              # on demand
+│       │       ├── config.json          # only if a test contract exists
+│       │       ├── fixtures/            # only if specific to the product
+│       │       └── baselines/           # only for accepted baselines
 │       ├── validation/
 │       │   ├── current.json
-│       │   ├── runs/                    # à la première validation
-│       │   └── evidence/                # uniquement si preuve fichier utile
-│       ├── docs/                        # à la demande
-│       └── release/                     # à la demande
+│       │   ├── runs/                    # at the first validation
+│       │   └── evidence/                # only if file evidence is useful
+│       ├── docs/                        # on demand
+│       └── release/                     # on demand
 │
 ├── docs/
 │   └── architecture/
@@ -780,30 +782,30 @@ Les dossiers marqués « à la demande » ne doivent pas être créés tant qu�
         ├── test_guard.py
         ├── test_validation.py
         ├── test_tv_mode.py
-        └── test_pine_exec.py             # ou factorisation équivalente justifiée
+        └── test_pine_exec.py             # or an equivalent, justified factorization
 ```
 
-Le découpage interne exact du package Python peut être légèrement ajusté si l’analyse réelle démontre une meilleure factorisation.
+The exact internal breakdown of the Python package may be slightly adjusted if the real analysis demonstrates a better factorization.
 
-Il ne doit toutefois pas devenir un framework volumineux.
+It must not, however, become a bulky framework.
 
-`tools/pine_exec/` est un thin adapter Node minimal autour de PineTS.
+`tools/pine_exec/` is a minimal Node thin adapter around PineTS.
 
-Il ne doit pas devenir :
+It must not become:
 
-- une plateforme locale ;
-- un serveur ;
-- un service réseau ;
-- un MCP ;
-- une base de données ;
-- un dashboard ;
-- un framework de backtesting généraliste ;
-- un clone fonctionnel de TradingView ou de LuxAlgo Quant.
+- a local platform;
+- a server;
+- a network service;
+- an MCP;
+- a database;
+- a dashboard;
+- a general-purpose backtesting framework;
+- a functional clone of TradingView or of LuxAlgo Quant.
 
-Le découpage interne du thin adapter peut être légèrement ajusté si l’implémentation réelle le justifie, mais sa responsabilité reste limitée à :
+The internal breakdown of the thin adapter may be slightly adjusted if the real implementation justifies it, but its responsibility remains limited to:
 
 ```text
-source Pine
+Pine source
 +
 dataset
 +
@@ -813,293 +815,293 @@ capability state
         ↓
 PineTS
         ↓
-sortie normalisée
+normalized output
 ```
 
-Les résultats d’exécution temporaires ne doivent pas être stockés durablement dans l’arbre produit par défaut.
+Temporary execution results must not be stored durably in the product tree by default.
 
-`tests/behavioral/` contient uniquement les contrats, fixtures spécifiques et baselines ayant une utilité durable.
+`tests/behavioral/` contains only the contracts, specific fixtures and baselines that have a durable use.
 
-`validation/` reste exclusivement réservé à la validation TradingView et à ses preuves.
+`validation/` remains exclusively reserved for TradingView validation and its evidence.
 
-### 9.1 Conventions communes aux rules
+### 9.1 Conventions common to rules
 
-Toutes les rules du socle initial doivent posséder un scope `paths` réel.
+All the rules of the initial foundation must have a real `paths` scope.
 
-Une rule sans `paths` serait chargée à chaque session et doit donc être rejetée sauf justification exceptionnelle démontrée.
+A rule without `paths` would be loaded in every session and must therefore be rejected unless an exceptional justification is demonstrated.
 
-### 9.2 Conventions communes aux skills
+### 9.2 Conventions common to skills
 
-Pour chaque skill :
+For each skill:
 
-- écrire une `description` courte, spécifique et suffisamment distincte pour éviter les déclenchements ambigus ;
-- utiliser uniquement les outils réellement nécessaires ;
-- garder `SKILL.md` concis ; la documentation Claude Code actuelle recommande moins de 500 lignes ;
-- déplacer les références détaillées dans des fichiers de support uniquement lorsqu’elles apportent une vraie valeur ;
-- ne pas créer un fichier de support qui ne serait qu’une copie d’une partie du standard maître ;
-- réserver `disable-model-invocation: true` aux actions que le titulaire doit déclencher lui-même.
+- write a short, specific `description` that is distinct enough to avoid ambiguous triggering;
+- use only the tools actually needed;
+- keep `SKILL.md` concise; the current Claude Code documentation recommends fewer than 500 lines;
+- move detailed references into supporting files only when they bring real value;
+- do not create a supporting file that would only be a copy of part of the master standard;
+- reserve `disable-model-invocation: true` for the actions that the holder must trigger themselves.
 
-Les descriptions des skills font partie du contexte de découverte. Elles doivent donc être informatives sans devenir de mini-prompts.
+Skill descriptions are part of the discovery context. They must therefore be informative without becoming mini-prompts.
 
-### 9.3 Conventions communes aux subagents
+### 9.3 Conventions common to subagents
 
-Chaque agent doit avoir :
+Each agent must have:
 
-- une mission qui ne recouvre pas celle d’un autre agent ;
-- le minimum d’outils requis ;
-- une politique explicite d’écriture ;
-- une politique explicite de mémoire ;
-- un format de retour utile au parent.
+- a mission that does not overlap that of another agent;
+- the minimum of required tools;
+- an explicit write policy;
+- an explicit memory policy;
+- a return format useful to the parent.
 
-Les quatre agents du socle initial sont spécialisés dans lecture, recherche ou revue. Ils ne doivent pas modifier le source Pine.
+The four agents of the initial foundation are specialized in reading, research or review. They must not modify the Pine source.
 
 ---
 
-## 10. `CLAUDE.md` RACINE — CONTRAT
+## 10. ROOT `CLAUDE.md` — CONTRACT
 
-### 10.1 Rôle
+### 10.1 Role
 
-Routeur permanent du workspace.
+Permanent router of the workspace.
 
-### 10.2 Taille
+### 10.2 Size
 
-Viser nettement moins de 200 lignes.
+Aim for well under 200 lines.
 
-### 10.3 Contenu nécessaire
+### 10.3 Necessary content
 
-Il doit contenir uniquement ce que Claude doit connaître dans presque toutes les sessions :
+It must contain only what Claude must know in almost every session:
 
-- identité du workspace ;
-- mission générale ;
-- invariant d’indépendance envers tout autre projet externe et confinement à la racine physique du workspace ;
-- rôles des sources d’autorité ;
-- chemin canonique du standard maître ;
-- carte très courte du repo ;
-- règles universelles de langue ;
-- interdiction d’inventer des faits ;
-- interdiction de modifier la constitution sans demande explicite ;
-- politique Git local-first ;
-- politique mémoire non normative ;
-- règle de détection/onboarding des `.pine` non enregistrés ;
-- routage vers le menu contextuel PWS et les principales skills ;
-- séparation stricte entre checks déterministes, exécution comportementale locale PineTS et validation TradingView ;
-- rappel que PineTS est capability-gated, peut produire une gate locale sur un contrat strictement borné, et ne remplace jamais l’autorité officielle Pine Script ni la validation empirique TradingView ;
-- interdiction de déclarer un succès TradingView fictif ;
-- interdiction de publication implicite.
+- identity of the workspace;
+- general mission;
+- invariant of independence from any other external project and confinement to the physical root of the workspace;
+- roles of the sources of authority;
+- canonical path of the master standard;
+- very short map of the repo;
+- universal language rules;
+- prohibition on inventing facts;
+- prohibition on modifying the constitution without an explicit request;
+- local-first Git policy;
+- non-normative memory policy;
+- detection/onboarding rule for unregistered `.pine` files;
+- routing to the PWS contextual menu and the main skills;
+- strict separation between deterministic checks, PineTS local behavioural execution and TradingView validation;
+- reminder that PineTS is capability-gated, can produce a local gate on a strictly bounded contract, and never replaces the official Pine Script authority or the TradingView empirical validation;
+- prohibition on declaring a fictitious TradingView success;
+- prohibition on implicit publication.
 
-### 10.4 Ce qui n’y appartient pas
+### 10.4 What does not belong there
 
-Ne pas recopier :
+Do not copy:
 
-- conventions Pine détaillées ;
-- règles de tooltip ;
-- palettes ;
-- SemVer complet ;
-- procédures de release ;
-- workflow complet de recherche ;
-- checklist MTF ;
-- guide TradingView ;
-- contenu du standard maître.
+- detailed Pine conventions;
+- tooltip rules;
+- palettes;
+- complete SemVer;
+- release procedures;
+- complete research workflow;
+- MTF checklist;
+- TradingView guide;
+- content of the master standard.
 
 ### 10.5 Import
 
-Ne pas importer le standard maître avec `@`.
+Do not import the master standard with `@`.
 
-Référencer son chemin en code inline.
+Reference its path as inline code.
 
 ---
 
-## 11. `README.md` — CONTRAT
+## 11. `README.md` — CONTRACT
 
-### 11.1 Public
+### 11.1 Audience
 
-Humain.
+Human.
 
-### 11.2 Fonction
+### 11.2 Function
 
-Présenter rapidement :
+Present briefly:
 
-- but du workspace ;
-- autonomie du workspace et absence de projet sibling requis ;
-- emplacement des scripts ;
-- comment ajouter un script existant ;
-- comment demander un nouveau script ;
-- comment lancer Claude Code ;
-- comment changer le mode TradingView ;
-- comment lancer `project-doctor` ;
-- principe Git local.
+- purpose of the workspace;
+- autonomy of the workspace and absence of any required sibling project;
+- location of the scripts;
+- how to add an existing script;
+- how to request a new script;
+- how to launch Claude Code;
+- how to change the TradingView mode;
+- how to run `project-doctor`;
+- local Git principle.
 
 ### 11.3 Non-duplication
 
-Les procédures détaillées vont dans `docs/architecture/OPERATIONS.md`.
+Detailed procedures go into `docs/architecture/OPERATIONS.md`.
 
-Le README ne devient pas un second manuel.
+The README does not become a second manual.
 
 ---
 
-## 12. `standards/INDEX.md` — CONTRAT
+## 12. `standards/INDEX.md` — CONTRACT
 
-### 12.1 Statut
+### 12.1 Status
 
-Dérivé, non normatif.
+Derived, non-normative.
 
 ### 12.2 Source
 
 `PINE_SCRIPT_V6_STANDARD.md`.
 
-### 12.3 Contenu
+### 12.3 Content
 
-Inclure :
+Include:
 
-- SHA-256 du standard source ;
-- date de génération ;
-- sections ;
-- titres exacts ;
-- lignes courantes ou plages utiles ;
-- mots-clés de routage ;
-- principaux consommateurs opérationnels.
+- SHA-256 of the source standard;
+- generation date;
+- sections;
+- exact titles;
+- current lines or useful ranges;
+- routing keywords;
+- main operational consumers.
 
-### 12.4 Règle de fraîcheur
+### 12.4 Freshness rule
 
-Si :
+If:
 
 ```text
-SHA(master) != SHA enregistré dans INDEX
+SHA(master) != SHA recorded in INDEX
 ```
 
-l’index est `STALE`.
+the index is `STALE`.
 
-Il ne doit plus être utilisé comme représentation fiable tant qu’il n’est pas régénéré.
+It must no longer be used as a reliable representation until it is regenerated.
 
-### 12.5 Génération
+### 12.5 Generation
 
-Générer automatiquement à partir des headings réels du standard.
+Generate automatically from the real headings of the standard.
 
-Ne pas inventer des sections.
+Do not invent sections.
 
 ---
 
-## 13. `standards/TRACEABILITY.md` — CONTRAT
+## 13. `standards/TRACEABILITY.md` — CONTRACT
 
-### 13.1 Statut
+### 13.1 Status
 
-Dérivé architectural, non normatif.
+Derived, architectural, non-normative.
 
-### 13.2 But
+### 13.2 Purpose
 
-Montrer où chaque partie du standard maître est opérationnalisée.
+Show where each part of the master standard is operationalized.
 
-Exemple de structure :
+Example structure:
 
 ```text
-Section du standard
-→ contexte/rule
+Section of the standard
+→ context/rule
 → skill
-→ agent éventuel
-→ check déterministe éventuel
-→ exécution comportementale locale éventuelle
-→ validation empirique éventuelle
+→ agent, if any
+→ deterministic check, if any
+→ local behavioural execution, if any
+→ empirical validation, if any
 ```
 
-### 13.3 Utilité
+### 13.3 Usefulness
 
-Empêcher :
+Prevent:
 
-- omission d’une convention ;
-- duplication inutile ;
-- création de règles concurrentes ;
-- oubli d’un mécanisme lors d’une future évolution du standard.
+- omission of a convention;
+- unnecessary duplication;
+- creation of competing rules;
+- forgetting a mechanism during a future evolution of the standard.
 
-### 13.4 Fraîcheur
+### 13.4 Freshness
 
-Stocker le SHA-256 du standard maître.
+Store the SHA-256 of the master standard.
 
-Toute modification du master rend la traceability `STALE` jusqu’à revue.
+Any modification of the master makes the traceability `STALE` until review.
 
-La régénération demande une analyse sémantique.
+Regeneration requires a semantic analysis.
 
-Ne pas prétendre qu’un simple parser peut recréer correctement cette cartographie.
-
----
-
-## 14. `ARCHITECTURE.md` DU WORKSPACE — CONTRAT
-
-Expliquer les décisions et surtout leurs raisons.
-
-Inclure notamment :
-
-- pourquoi le master est unique ;
-- pourquoi le workspace ne dépend de l’existence, du nom, du chemin ou de l’état d’aucun autre projet ;
-- pourquoi il n’est pas importé dans `CLAUDE.md` ;
-- pourquoi les rules sont path-scoped ;
-- pourquoi les procédures vont dans des skills ;
-- pourquoi les gros travaux utilisent des subagents frais ;
-- pourquoi les agents de revue n’ont pas de mémoire persistante ;
-- pourquoi les checks locaux restent mécaniques ;
-- pourquoi l’exécution comportementale locale est séparée des checks déterministes ;
-- pourquoi PineTS peut être une autorité d’exécution locale capability-gated sur un contrat borné sans concurrencer la documentation officielle Pine Script ni TradingView comme autorité sur le comportement propre à la plateforme ;
-- pourquoi TradingView est une couche empirique séparée ;
-- pourquoi Git est local-first ;
-- pourquoi aucune registry centrale des scripts n’existe ;
-- pourquoi les contextes script sont co-localisés ;
-- pourquoi les dossiers de release/docs/research sont à la demande ;
-- pourquoi GitHub, MCP, Agent Teams, dynamic workflows et CI distante ne sont pas des dépendances initiales.
-
-Ne pas reformuler tout le standard Pine.
+Do not claim that a simple parser can correctly recreate this mapping.
 
 ---
 
-## 15. `FILE_CONTRACTS.md` — CONTRAT
+## 14. WORKSPACE `ARCHITECTURE.md` — CONTRACT
 
-Pour chaque artefact durable du workspace, documenter :
+Explain the decisions and above all their reasons.
 
-- responsabilité ;
-- catégorie ;
-- source d’autorité ;
-- lecteur ;
-- writer ;
-- déclencheur de création ;
-- déclencheur de mise à jour ;
-- statut de fraîcheur éventuel ;
-- contenu interdit ;
-- doublons qu’il doit éviter ;
-- test d’utilité.
+Include in particular:
 
-Ce fichier sert de garde contre les artefacts décoratifs.
+- why the master is unique;
+- why the workspace does not depend on the existence, the name, the path or the state of any other project;
+- why it is not imported into `CLAUDE.md`;
+- why the rules are path-scoped;
+- why procedures go into skills;
+- why large tasks use fresh subagents;
+- why review agents have no persistent memory;
+- why local checks remain mechanical;
+- why local behavioural execution is separated from deterministic checks;
+- why PineTS can be a capability-gated local execution authority on a bounded contract without competing with the official Pine Script documentation or with TradingView as the authority on the behaviour specific to the platform;
+- why TradingView is a separate empirical layer;
+- why Git is local-first;
+- why no central registry of scripts exists;
+- why script contexts are co-located;
+- why the release/docs/research folders are on demand;
+- why GitHub, MCP, Agent Teams, dynamic workflows and remote CI are not initial dependencies.
 
----
-
-## 16. `OPERATIONS.md` — CONTRAT
-
-Document humain concis pour les opérations récurrentes.
-
-Doit décrire :
-
-- que Pine Workspace fonctionne de façon autonome, sans projet sibling requis, et doit être lancé depuis sa propre racine physique ;
-- ouvrir ou réouvrir le menu contextuel PWS ;
-- ajouter un `.pine` existant ;
-- créer un nouveau produit avec Claude Code ;
-- lancer le doctor ;
-- comprendre les axes `source_registration_status`, `product_structure_status` et `validation_effective_status`, notamment `UNREGISTERED`, `INCOMPLETE`, `BROKEN` et `stale` ;
-- changer le mode TradingView ;
-- lancer une validation manuelle ;
-- lancer une validation expérimentale Chrome ;
-- lancer `pine-local-test` lorsqu’un test comportemental local est applicable ;
-- interpréter `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL`, `PINETS_INCONCLUSIVE` et les changements de régression sans les confondre avec une validation TradingView ;
-- effectuer une mise à niveau contrôlée de PineTS avec recalibration obligatoire ;
-- utiliser un worktree quand un chantier le justifie ;
-- comportement Git local ;
-- stratégie de sauvegarde locale optionnelle.
-
-Ne pas recopier les règles de développement Pine.
+Do not rephrase the entire Pine standard.
 
 ---
 
-## 17. `.gitignore` — CONTRAT
+## 15. `FILE_CONTRACTS.md` — CONTRACT
 
-Doit ignorer au minimum les éléments réellement locaux ou éphémères produits par ce workspace.
+For each durable artefact of the workspace, document:
 
-Exemples applicables :
+- responsibility;
+- category;
+- source of authority;
+- reader;
+- writer;
+- creation trigger;
+- update trigger;
+- freshness status, if any;
+- forbidden content;
+- duplicates it must avoid;
+- usefulness test.
+
+This file serves as a guard against decorative artefacts.
+
+---
+
+## 16. `OPERATIONS.md` — CONTRACT
+
+Concise human document for recurring operations.
+
+Must describe:
+
+- that Pine Workspace works autonomously, without any required sibling project, and must be launched from its own physical root;
+- opening or reopening the PWS contextual menu;
+- adding an existing `.pine`;
+- creating a new product with Claude Code;
+- running the doctor;
+- understanding the `source_registration_status`, `product_structure_status` and `validation_effective_status` axes, in particular `UNREGISTERED`, `INCOMPLETE`, `BROKEN` and `stale`;
+- changing the TradingView mode;
+- running a manual validation;
+- running an experimental Chrome validation;
+- running `pine-local-test` when a local behavioural test is applicable;
+- interpreting `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL`, `PINETS_INCONCLUSIVE` and regression changes without confusing them with a TradingView validation;
+- performing a controlled upgrade of PineTS with mandatory recalibration;
+- using a worktree when a piece of work justifies it;
+- local Git behaviour;
+- optional local backup strategy.
+
+Do not copy the Pine development rules.
+
+---
+
+## 17. `.gitignore` — CONTRACT
+
+Must ignore at a minimum the truly local or ephemeral elements produced by this workspace.
+
+Applicable examples:
 
 ```text
 .claude/settings.local.json
@@ -1112,85 +1114,85 @@ __pycache__/
 *.pyc
 ```
 
-Ajouter les artefacts OS/editor réellement présents seulement si nécessaire.
+Add the OS/editor artefacts actually present only if necessary.
 
-Ne pas copier une énorme `.gitignore` générique depuis Internet.
+Do not copy a huge generic `.gitignore` from the Internet.
 
-Ne jamais ignorer :
+Never ignore:
 
-- `.pine` ;
-- contextes script versionnés ;
-- standard maître ;
-- rules ;
-- skills ;
-- agents ;
-- rapports de validation destinés à persister ;
-- `tools/pine_exec/package.json` ;
-- `tools/pine_exec/package-lock.json` ;
-- `tools/pine_exec/calibration/` ;
-- `scripts/**/tests/behavioral/config.json`, fixtures et baselines lorsqu’ils existent et ont une utilité durable.
+- `.pine`;
+- versioned script contexts;
+- master standard;
+- rules;
+- skills;
+- agents;
+- validation reports intended to persist;
+- `tools/pine_exec/package.json`;
+- `tools/pine_exec/package-lock.json`;
+- `tools/pine_exec/calibration/`;
+- `scripts/**/tests/behavioral/config.json`, fixtures and baselines when they exist and have a durable use.
 
 ---
 
-## 18. `.worktreeinclude` — CONTRAT
+## 18. `.worktreeinclude` — CONTRACT
 
-But : préserver dans les worktrees les fichiers locaux gitignored dont le workflow dépend.
+Purpose: preserve in the worktrees the gitignored local files on which the workflow depends.
 
-Inclure au minimum, lorsqu’ils existent :
+Include at a minimum, when they exist:
 
 ```text
 .claude/settings.local.json
 CLAUDE.local.md
 ```
 
-Ne pas recopier des secrets non nécessaires.
+Do not copy unnecessary secrets.
 
-`.worktreeinclude` ne constitue jamais un mécanisme de backup.
-
----
-
-## 19. `.claude/settings.local.json` — CONTRAT
-
-### 19.1 Statut
-
-Local, gitignored. Depuis l’amendement du 2026-11-06, ce fichier appartient à Claude Code seul (approvals et réglages locaux de l’outil) : le workspace n’y écrit plus. La configuration propre à PWS vit dans `pws.config.json` (§19A).
-
-### 19.2 Valeur initiale
-
-Aucune valeur PWS n’y est initialisée. Historique : jusqu’au 2026-11-06, le mode TradingView y était persisté sous `env.PWS_TV_VALIDATION_MODE` ; cette clé est lue par compatibilité tant qu’elle existe (jamais à travers un lien symbolique), puis réglée par la migration (`migrate --apply`, étapes m001/m003, règle §19A du 2026-11-13 : copiée si `pws.config.json` n’a pas de mode exploitable, conservée dans la configuration si les valeurs concordent ou si le titulaire a choisi explicitement, conflit bloqué jusqu’à son choix sinon) et retirée seulement ensuite, sans toucher aucune autre clé.
-
-### 19.3 Évolution
-
-Ce fichier reçoit les approvals locaux que Claude Code y conserve. Le workspace ne les écrase jamais ; la seule écriture PWS admise est le retrait, une fois, de la clé legacy ci-dessus par la migration, sous verrou, avec préservation de toutes les autres clés et refus de conflit.
-
-### 19A. `pws.config.json` — CONTRAT (ratifié le 2026-11-06)
-
-Fichier personnel à la racine du workspace, gitignored, copié dans les worktrees via `.worktreeinclude`, jamais inclus dans une distribution. Schéma 1 : `schema_version`, `workspace_version` (version du cœur enregistrée par `init`/`migrate`), `language` (`en` par défaut en nouvelle installation, `fr` conservé par l’installation migrée), `identity` (`copyright_holder`, `header_aliases`, `default_profile`), `tv_validation_mode` (`manual` par défaut, `chrome-experimental` explicitement optionnel ; `tv_validation_mode_choice` facultatif = provenance d'un choix explicite du titulaire par `tv-mode` ou `config set`, qui seule résout un conflit avec une valeur héritée — migration m001, règle décidée par le titulaire le 2026-11-13), `github.destinations`, `maintenance.startup_cleanup`, `migrations`. Lecture tolérante : fichier absent → valeurs par défaut (jamais une erreur) ; fichier invalide → défauts plus diagnostic actionnable (doctor BLOCKING). Écritures : `init`, `config set`, `tv-mode <mode>`, `github destination-*`, `migrate`, toutes par le même contrôleur de configuration (`tools/pws_workspace/config.py`).
-
-La source persistée du mode TradingView est `pws.config.json`, pas une variable héritée par le processus. Toute mutation doit :
-
-1. lire le fichier courant ;
-2. valider qu'il n'a pas changé entre lecture et écriture ;
-3. effectuer un read-modify-write qui préserve toutes les autres clés, notamment les approvals ;
-4. écrire un fichier temporaire dans le même filesystem puis effectuer un remplacement atomique ;
-5. relire et valider le JSON résultant ;
-6. signaler un conflit au lieu d'écraser silencieusement toute modification concurrente détectée entre la lecture initiale et la relecture précédant le remplacement atomique.
-
-La portée de ces garanties :
-
-- entre écrivains du workspace (le contrôleur de configuration et tout outil PWS), la sérialisation est garantie par un verrou exclusif partagé (`pws.config.json.lock`) couvrant l'intégralité de la transaction lecture-vérification-écriture ;
-- `pws.config.json` n'a pas d'écrivain externe connu (Claude Code n'y écrit pas) : la fenêtre résiduelle documentée le 2026-09-06 pour `settings.local.json` ne s'applique plus au mode TradingView ; elle reste vraie pour `settings.local.json` lui-même, que le workspace n'écrit plus hors de la migration legacy ;
-- si une version future de Claude Code expose un mécanisme de coordination pour ses fichiers, le contrôleur doit être réévalué pour l'utiliser.
-
-Après écriture, relire via le contrôleur (`tv-mode` sans argument) que la valeur persistée est celle attendue. Une variable de processus n'est jamais un chemin de lecture.
+`.worktreeinclude` never constitutes a backup mechanism.
 
 ---
 
-## 20. `.claude/settings.json` — CONTRAT
+## 19. `.claude/settings.local.json` — CONTRACT
+
+### 19.1 Status
+
+Local, gitignored. Since the amendment of 2026-11-06, this file belongs to Claude Code alone (approvals and local settings of the tool): the workspace no longer writes to it. The PWS-specific configuration lives in `pws.config.json` (§19A).
+
+### 19.2 Initial value
+
+No PWS value is initialized there. History: until 2026-11-06, the TradingView mode was persisted there under `env.PWS_TV_VALIDATION_MODE`; this key is read for compatibility as long as it exists (never through a symbolic link), then settled by the migration (`migrate --apply`, steps m001/m003, §19A rule of 2026-11-13: copied if `pws.config.json` has no usable mode, kept in the configuration if the values match or if the holder has chosen explicitly, otherwise conflict blocked until the holder's choice) and removed only afterwards, without touching any other key.
+
+### 19.3 Evolution
+
+This file receives the local approvals that Claude Code keeps there. The workspace never overwrites them; the only PWS write allowed is the removal, once, of the legacy key above by the migration, under lock, with preservation of all the other keys and refusal in case of conflict.
+
+### 19A. `pws.config.json` — CONTRACT (ratified on 2026-11-06)
+
+Personal file at the root of the workspace, gitignored, copied into the worktrees via `.worktreeinclude`, never included in a distribution. Schema 1: `schema_version`, `workspace_version` (core version recorded by `init`/`migrate`), `language` (`en` by default in a new installation, `fr` kept by the migrated installation), `identity` (`copyright_holder`, `header_aliases`, `default_profile`), `tv_validation_mode` (`manual` by default, `chrome-experimental` explicitly optional; optional `tv_validation_mode_choice` = provenance of an explicit choice of the holder through `tv-mode` or `config set`, which alone resolves a conflict with a legacy value — migration m001, rule decided by the holder on 2026-11-13), `github.destinations`, `maintenance.startup_cleanup`, `migrations`. Tolerant reading: missing file → default values (never an error); invalid file → defaults plus actionable diagnostic (doctor BLOCKING). Writes: `init`, `config set`, `tv-mode <mode>`, `github destination-*`, `migrate`, all through the same configuration controller (`tools/pws_workspace/config.py`).
+
+The persisted source of the TradingView mode is `pws.config.json`, not a variable inherited by the process. Every mutation must:
+
+1. read the current file;
+2. validate that it has not changed between reading and writing;
+3. perform a read-modify-write that preserves all the other keys, in particular the approvals;
+4. write a temporary file in the same filesystem, then perform an atomic replacement;
+5. re-read and validate the resulting JSON;
+6. report a conflict instead of silently overwriting any concurrent modification detected between the initial read and the re-read preceding the atomic replacement.
+
+The scope of these guarantees:
+
+- between workspace writers (the configuration controller and any PWS tool), serialization is guaranteed by a shared exclusive lock (`pws.config.json.lock`) covering the entire read-check-write transaction;
+- `pws.config.json` has no known external writer (Claude Code does not write to it): the residual window documented on 2026-09-06 for `settings.local.json` no longer applies to the TradingView mode; it remains true for `settings.local.json` itself, which the workspace no longer writes outside the legacy migration;
+- if a future version of Claude Code exposes a coordination mechanism for its files, the controller must be re-evaluated in order to use it.
+
+After writing, re-read through the controller (`tv-mode` without an argument) to check that the persisted value is the expected one. A process variable is never a read path.
+
+---
+
+## 20. `.claude/settings.json` — CONTRACT
 
 ### 20.1 Worktrees
 
-Configurer :
+Configure:
 
 ```json
 {
@@ -1200,152 +1202,152 @@ Configurer :
 }
 ```
 
-si cette syntaxe est toujours valide dans la version installée.
+if this syntax is still valid in the installed version.
 
-Le but est de faire partir les worktrees du `HEAD` local, sans dépendre d’un remote.
+The purpose is to make the worktrees start from the local `HEAD`, without depending on a remote.
 
 ### 20.2 Permissions
 
-Configurer une politique locale prudente.
+Configure a cautious local policy.
 
-Principes :
+Principles:
 
-- lecture Git courante : autorisable ;
-- `git diff`, `git status`, `git log`, `git show` : usage normal ;
-- `git commit` : confirmation utilisateur ;
-- création/modification/suppression d’un remote : confirmation utilisateur ;
-- `git push` : confirmation utilisateur (jamais d’autorisation générale ; `--force` refusé) ;
-- `gh` : lecture seule autorisée (`auth status`, `repo view`) ; `auth login`, `repo create` : confirmation ; `repo delete`, `api`, `secret`, `auth token` : refus ;
-- sous-commandes PWS en lecture seule : autorisables ; sous-commandes mutantes à effet externe ou irréversible (`github publish`, `github fetch`, `pinets install`, `pinets rollback`, `pinets check-update`, `migrate --apply`, `migrate --rollback`, `maintenance archives-remove-source`) : confirmation ;
-- commandes Git destructrices : confirmation ou refus selon gravité ;
-- contournement de permissions : ne pas l’activer depuis le projet.
+- routine Git reading: allowable;
+- `git diff`, `git status`, `git log`, `git show`: normal use;
+- `git commit`: user confirmation;
+- creation/modification/deletion of a remote: user confirmation;
+- `git push`: user confirmation (never a general authorization; `--force` refused);
+- `gh`: read-only allowed (`auth status`, `repo view`); `auth login`, `repo create`: confirmation; `repo delete`, `api`, `secret`, `auth token`: refusal;
+- read-only PWS subcommands: allowable; mutating subcommands with an external or irreversible effect (`github publish`, `github fetch`, `pinets install`, `pinets rollback`, `pinets check-update`, `migrate --apply`, `migrate --rollback`, `maintenance archives-remove-source`): confirmation;
+- destructive Git commands: confirmation or refusal depending on severity;
+- permission bypass: do not enable it from the project.
 
-Vérifier la syntaxe actuelle `allow` / `ask` / `deny`.
+Check the current `allow` / `ask` / `deny` syntax.
 
-Ne jamais ajouter une permission large uniquement pour éviter des prompts.
+Never add a broad permission only to avoid prompts.
 
 ### 20.3 Hooks
 
-Configurer uniquement les hooks justifiés dans cette spécification.
+Configure only the hooks justified in this specification.
 
 ### 20.4 Sandbox
 
-Ne pas activer ou désactiver arbitrairement un sandbox système sans vérifier :
+Do not arbitrarily enable or disable a system sandbox without checking:
 
-- OS ;
-- support ;
-- impact ;
-- configuration existante du titulaire.
+- OS;
+- support;
+- impact;
+- existing configuration of the holder.
 
-Le bootstrap peut recommander une configuration, mais ne doit pas modifier une politique système hors projet sans nécessité et consentement.
+The bootstrap may recommend a configuration, but must not modify a system policy outside the project without necessity and consent.
 
 ---
 
-## 21. RULES PATH-SCOPED
+## 21. PATH-SCOPED RULES
 
-Les rules doivent rester courtes.
+Rules must remain short.
 
-Elles ne doivent pas contenir la totalité du master.
+They must not contain the whole of the master.
 
 ### 21.1 `pine-source.md`
 
-Scope :
+Scope:
 
 ```yaml
 paths:
   - "scripts/**/*.pine"
 ```
 
-Mission :
+Mission:
 
-- reconnaître un source Pine le titulaire ;
-- vérifier que le produit est onboardé avant modification substantielle ;
-- pointer vers le contexte local du script ;
-- pointer vers le standard maître sans l’importer ;
-- rappeler le workflow `pine-develop` ;
-- rappeler que checks déterministes, exécution comportementale PineTS et validation TradingView sont trois couches distinctes ;
-- router vers `pine-local-test` lorsque le workflow ou le risque de modification justifie une exécution locale ;
-- interdire toute modification du source Pine dont la seule justification serait de satisfaire une incompatibilité, limitation ou divergence PineTS.
+- recognize a Pine source of the holder;
+- check that the product is onboarded before substantive modification;
+- point to the local context of the script;
+- point to the master standard without importing it;
+- recall the `pine-develop` workflow;
+- recall that deterministic checks, PineTS behavioural execution and TradingView validation are three distinct layers;
+- route to `pine-local-test` when the workflow or the risk of the modification justifies a local execution;
+- forbid any modification of the Pine source whose only justification would be to satisfy a PineTS incompatibility, limitation or divergence.
 
-Ne pas recopier toutes les conventions Pine.
+Do not copy all the Pine conventions.
 
 ### 21.2 `script-context.md`
 
-Scope sur :
+Scope covering:
 
-- `SCRIPT.json` ;
-- `PRODUCT.md` ;
-- `ARCHITECTURE.md` ;
-- `DECISIONS.md` lorsqu’il existe ;
-- `CLAUDE.md` dans les dossiers produits.
+- `SCRIPT.json`;
+- `PRODUCT.md`;
+- `ARCHITECTURE.md`;
+- `DECISIONS.md` when it exists;
+- `CLAUDE.md` in the product folders.
 
-Règle principale :
+Main rule:
 
-> Ne jamais transformer une observation ou une inférence en décision le titulaire.
+> Never turn an observation or an inference into a decision of the holder.
 
-Distinguer :
+Distinguish:
 
-- observé ;
-- confirmé ;
-- inféré ;
-- à confirmer.
+- observed;
+- confirmed;
+- inferred;
+- to be confirmed.
 
-Les provenances suivantes restent distinctes et ne se substituent jamais l’une à l’autre : observation dans le source ; fait de documentation officielle daté ; observation de benchmark datée ; inférence ; confirmation par le titulaire d’une observation ; ratification par le titulaire d’une décision produit. Une preuve absente signifie non démontré, jamais non effectué.
+The following provenances remain distinct and never substitute for one another: observation in the source; dated official documentation fact; dated benchmark observation; inference; confirmation by the holder of an observation; ratification by the holder of a product decision. Absent evidence means not demonstrated, never not performed.
 
 ### 21.3 `research.md`
 
-Scope :
+Scope:
 
 ```text
 scripts/**/research/**
 ```
 
-Exiger :
+Require:
 
-- date ;
-- question ;
-- sources ;
-- faits ;
-- conclusions ;
-- distinction observation/inférence ;
-- statut de fraîcheur.
+- date;
+- question;
+- sources;
+- facts;
+- conclusions;
+- observation/inference distinction;
+- freshness status.
 
 ### 21.4 `validation.md`
 
-Scope :
+Scope:
 
 ```text
 scripts/**/validation/**
 ```
 
-Interdire :
+Forbid:
 
-- `validated` sans run réel ;
-- preuve non liée au hash du source ;
-- confusion entre test local et TradingView ;
-- modification manuelle trompeuse de l’état.
+- `validated` without a real run;
+- evidence not linked to the hash of the source;
+- confusion between local test and TradingView;
+- misleading manual modification of the state.
 
 ### 21.5 `documentation.md`
 
-Scope sur les docs user-facing des scripts.
+Scope covering the user-facing docs of the scripts.
 
-Doit router vers les sections applicables du standard.
+Must route to the applicable sections of the standard.
 
-Ne pas dupliquer le style complet des tutoriels.
+Do not duplicate the complete style of the tutorials.
 
 ### 21.6 `release.md`
 
-Scope sur les artefacts de release.
+Scope covering the release artefacts.
 
-Doit imposer :
+Must enforce:
 
-- relecture des règles TradingView actuelles ;
-- application de `pine-release` ;
-- interdiction de publication automatique implicite.
+- re-reading of the current TradingView rules;
+- application of `pine-release`;
+- prohibition of implicit automatic publication.
 
 ### 21.7 `pinets-behavioral.md`
 
-Scopes :
+Scopes:
 
 ```yaml
 paths:
@@ -1353,186 +1355,186 @@ paths:
   - "scripts/**/tests/behavioral/**"
 ```
 
-Cette rule reste concise et protège uniquement les invariants capables de modifier une gate locale :
+This rule remains concise and protects only the invariants capable of modifying a local gate:
 
-- aucune promotion `GATING` sans calibration indépendante suffisante ;
-- application des causes de staleness de §24.4.5 ;
-- baseline durable uniquement après acceptation conforme à §24.4.10 ;
-- aucune écriture de preuve PineTS sous `validation/` ;
-- aucune modification du source Pine dont la seule justification serait de satisfaire PineTS.
+- no `GATING` promotion without sufficient independent calibration;
+- application of the staleness causes of §24.4.5;
+- durable baseline only after an acceptance compliant with §24.4.10;
+- no writing of PineTS evidence under `validation/`;
+- no modification of the Pine source whose only justification would be to satisfy PineTS.
 
-Elle route vers le contrat `pine-local-test` au lieu de recopier toute la doctrine PineTS.
+It routes to the `pine-local-test` contract instead of copying the whole PineTS doctrine.
 
 ---
 
 ## 22. SKILL `pine-onboard`
 
-### 22.1 Déclencheur
+### 22.1 Trigger
 
-Claude peut l’invoquer automatiquement lorsqu’un `.pine` sous `scripts/**` est détecté comme non onboardé ou partiellement onboardé.
+Claude may invoke it automatically when a `.pine` under `scripts/**` is detected as not onboarded or partially onboarded.
 
-### 22.2 Principe
+### 22.2 Principle
 
-Onboarding = compréhension et contextualisation.
+Onboarding = understanding and contextualization.
 
 Onboarding ≠ refactoring.
 
-### 22.3 Étapes
+### 22.3 Steps
 
-1. Identifier le product root.
-2. Identifier le ou les `.pine`.
-3. Si plusieurs sources rendent la racine ambiguë, demander au titulaire.
-4. Lire intégralement le source principal.
-5. Lire les parties applicables du master via l’index.
-6. Cartographier le script.
-7. Identifier :
-   - type Pine ;
-   - déclaration principale ;
-   - modules ;
-   - inputs ;
-   - dépendances ;
-   - types/enums/UDTs ;
-   - état ;
-   - arrays/maps/matrices ;
-   - requests ;
-   - MTF ;
-   - signaux ;
-   - objets ;
-   - tables ;
-   - alertes ;
-   - performance sensible ;
-   - risques historical/realtime/repaint.
-8. Déterminer le profil de licence et ses axes (§45) si le header réel du code ou une décision fiable le permet ; noter les mentions légales existantes sans les retirer.
-9. Si `script_kind = library`, dériver FREE à source public selon §45.4 et signaler toute valeur existante incompatible.
-10. Si le profil, l’accès ou le mode de publication reste ambigu pour un indicator ou une strategy, demander au titulaire ; ne jamais deviner.
-11. Définir ce qui est observé, confirmé et à confirmer.
-12. Créer `SCRIPT.json`.
-13. Créer `PRODUCT.md`.
-14. Créer `ARCHITECTURE.md`.
-15. Créer le `CLAUDE.md` local.
-16. Créer `validation/current.json` à l’état non validé.
-17. Créer `DECISIONS.md` seulement si au moins une vraie décision durable existe.
-18. Créer `research/` seulement si une recherche réelle a été effectuée et mérite d’être conservée.
-19. Exécuter les checks structurels.
-20. Revoir les nouveaux fichiers pour supprimer le contenu générique.
-21. Marquer l’onboarding complet uniquement si le contexte minimal est cohérent.
+1. Identify the product root.
+2. Identify the `.pine` file or files.
+3. If several sources make the root ambiguous, ask the holder.
+4. Read the main source in full.
+5. Read the applicable parts of the master via the index.
+6. Map the script.
+7. Identify:
+   - Pine type;
+   - main declaration;
+   - modules;
+   - inputs;
+   - dependencies;
+   - types/enums/UDTs;
+   - state;
+   - arrays/maps/matrices;
+   - requests;
+   - MTF;
+   - signals;
+   - objects;
+   - tables;
+   - alerts;
+   - sensitive performance;
+   - historical/realtime/repaint risks.
+8. Determine the licence profile and its axes (§45) if the real header of the code or a reliable decision allows it; note the existing legal notices without removing them.
+9. If `script_kind = library`, derive FREE with public source according to §45.4 and report any incompatible existing value.
+10. If the profile, the access or the publication mode remains ambiguous for an indicator or a strategy, ask the holder; never guess.
+11. Define what is observed, confirmed and to be confirmed.
+12. Create `SCRIPT.json`.
+13. Create `PRODUCT.md`.
+14. Create `ARCHITECTURE.md`.
+15. Create the local `CLAUDE.md`.
+16. Create `validation/current.json` in the non-validated state.
+17. Create `DECISIONS.md` only if at least one real durable decision exists.
+18. Create `research/` only if real research has been carried out and deserves to be kept.
+19. Run the structural checks.
+20. Review the new files to remove generic content.
+21. Mark the onboarding complete only if the minimal context is consistent.
 
-### 22.4 Interdictions
+### 22.4 Prohibitions
 
-Pendant l’onboarding seul :
+During onboarding alone:
 
-- ne pas modifier le `.pine` pour « corriger » ce qui est découvert ;
-- ne pas inventer une intention produit ;
-- ne pas inventer un modèle de distribution ;
-- ne pas enregistrer une inférence comme décision ;
-- ne pas créer de dossier release/docs sans besoin ;
-- ne pas déclarer le script validé.
+- do not modify the `.pine` to "correct" what is discovered;
+- do not invent a product intention;
+- do not invent a distribution model;
+- do not record an inference as a decision;
+- do not create a release/docs folder without need;
+- do not declare the script validated.
 
-### 22.5 Résultat
+### 22.5 Result
 
-Le produit obtient `product_structure_status = REGISTERED` seulement après validation structurelle de son contexte.
+The product obtains `product_structure_status = REGISTERED` only after structural validation of its context.
 
 ---
 
 ## 23. SKILL `pine-new`
 
-### 23.1 Déclencheur
+### 23.1 Trigger
 
-Utiliser lorsqu’il n’existe pas encore de source Pine et que le titulaire demande la création d’un nouveau produit.
+Use when no Pine source exists yet and the holder requests the creation of a new product.
 
-### 23.2 Workflow obligatoire
+### 23.2 Mandatory workflow
 
-1. Comprendre l’objectif fonctionnel.
-2. Définir l’audience.
-3. Déterminer `script_kind` parmi `indicator`, `strategy` et `library`.
-4. Déterminer le profil de licence et ses axes selon §45 (FREE, FREE à source fermé, PRIVATE, COMMERCIAL). Pour `library`, dériver automatiquement FREE à source public et ne jamais proposer ni accepter un accès payant ou un source fermé tant que la règle TradingView actuelle impose la publication open-source des libraries.
-5. Vérifier que l’objectif est suffisamment complet, abouti et différencié pour le produit visé — l’ambition dépend du produit, pas du profil (master §5).
-6. Vérifier la documentation Pine V6 actuelle pertinente.
-7. Rechercher les meilleurs scripts publics open-source du domaine.
-8. Donner priorité aux Editors’ Picks pertinents.
-9. Analyser les meilleures références accessibles.
-10. Identifier leurs forces, limites, compromis et faiblesses.
-11. Définir comment une solution le titulaire originale peut les surpasser.
-12. Définir le produit avant le code.
-13. Définir les décisions utilisateur réellement nécessaires.
-14. Concevoir l’architecture.
-15. Concevoir les settings.
-16. Concevoir les états et flux de données.
-17. Concevoir MTF/realtime/repaint si applicable.
-18. Concevoir visualisation et alertes seulement si utiles.
-19. Définir les risques.
-20. Obtenir confirmation du titulaire pour les décisions produit non délégables.
-21. Créer le dossier stable `scripts/<slug>/`.
-22. Créer le contexte produit spécifique.
-23. Créer le premier research run.
-24. Déterminer la version produit initiale selon une décision le titulaire ou une politique explicitement ratifiée.
-25. Ne jamais inventer une convention universelle de version initiale si elle n’existe pas.
-26. Créer le `.pine` avec son header approprié.
-27. Développer section par section.
-28. Revoir.
-29. Exécuter les checks locaux déterministes.
-30. Exécuter `pine-local-test` selon applicabilité, capabilities effectivement utilisées, calibration courante et proportionnalité.
-31. Qualifier tout résultat comportemental avant d’en déduire une correction.
-32. Valider réellement dans TradingView.
-33. Synchroniser le contexte final.
+1. Understand the functional objective.
+2. Define the audience.
+3. Determine `script_kind` among `indicator`, `strategy` and `library`.
+4. Determine the licence profile and its axes according to §45 (FREE, FREE with closed source, PRIVATE, COMMERCIAL). For `library`, automatically derive FREE with public source and never propose or accept paid access or a closed source as long as the current TradingView rule requires the open-source publication of libraries.
+5. Check that the objective is sufficiently complete, mature and differentiated for the intended product — the ambition depends on the product, not on the profile (master §5).
+6. Check the relevant current Pine V6 documentation.
+7. Search for the best public open-source scripts in the domain.
+8. Give priority to relevant Editors’ Picks.
+9. Analyse the best accessible references.
+10. Identify their strengths, limits, trade-offs and weaknesses.
+11. Define how an original solution by the holder can surpass them.
+12. Define the product before the code.
+13. Define the user decisions that are actually necessary.
+14. Design the architecture.
+15. Design the settings.
+16. Design the states and data flows.
+17. Design MTF/realtime/repaint if applicable.
+18. Design visualization and alerts only if useful.
+19. Define the risks.
+20. Obtain the holder's confirmation for non-delegable product decisions.
+21. Create the stable folder `scripts/<slug>/`.
+22. Create the specific product context.
+23. Create the first research run.
+24. Determine the initial product version according to a decision by the holder or an explicitly ratified policy.
+25. Never invent a universal initial-version convention if it does not exist.
+26. Create the `.pine` with its appropriate header.
+27. Develop section by section.
+28. Review.
+29. Run the deterministic local checks.
+30. Run `pine-local-test` according to applicability, the capabilities actually used, the current calibration and proportionality.
+31. Qualify any behavioural result before deducing a fix from it.
+32. Actually validate in TradingView.
+33. Synchronize the final context.
 
 ### 23.3 Slug
 
-Le dossier produit utilise un slug :
+The product folder uses a slug:
 
-- stable ;
-- ASCII ;
-- en kebab-case ;
-- descriptif ;
-- non dépendant de la version produit.
+- stable;
+- ASCII;
+- in kebab-case;
+- descriptive;
+- not dependent on the product version.
 
-Ne pas renommer automatiquement un slug existant sans raison structurelle.
+Do not automatically rename an existing slug without a structural reason.
 
 ---
 
 ## 24. SKILL `pine-develop`
 
-Orchestrateur principal des modifications.
+Main orchestrator of modifications.
 
-### 24.1 Entrée
+### 24.1 Input
 
-Une demande le titulaire portant sur un script onboardé.
+A request from the holder concerning an onboarded script.
 
-### 24.2 Séquence
+### 24.2 Sequence
 
-1. Lire le contexte local requis.
-2. Comprendre précisément la demande.
-3. Classer la tâche selon le standard maître ; le niveau de vérification (master §9.1) est le travail courant (cette skill) sauf audit approfondi demandé par le titulaire (`pine-audit`, périmètre annoncé) ou préparation de publication (`pine-release`).
-4. Lire la cartographie du produit (`ARCHITECTURE.md`) puis les blocs concernés et leurs dépendances pertinentes, étendues selon la classe de la tâche ; lecture intégrale seulement dans un audit explicitement demandé (amendement du 2026-11-06 : aucune lecture intégrale, aucun agent, aucune cascade de revues déclenchés automatiquement par une modification, quelle que soit sa classe — un changement structurel compris).
-5. Utiliser `pws-pine-cartographer` seulement dans un audit demandé ou un onboarding, lorsque la taille/complexité justifie l’isolation du volume.
-6. Établir l’inventaire d’impact.
-7. Vérifier la documentation Pine actuelle pertinente.
-8. Effectuer la vérification de pertinence du benchmark.
-9. Exécuter `pine-research` si nécessaire.
-10. Définir la modification minimale cohérente.
-11. Planifier.
-12. Implémenter.
-13. Relire selon la couverture du master §9.2.
-14. Synchroniser les artefacts dépendants.
-15. Revue indépendante (`pine-review`) seulement dans un audit approfondi demandé, en préparation de publication ou à la demande du titulaire ; jamais déclenchée par la classe de la tâche (amendement du 2026-11-13).
-16. Corriger les constats retenus.
-17. Exécuter les checks locaux déterministes.
-18. Exécuter `pine-local-test` selon applicabilité, capabilities effectivement utilisées, calibration courante, inventaire d’impact et profondeur proportionnée à la modification.
-19. Qualifier les résultats PineTS. Si une correction du source est réellement justifiée par l’objectif, le standard, la documentation Pine ou le contrat comportemental attendu, corriger puis réexécuter les étapes locales applicables.
-20. Préparer/exécuter `tv-validate` selon applicabilité : compilation minimale intermédiaire lorsque l’inventaire d’impact le justifie (§30.5), campagne fonctionnelle sur le source stabilisé.
-21. Revalider après toute correction qui change le source.
-22. Mettre à jour uniquement les fichiers contextuels devenus réellement obsolètes.
+1. Read the required local context.
+2. Understand the request precisely.
+3. Classify the task according to the master standard; the verification level (master §9.1) is routine work (this skill) except in a deep audit requested by the holder (`pine-audit`, announced scope) or in publication preparation (`pine-release`).
+4. Read the product map (`ARCHITECTURE.md`), then the blocks concerned and their relevant dependencies, extended according to the class of the task; full read only in an explicitly requested audit (amendment of 2026-11-06: no full read, no agent, no cascade of reviews triggered automatically by a modification, whatever its class — a structural change included).
+5. Use `pws-pine-cartographer` only in a requested audit or an onboarding, when the size/complexity justifies isolating the volume.
+6. Establish the impact inventory.
+7. Check the relevant current Pine documentation.
+8. Perform the benchmark relevance check.
+9. Run `pine-research` if necessary.
+10. Define the minimal coherent modification.
+11. Plan.
+12. Implement.
+13. Re-read according to the coverage of master §9.2.
+14. Synchronize the dependent artefacts.
+15. Independent review (`pine-review`) only in a requested deep audit, in publication preparation or at the holder's request; never triggered by the class of the task (amendment of 2026-11-13).
+16. Fix the retained findings.
+17. Run the deterministic local checks.
+18. Run `pine-local-test` according to applicability, the capabilities actually used, the current calibration, the impact inventory and a depth proportionate to the modification.
+19. Qualify the PineTS results. If a fix of the source is actually justified by the objective, the standard, the Pine documentation or the expected behavioural contract, fix it, then rerun the applicable local steps.
+20. Prepare/run `tv-validate` according to applicability: intermediate minimal compilation when the impact inventory justifies it (§30.5), functional campaign on the stabilized source.
+21. Revalidate after any fix that changes the source.
+22. Update only the context files that have actually become obsolete.
 
-Correspondance avec le master §38 : spec 1 (contexte local) → propre au workspace ; 2 → §38.1 ; 3 → §38.2 ; 4 → §38.4 ; 5 → §38.5 ; 6 → §38.6 ; 7 → §38.7 ; 8 → §38.8 ; 9 → §38.9 et §38.10 ; 10 → §38.11 à §38.13 ; 11 (planifier) → propre au workspace ; 12 → §38.14 ; 13 → §38.15 ; 14 → §38.18 ; 15 → §38.16 et §38.17 ; 16 (corriger après la revue) → propre au workspace ; 17 (checks déterministes), 18 et 19 (PineTS) → propres au workspace ; 20 → §38.19 et §38.20 ; 21 → §38.21 et §38.22 ; 22 → spec §53. Le master §38.23 (livrables) relève de `pine-release`. Le master §38.3 (modèle de distribution) est lu via `SCRIPT.json` à l’étape 1.
+Correspondence with master §38: spec 1 (local context) → workspace-specific; 2 → §38.1; 3 → §38.2; 4 → §38.4; 5 → §38.5; 6 → §38.6; 7 → §38.7; 8 → §38.8; 9 → §38.9 and §38.10; 10 → §38.11 to §38.13; 11 (plan) → workspace-specific; 12 → §38.14; 13 → §38.15; 14 → §38.18; 15 → §38.16 and §38.17; 16 (fix after the review) → workspace-specific; 17 (deterministic checks), 18 and 19 (PineTS) → workspace-specific; 20 → §38.19 and §38.20; 21 → §38.21 and §38.22; 22 → spec §53. Master §38.23 (deliverables) falls under `pine-release`. Master §38.3 (distribution model) is read via `SCRIPT.json` at step 1.
 
-### 24.3 Pas de scope creep
+### 24.3 No scope creep
 
-Les améliorations non demandées sont proposées au titulaire avant implémentation lorsqu’elles constituent une décision produit.
+Unrequested improvements are proposed to the holder before implementation when they constitute a product decision.
 
 
-### 24.4 Skill `pine-local-test` — contrat
+### 24.4 Skill `pine-local-test` — contract
 
-Cette sous-section constitue le contrat normatif de la skill :
+This subsection constitutes the normative contract of the skill:
 
 ```text
 .claude/skills/pine-local-test/SKILL.md
@@ -1540,30 +1542,30 @@ Cette sous-section constitue le contrat normatif de la skill :
 
 #### 24.4.1 Mission
 
-`pine-local-test` fournit une exécution comportementale locale du source Pine exact au moyen de PineTS.
+`pine-local-test` provides a local behavioural execution of the exact Pine source by means of PineTS.
 
-Sa mission est de produire des observations reproductibles et, lorsqu’un contrat local le permet, des conclusions comportementales localement gating avant `tv-validate`.
+Its mission is to produce reproducible observations and, when a local contract allows it, locally gating behavioural conclusions before `tv-validate`.
 
-Elle ne constitue jamais :
+It never constitutes:
 
-- une validation TradingView ;
-- une autorité sur la syntaxe ou la sémantique officielle Pine Script ;
-- une preuve universelle de non-repaint ;
-- une preuve générale de parité avec le Strategy Tester ou avec TradingView ;
-- une preuve de performance TradingView ;
-- une instruction automatique de modification du code.
+- a TradingView validation;
+- an authority on official Pine Script syntax or semantics;
+- a universal proof of non-repaint;
+- a general proof of parity with the Strategy Tester or with TradingView;
+- a proof of TradingView performance;
+- an automatic instruction to modify the code.
 
-Une conclusion PineTS peut être localement bloquante uniquement lorsqu’elle est précisément bornée au source, au dataset, à la configuration, à l’environnement et aux `capabilities_used` du run, et lorsque toutes les capabilities matériellement nécessaires à cette conclusion sont effectivement gating.
+A PineTS conclusion may be locally blocking only when it is precisely bounded to the source, the dataset, the configuration, the environment and the `capabilities_used` of the run, and when all the capabilities materially necessary to this conclusion are effectively gating.
 
-Cette autorité locale porte sur le contrat comportemental local testé. Elle ne crée aucun statut TradingView, ne remplace aucune observation TradingView requise et ne permet jamais d’extrapoler une compatibilité générale de PineTS avec TradingView.
+This local authority covers the tested local behavioural contract. It creates no TradingView status, replaces no required TradingView observation and never allows extrapolating a general compatibility of PineTS with TradingView.
 
 #### 24.4.2 Backend
 
-L’intégration durable utilise un thin adapter Node local autour d’une dépendance directe à PineTS.
+The durable integration uses a local Node thin adapter around a direct dependency on PineTS.
 
-La version PineTS doit être pinée exactement.
+The PineTS version must be pinned exactly.
 
-Interdire les ranges flottants tels que :
+Forbid floating ranges such as:
 
 ```text
 ^X.Y.Z
@@ -1572,56 +1574,56 @@ latest
 *
 ```
 
-Le lockfile doit être versionné.
+The lockfile must be versioned.
 
-Aucun auto-upgrade de PineTS n’est autorisé.
+No auto-upgrade of PineTS is allowed.
 
-Une mise à niveau PineTS constitue une opération explicite de maintenance. Elle invalide la fraîcheur des calibrations liées à l’ancienne identité d’environnement et exige une recalibration avant qu’une capability concernée puisse de nouveau produire une conclusion effectivement gating.
+A PineTS upgrade constitutes an explicit maintenance operation. It invalidates the freshness of the calibrations tied to the previous environment identity and requires a recalibration before an affected capability can again produce an effectively gating conclusion.
 
-`pinets-cli` peut être utilisé ponctuellement pour un proof of concept ou un diagnostic, mais n’est pas le backend durable canonique du workspace sauf décision ultérieure explicite du titulaire.
+`pinets-cli` may be used occasionally for a proof of concept or a diagnostic, but is not the canonical durable backend of the workspace, except by a later explicit decision of the holder.
 
 #### 24.4.3 Executor fingerprint
 
-Chaque environnement d’exécution comportementale possède un `executor_fingerprint` représentant l’ensemble des artefacts locaux susceptibles d’influencer le résultat normalisé.
+Each behavioural execution environment has an `executor_fingerprint` representing all the local artefacts likely to influence the normalized result.
 
-Le fingerprint doit couvrir au minimum, lorsqu’ils existent ou influencent le comportement :
+The fingerprint must cover at least, when they exist or influence the behaviour:
 
-- `runner.mjs` ;
-- `normalize.mjs` ;
-- `package.json` ;
-- `package-lock.json` ;
-- la configuration comportementale du runner qui ne relève pas de la configuration propre au run ;
-- tout module auxiliaire local chargé par l’exécuteur et susceptible de modifier l’exécution ou la normalisation ;
-- version Node.js exacte ;
-- plateforme et architecture ;
-- options Node.js pertinentes ;
-- variables d'environnement pertinentes et non secrètes ;
-- timezone et locale, soit contrôlées explicitement, soit enregistrées lorsqu'elles peuvent influencer l'exécution ou la normalisation.
+- `runner.mjs`;
+- `normalize.mjs`;
+- `package.json`;
+- `package-lock.json`;
+- the behavioural configuration of the runner that does not belong to the run's own configuration;
+- any local auxiliary module loaded by the executor and likely to modify the execution or the normalization;
+- exact Node.js version;
+- platform and architecture;
+- relevant Node.js options;
+- relevant, non-secret environment variables;
+- timezone and locale, either explicitly controlled or recorded when they can influence the execution or the normalization.
 
-Le calcul exact doit être déterministe et reproductible. Une implémentation acceptable consiste à produire un manifeste canonique `chemin relatif → SHA-256` des éléments concernés, à y intégrer les faits d'environnement et paramètres d’exécuteur pertinents sous forme canonique, puis à calculer le SHA-256 de ce manifeste.
+The exact computation must be deterministic and reproducible. An acceptable implementation consists in producing a canonical manifest `relative path → SHA-256` of the elements concerned, integrating into it the relevant environment facts and executor parameters in canonical form, then computing the SHA-256 of this manifest.
 
-Ne pas fingerprint-er aveuglément tout l'environnement. Inclure uniquement les faits susceptibles d'influencer l'exécution ou la normalisation, sans jamais enregistrer une valeur secrète. Ces faits restent absorbés par `executor_fingerprint` : ils ne créent pas une quatrième dimension concurrente au triplet ratifié.
+Do not blindly fingerprint the whole environment. Include only the facts likely to influence the execution or the normalization, without ever recording a secret value. These facts remain absorbed by `executor_fingerprint`: they do not create a fourth dimension competing with the ratified triplet.
 
-`executor_fingerprint` ne remplace pas `source_sha256`, `dataset_sha256` ni la `configuration` propre au run. Ces identités restent séparées.
+`executor_fingerprint` does not replace `source_sha256`, `dataset_sha256` or the run's own `configuration`. These identities remain separate.
 
-#### 24.4.4 Capability gate, granularité et fraîcheur de calibration
+#### 24.4.4 Capability gate, granularity and calibration freshness
 
-Le workspace ne suppose jamais que toute fonctionnalité annoncée par PineTS est suffisamment compatible pour devenir gating.
+The workspace never assumes that every feature announced by PineTS is sufficiently compatible to become gating.
 
-Le statut est attribué à des capabilities suffisamment fines pour représenter le comportement réellement testé. Ne pas classer une famille entière telle que `MTF`, `request.*`, `strategy.*`, historical/realtime, inputs ou objets comme `GATING`, `EXPERIMENTAL` ou `UNSUPPORTED` lorsque ses sous-capabilities peuvent avoir des profils de compatibilité différents.
+The status is assigned to capabilities fine-grained enough to represent the behaviour actually tested. Do not classify an entire family such as `MTF`, `request.*`, `strategy.*`, historical/realtime, inputs or objects as `GATING`, `EXPERIMENTAL` or `UNSUPPORTED` when its sub-capabilities can have different compatibility profiles.
 
-Aucune famille de fonctionnalités Pine n’est durablement condamnée à rester `EXPERIMENTAL` ou `UNSUPPORTED`, ni promue `GATING`, par sa seule catégorie. Les statuts doivent pouvoir évoluer capability par capability lorsque la calibration et les preuves réelles le justifient.
+No family of Pine features is durably condemned to remain `EXPERIMENTAL` or `UNSUPPORTED`, nor promoted to `GATING`, by its category alone. The statuses must be able to evolve capability by capability when the calibration and the real evidence justify it.
 
-Une capability nouvellement rencontrée sans qualification suffisante peut être enregistrée provisoirement comme `EXPERIMENTAL` avec `calibration_status = MISSING`. Ce statut provisoire signifie uniquement « aucune autorité gating établie » ; il ne constitue pas une preuve que la capability est incorrecte. `UNSUPPORTED` exige une raison démontrable, par exemple une absence fonctionnelle, une divergence reproductible ou une incapacité actuelle à exécuter le contrat avec une fidélité suffisante.
+A newly encountered capability without sufficient qualification may be recorded provisionally as `EXPERIMENTAL` with `calibration_status = MISSING`. This provisional status means only "no established gating authority"; it does not constitute evidence that the capability is incorrect. `UNSUPPORTED` requires a demonstrable reason, for example a functional absence, a reproducible divergence or a current inability to execute the contract with sufficient fidelity.
 
-Deux dimensions indépendantes sont conservées pour chaque capability :
+Two independent dimensions are kept for each capability:
 
 ```text
 capability_status
 calibration_status
 ```
 
-`capability_status` accepte uniquement :
+`capability_status` accepts only:
 
 ```text
 GATING
@@ -1629,7 +1631,7 @@ EXPERIMENTAL
 UNSUPPORTED
 ```
 
-`calibration_status` accepte au minimum :
+`calibration_status` accepts at least:
 
 ```text
 CURRENT
@@ -1637,11 +1639,11 @@ STALE
 MISSING
 ```
 
-`capability_status = GATING` signifie que cette capability est autorisée à produire des conclusions gating lorsqu’une calibration indépendante courante existe pour l’environnement exact.
+`capability_status = GATING` means that this capability is authorized to produce gating conclusions when a current independent calibration exists for the exact environment.
 
-Un changement d’environnement ne transforme pas automatiquement `GATING` en `EXPERIMENTAL` ou `UNSUPPORTED`.
+A change of environment does not automatically turn `GATING` into `EXPERIMENTAL` or `UNSUPPORTED`.
 
-La capacité à bloquer effectivement est dérivée :
+The ability to actually block is derived:
 
 ```text
 effective_gating =
@@ -1649,9 +1651,9 @@ effective_gating =
     AND calibration_status == CURRENT
 ```
 
-Pour `EXPERIMENTAL` ou `UNSUPPORTED`, `effective_gating` est toujours faux.
+For `EXPERIMENTAL` or `UNSUPPORTED`, `effective_gating` is always false.
 
-L’identité de l’environnement calibré est déterminée par le triplet exact :
+The identity of the calibrated environment is determined by the exact triplet:
 
 ```text
 pinets_version
@@ -1661,76 +1663,76 @@ executor_fingerprint
 normalization_schema
 ```
 
-Toute modification de l’un de ces trois éléments rend `calibration_status = STALE` pour les calibrations qui reposaient sur l’identité précédente.
+Any modification of one of these three elements results in `calibration_status = STALE` for the calibrations that relied on the previous identity.
 
-L'identité d'environnement n'est pas la seule cause d'obsolescence. La fraîcheur de chaque capability dépend également de l'identité et de l'intégrité de ses cas, inputs, résultats attendus, références indépendantes et preuves éventuelles selon §24.4.5.
+The environment identity is not the only cause of obsolescence. The freshness of each capability also depends on the identity and integrity of its cases, inputs, expected results, independent references and any evidence according to §24.4.5.
 
-Lors d’une recalibration, `capability_status` peut être révisé si les preuves de compatibilité le justifient ; il n’est jamais réécrit automatiquement uniquement parce que l’environnement a changé.
+During a recalibration, `capability_status` may be revised if the compatibility evidence justifies it; it is never rewritten automatically only because the environment has changed.
 
-Une capability `GATING` ne peut redevenir effectivement gating qu’après recalibration réussie contre l’identité d’environnement courante.
+A `GATING` capability can become effectively gating again only after a successful recalibration against the current environment identity.
 
 #### 24.4.5 Calibration
 
-Le dossier :
+The folder:
 
 ```text
 tools/pine_exec/calibration/
 ```
 
-doit contenir un état de calibration durable permettant d’identifier au minimum :
+must contain a durable calibration state making it possible to identify at least:
 
-- version PineTS exacte ;
-- `executor_fingerprint` ;
-- identité du schéma de normalisation ;
-- date de calibration ;
-- capabilities examinées ;
-- `capability_status` de chaque capability ;
-- `calibration_status` de chaque capability ;
-- cas utilisés ;
-- hashes ou identités canoniques des cas et inputs ;
-- hashes ou identités canoniques des résultats attendus ;
-- provenance de la référence indépendante ;
-- hash et référence durable de la référence indépendante ;
-- référence et hash de toute preuve TradingView utilisée pour soutenir le claim ;
-- divergences connues ;
-- limitations connues.
+- exact PineTS version;
+- `executor_fingerprint`;
+- identity of the normalization schema;
+- calibration date;
+- capabilities examined;
+- `capability_status` of each capability;
+- `calibration_status` of each capability;
+- cases used;
+- hashes or canonical identities of the cases and inputs;
+- hashes or canonical identities of the expected results;
+- provenance of the independent reference;
+- hash and durable reference of the independent reference;
+- reference and hash of any TradingView evidence used to support the claim;
+- known divergences;
+- known limitations.
 
-Une capability `GATING` exige une calibration indépendante avec :
+A `GATING` capability requires an independent calibration with:
 
-- la version PineTS exacte installée ;
-- l’`executor_fingerprint` exact ;
-- le schéma de normalisation exact ;
-- des cas représentatifs ;
-- une référence attendue indépendante de PineTS.
+- the exact installed PineTS version;
+- the exact `executor_fingerprint`;
+- the exact normalization schema;
+- representative cases;
+- an expected reference independent of PineTS.
 
-Une référence de calibration peut provenir notamment :
+A calibration reference can come, in particular:
 
-- d’une observation TradingView correctement établie ;
-- d’un calcul indépendant dont le résultat est déterminable sans utiliser PineTS comme oracle.
+- from a properly established TradingView observation;
+- from an independent computation whose result can be determined without using PineTS as an oracle.
 
-La référence doit correspondre au type de claim que la capability est autorisée à produire. Une capability destinée uniquement à établir un contrat mathématique ou comportemental local peut être calibrée contre une référence indépendante appropriée. Une capability utilisée pour soutenir un claim de correspondance avec un comportement propre à TradingView doit être calibrée contre une observation TradingView suffisamment probante pour ce claim précis.
+The reference must correspond to the type of claim that the capability is authorized to produce. A capability intended only to establish a local mathematical or behavioural contract may be calibrated against an appropriate independent reference. A capability used to support a claim of correspondence with a behaviour specific to TradingView must be calibrated against a TradingView observation that is sufficiently conclusive for this precise claim.
 
-Une sortie PineTS antérieure ne suffit jamais, à elle seule, à calibrer PineTS.
+A previous PineTS output is never sufficient, on its own, to calibrate PineTS.
 
-Une calibration `STALE` ou `MISSING` ne change pas le `capability_status`, mais interdit toute utilisation effectivement gating de cette capability.
+A `STALE` or `MISSING` calibration does not change the `capability_status`, but forbids any effectively gating use of this capability.
 
-Une calibration devient `STALE`, capability par capability, lorsque notamment :
+A calibration becomes `STALE`, capability by capability, in particular when:
 
-- un cas ou un input de calibration change ;
-- un résultat attendu change ;
-- une référence indépendante ou une preuve requise disparaît, change ou ne passe plus sa vérification d'intégrité ;
-- une nouvelle divergence reproductible contredit le contrat antérieurement calibré ;
-- une évolution pertinente de la documentation officielle rend le contrat de calibration invalide.
+- a calibration case or input changes;
+- an expected result changes;
+- an independent reference or a required piece of evidence disappears, changes or no longer passes its integrity check;
+- a new reproducible divergence contradicts the previously calibrated contract;
+- a relevant change in the official documentation makes the calibration contract invalid.
 
-L'âge seul d'une calibration n'est pas une preuve de staleness. Ne pas appliquer de TTL arbitraire.
+The age of a calibration alone is not evidence of staleness. Do not apply an arbitrary TTL.
 
-La calibration ne doit pas devenir un second standard Pine Script.
+The calibration must not become a second Pine Script standard.
 
-Elle décrit uniquement ce que cette version précise de PineTS, avec cet exécuteur et ce schéma de normalisation, est autorisée à prouver localement.
+It describes only what this precise version of PineTS, with this executor and this normalization schema, is authorized to prove locally.
 
-#### 24.4.6 Identité et capabilities d’un run
+#### 24.4.6 Identity and capabilities of a run
 
-Tout résultat comportemental utilisé pour une comparaison ou une conclusion doit être lié au minimum à :
+Any behavioural result used for a comparison or a conclusion must be linked at least to:
 
 ```text
 source_sha256
@@ -1745,21 +1747,21 @@ run_id
 timestamp
 ```
 
-`dataset_descriptor` décrit la provenance et les sémantiques nécessaires à l’interprétation du dataset sans remplacer son hash. Il distingue au minimum un dataset synthétique d’un snapshot importé et enregistre, selon applicabilité :
+`dataset_descriptor` describes the provenance and the semantics needed to interpret the dataset without replacing its hash. It distinguishes at least a synthetic dataset from an imported snapshot and records, depending on applicability:
 
-- type de dataset ;
-- générateur et paramètres lorsque synthétique ;
-- source ou provenance lorsque importé ;
-- symbole, timeframe et plage temporelle ;
-- timezone, session ou autres sémantiques temporelles pertinentes ;
-- date ou référence d’acquisition/export lorsque utile ;
-- information de licence ou de droit d’usage nécessaire lorsque la source est externe.
+- dataset type;
+- generator and parameters when synthetic;
+- source or provenance when imported;
+- symbol, timeframe and time range;
+- timezone, session or other relevant time semantics;
+- acquisition/export date or reference when useful;
+- licence or usage-right information needed when the source is external.
 
-`timestamp` utilise RFC 3339 en UTC. `run_id` est collision-resistant et ne dépend pas d'une date locale seule.
+`timestamp` uses RFC 3339 in UTC. `run_id` is collision-resistant and does not depend on a local date alone.
 
-`capabilities_used` doit enregistrer les capabilities PineTS effectivement sollicitées par le comportement ou la conclusion concernée, ainsi que leur état au moment du run.
+`capabilities_used` must record the PineTS capabilities actually exercised by the behaviour or the conclusion concerned, as well as their state at the time of the run.
 
-Une représentation valide est par exemple :
+A valid representation is, for example:
 
 ```json
 {
@@ -1780,36 +1782,36 @@ Une représentation valide est par exemple :
 }
 ```
 
-`effective_gating` est dérivé des deux statuts et ne doit pas être persisté comme une troisième source de vérité lorsqu’il peut être recalculé sans ambiguïté.
+`effective_gating` is derived from the two statuses and must not be persisted as a third source of truth when it can be recomputed without ambiguity.
 
-Un run peut s’exécuter avec succès tout en utilisant une ou plusieurs capabilities non effectivement gating.
+A run can execute successfully while using one or more capabilities that are not effectively gating.
 
-Dans ce cas, `PINETS_EXECUTION_PASS` reste valide, mais aucune conclusion comportementale qui dépend matériellement d’une capability non effectivement gating ne peut être utilisée comme gate.
+In this case, `PINETS_EXECUTION_PASS` remains valid, but no behavioural conclusion that materially depends on a capability that is not effectively gating may be used as a gate.
 
-Lorsqu’une conclusion peut être isolée à un sous-ensemble de capabilities toutes effectivement gating, seule cette conclusion précisément bornée peut être gating.
+When a conclusion can be isolated to a subset of capabilities that are all effectively gating, only this precisely bounded conclusion may be gating.
 
-Si les `capabilities_used` ne peuvent pas être déterminées avec une confiance suffisante pour la conclusion concernée, cette conclusion est `PINETS_INCONCLUSIVE` ou autrement non gating ; l’incertitude de détection ne doit jamais être transformée en preuve.
+If the `capabilities_used` cannot be determined with sufficient confidence for the conclusion concerned, this conclusion is `PINETS_INCONCLUSIVE` or otherwise non-gating; detection uncertainty must never be turned into evidence.
 
-Lorsque le dataset est généré synthétiquement, sa définition doit être déterministe et permettre de reproduire exactement le même OHLCV.
+When the dataset is generated synthetically, its definition must be deterministic and make it possible to reproduce exactly the same OHLCV.
 
-Un snapshot OHLCV importé depuis une source indépendante peut également être utilisé lorsqu’il est conservé ou reconstructible de manière suffisamment fiable, que son `dataset_sha256` est stable, que sa provenance est enregistrée et que ses conditions d’usage permettent l’utilisation prévue.
+An OHLCV snapshot imported from an independent source may also be used when it is kept or reconstructible in a sufficiently reliable way, its `dataset_sha256` is stable, its provenance is recorded and its terms of use allow the intended use.
 
-Le bootstrap ne doit pas intégrer par défaut un fournisseur de données réseau ni créer une nouvelle plateforme de market data. Il doit seulement permettre au thin adapter de consommer des datasets locaux contrôlés selon un contrat documenté.
+The bootstrap must not integrate a network data provider by default, nor create a new market data platform. It must only allow the thin adapter to consume controlled local datasets according to a documented contract.
 
-La couche PineTS ne doit pas automatiser l’extraction de données, contenus ou états TradingView dans le seul but d’alimenter le runtime local, sauf décision ultérieure explicitement ratifiée après analyse des conditions actuelles applicables à cet usage précis.
+The PineTS layer must not automate the extraction of TradingView data, content or states for the sole purpose of feeding the local runtime, except by a later decision explicitly ratified after analysis of the current terms applicable to this precise use.
 
-#### 24.4.7 Statuts : exécution et observations comportementales
+#### 24.4.7 Statuses: execution and behavioural observations
 
-Les statuts d’exécution et les observations comportementales sont deux axes distincts.
+Execution statuses and behavioural observations are two distinct axes.
 
-Le statut d’exécution décrit uniquement la capacité du runtime PineTS à exécuter le source dans l’environnement concerné :
+The execution status describes only the ability of the PineTS runtime to execute the source in the environment concerned:
 
 ```text
 PINETS_EXECUTION_PASS
 PINETS_EXECUTION_FAIL
 ```
 
-Les observations comportementales décrivent ce qui a été observé après ou pendant une exécution exploitable :
+Behavioural observations describe what was observed after or during a usable execution:
 
 ```text
 PINETS_REGRESSION_UNCHANGED
@@ -1819,7 +1821,7 @@ PINETS_STABILITY_NO_ANOMALY
 PINETS_STABILITY_ANOMALY
 ```
 
-Les statuts de qualification de preuve comprennent :
+The evidence qualification statuses include:
 
 ```text
 PINETS_EXPERIMENTAL
@@ -1827,9 +1829,9 @@ PINETS_UNSUPPORTED
 PINETS_INCONCLUSIVE
 ```
 
-Les axes ne doivent jamais être fusionnés.
+The axes must never be merged.
 
-La combinaison suivante est parfaitement valide :
+The following combination is perfectly valid:
 
 ```text
 PINETS_EXECUTION_PASS
@@ -1837,53 +1839,53 @@ PINETS_EXECUTION_PASS
 PINETS_REGRESSION_CHANGED
 ```
 
-Elle signifie que le runtime a exécuté le source et qu’un changement comportemental a été observé. Elle ne signifie pas un échec d’exécution.
+It means that the runtime executed the source and that a behavioural change was observed. It does not mean an execution failure.
 
-`PINETS_EXECUTION_PASS` signifie uniquement que le source s’est exécuté avec succès dans l’environnement PineTS concerné.
+`PINETS_EXECUTION_PASS` means only that the source executed successfully in the PineTS environment concerned.
 
-Il ne signifie jamais `TV_VALIDATED`.
+It never means `TV_VALIDATED`.
 
-`PINETS_EXECUTION_FAIL` ne peut devenir un échec bloquant du workflow local que si :
+`PINETS_EXECUTION_FAIL` can become a blocking failure of the local workflow only if:
 
-1. les capabilities matériellement nécessaires à l’interprétation de cet échec sont effectivement gating ;
-2. leur calibration est `CURRENT` ;
-3. l’échec est attribuable au comportement du source ou à un contrat de test explicite ;
-4. aucune divergence PineTS connue ne rend l’interprétation incertaine.
+1. the capabilities materially necessary to interpret this failure are effectively gating;
+2. their calibration is `CURRENT`;
+3. the failure is attributable to the behaviour of the source or to an explicit test contract;
+4. no known PineTS divergence makes the interpretation uncertain.
 
-Sinon, utiliser un statut non gating approprié.
+Otherwise, use an appropriate non-gating status.
 
-`PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` et `PINETS_INCONCLUSIVE` ne sont jamais assimilés à un échec du script.
+`PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` and `PINETS_INCONCLUSIVE` are never equated with a failure of the script.
 
-Ils signifient que la couche locale ne peut pas fournir une preuve suffisante sur ce point.
+They mean that the local layer cannot provide sufficient evidence on this point.
 
-Le workflow peut alors poursuivre vers TradingView.
+The workflow may then proceed to TradingView.
 
-#### 24.4.8 Frontière de correction
+#### 24.4.8 Fix boundary
 
-Claude Code ne modifie jamais le source Pine uniquement pour faire accepter le code par PineTS.
+Claude Code never modifies the Pine source only to get the code accepted by PineTS.
 
-Avant toute correction déclenchée par un résultat PineTS, poser la question :
+Before any fix triggered by a PineTS result, ask the question:
 
-> Le code serait-il incorrect ou contraire à l’objectif, au standard, à la documentation Pine actuelle ou au contrat comportemental attendu si PineTS n’existait pas ?
+> Would the code be incorrect or contrary to the objective, the standard, the current Pine documentation or the expected behavioural contract if PineTS did not exist?
 
-Si la réponse est non ou indéterminable, ne pas modifier le Pine uniquement pour satisfaire PineTS.
+If the answer is no or cannot be determined, do not modify the Pine only to satisfy PineTS.
 
-Qualifier le résultat comme limitation, divergence, expérimental, unsupported ou inconclusif selon le cas.
+Qualify the result as a limitation, divergence, experimental, unsupported or inconclusive, as the case may be.
 
-#### 24.4.9 Régressions
+#### 24.4.9 Regressions
 
-Une différence comportementale n’est pas automatiquement un bug.
+A behavioural difference is not automatically a bug.
 
-`PINETS_REGRESSION_CHANGED` signifie uniquement qu’une différence a été observée entre deux exécutions comparables.
+`PINETS_REGRESSION_CHANGED` means only that a difference was observed between two comparable executions.
 
-Toute différence doit être confrontée :
+Any difference must be checked against:
 
-- à l’objectif demandé par le titulaire ;
-- à l’inventaire d’impact ;
-- aux comportements annoncés comme devant rester inchangés ;
-- aux comportements explicitement destinés à changer.
+- the objective requested by the holder;
+- the impact inventory;
+- the behaviours announced as having to remain unchanged;
+- the behaviours explicitly intended to change.
 
-Classer la différence comme :
+Classify the difference as:
 
 ```text
 EXPECTED
@@ -1891,23 +1893,23 @@ UNEXPECTED
 UNRESOLVED
 ```
 
-`EXPECTED` n’est pas un échec.
+`EXPECTED` is not a failure.
 
-`UNRESOLVED` ne doit pas produire une correction spéculative.
+`UNRESOLVED` must not produce a speculative fix.
 
-`UNEXPECTED` peut bloquer le cycle local uniquement lorsque la conclusion concernée dépend exclusivement de capabilities effectivement gating et repose sur un contrat de régression valide.
+`UNEXPECTED` may block the local cycle only when the conclusion concerned depends exclusively on effectively gating capabilities and rests on a valid regression contract.
 
 #### 24.4.10 Accepted behavioral baseline
 
-Une baseline durable porte le statut :
+A durable baseline carries the status:
 
 ```text
 ACCEPTED_BEHAVIORAL_BASELINE
 ```
 
-Une première exécution PineTS n’est jamais automatiquement une baseline acceptée.
+A first PineTS execution is never automatically an accepted baseline.
 
-Toute `ACCEPTED_BEHAVIORAL_BASELINE` doit être liée au minimum à :
+Any `ACCEPTED_BEHAVIORAL_BASELINE` must be linked at least to:
 
 ```text
 source_sha256
@@ -1925,118 +1927,118 @@ acceptance_evidence_ref
 acceptance_rationale
 ```
 
-La baseline doit idéalement provenir d’un source dont le même SHA a déjà passé la validation TradingView pertinente.
+The baseline must ideally come from a source whose same SHA has already passed the relevant TradingView validation.
 
-À défaut, elle ne peut être promue comme `ACCEPTED_BEHAVIORAL_BASELINE` que par une décision explicite du titulaire avec une justification enregistrée.
+Failing that, it may be promoted as `ACCEPTED_BEHAVIORAL_BASELINE` only by an explicit decision of the holder with a recorded justification.
 
-`acceptance_basis` doit permettre de distinguer notamment :
+`acceptance_basis` must make it possible to distinguish in particular:
 
 ```text
 TRADINGVIEW_VALIDATED_SOURCE
 RICK_EXPLICIT_ACCEPTANCE
 ```
 
-`normalized_payload_sha256` est requis lorsque le payload normalisé est séparé de son descripteur. Pour `TRADINGVIEW_VALIDATED_SOURCE`, `acceptance_evidence_ref` doit référencer la preuve durable du même SHA lorsqu'elle fonde l'acceptation. Pour `RICK_EXPLICIT_ACCEPTANCE`, `acceptance_rationale` doit expliquer la décision ; les champs non applicables peuvent être `null`, mais leur présence et leur sémantique restent normatives.
+`normalized_payload_sha256` is required when the normalized payload is separate from its descriptor. For `TRADINGVIEW_VALIDATED_SOURCE`, `acceptance_evidence_ref` must reference the durable evidence of the same SHA when it is the basis of the acceptance. For `RICK_EXPLICIT_ACCEPTANCE`, `acceptance_rationale` must explain the decision; the non-applicable fields may be `null`, but their presence and their semantics remain normative.
 
-Une baseline acceptée signifie :
+An accepted baseline means:
 
-> ce comportement est accepté comme référence de non-régression pour ce contexte précis.
+> this behaviour is accepted as a non-regression reference for this precise context.
 
-Elle ne signifie pas :
+It does not mean:
 
-> PineTS a prouvé que cette sortie est universellement correcte.
+> PineTS has proven that this output is universally correct.
 
-Une baseline reste un artefact historique valide lorsque l’environnement évolue, mais elle ne peut plus soutenir directement une comparaison gating si son `pinets_version`, son `executor_fingerprint`, son `normalization_schema`, son dataset ou sa configuration ne correspondent pas au contexte de comparaison.
+A baseline remains a valid historical artefact when the environment evolves, but it can no longer directly support a gating comparison if its `pinets_version`, its `executor_fingerprint`, its `normalization_schema`, its dataset or its configuration do not match the comparison context.
 
-Dans ce cas, le source de référence doit être réexécuté dans l’environnement courant, ou la baseline doit être régénérée puis acceptée selon le contrat ci-dessus.
+In this case, the reference source must be re-executed in the current environment, or the baseline must be regenerated and then accepted according to the contract above.
 
-Aucune baseline n’est migrée automatiquement.
+No baseline is migrated automatically.
 
-#### 24.4.11 Persistance
+#### 24.4.11 Persistence
 
-Les artefacts durables spécifiques à un produit résident exclusivement sous :
+The durable artefacts specific to a product reside exclusively under:
 
 ```text
 scripts/<slug>/tests/behavioral/
 ```
 
-Ils ne doivent jamais être écrits sous :
+They must never be written under:
 
 ```text
 scripts/<slug>/validation/
 ```
 
-Les sorties temporaires d’exécution appartiennent à un espace runtime gitignored.
+Temporary execution outputs belong to a gitignored runtime space.
 
-Ne pas conserver automatiquement chaque run.
+Do not automatically keep every run.
 
-Ne promouvoir une sortie en artefact durable que si elle possède une utilité réelle pour la régression, la reproduction d’un bug, la calibration ou la compréhension du produit.
+Promote an output to a durable artefact only if it has a real usefulness for regression, reproducing a bug, calibration or understanding the product.
 
-#### 24.4.12 Proportionnalité et matrices explicites
+#### 24.4.12 Proportionality and explicit matrices
 
-`pine-local-test` n’impose pas une matrice lourde pour chaque correction.
+`pine-local-test` does not impose a heavy matrix for every fix.
 
-La profondeur dépend :
+The depth depends on:
 
-- de la nature de la modification ;
-- des modules affectés ;
-- des risques identifiés ;
-- des baselines existantes ;
-- des capabilities disponibles ;
-- du coût raisonnable du test.
+- the nature of the modification;
+- the affected modules;
+- the identified risks;
+- the existing baselines;
+- the available capabilities;
+- the reasonable cost of the test.
 
-Une petite correction peut justifier un simple smoke run.
+A small fix can justify a simple smoke run.
 
-Une refactorisation censée être sémantiquement neutre peut justifier une comparaison de régression approfondie.
+A refactoring meant to be semantically neutral can justify an in-depth regression comparison.
 
-Une modification MTF, historique, realtime ou strategy peut demander des tests plus ciblés, mais uniquement dans les limites des capabilities effectivement gating ou comme observation explicitement expérimentale/non gating.
+An MTF, historical, realtime or strategy modification can call for more targeted tests, but only within the limits of the effectively gating capabilities or as an explicitly experimental/non-gating observation.
 
-Lorsqu’un besoin réel le justifie, un workflow explicite peut exécuter une matrice bornée comprenant notamment plusieurs datasets, symboles, timeframes, configurations ou valeurs d’inputs. Un parameter sweep local est donc autorisé comme technique d’exploration, de diagnostic ou de régression lorsque le runtime et les capabilities concernées le permettent.
+When a real need justifies it, an explicit workflow may run a bounded matrix comprising in particular several datasets, symbols, timeframes, configurations or input values. A local parameter sweep is therefore allowed as an exploration, diagnostic or regression technique when the runtime and the capabilities concerned allow it.
 
-Chaque exécution élémentaire de la matrice conserve sa propre identité de run. La matrice elle-même doit posséder un manifeste déterministe décrivant les combinaisons exécutées, afin qu’un résultat agrégé puisse être retracé jusqu’aux runs qui le composent.
+Each elementary execution of the matrix keeps its own run identity. The matrix itself must have a deterministic manifest describing the executed combinations, so that an aggregated result can be traced back to the runs that compose it.
 
-Un classement de configurations, un optimum apparent ou une meilleure métrique observée localement ne constitue jamais à lui seul une preuve de qualité de signal, de robustesse hors échantillon, de performance TradingView ou de supériorité produit. Toute décision de modifier les paramètres du produit reste une décision produit explicite ou une conséquence justifiée d’un objectif déjà ratifié.
+A ranking of configurations, an apparent optimum or a best metric observed locally never constitutes on its own a proof of signal quality, out-of-sample robustness, TradingView performance or product superiority. Any decision to modify the product's parameters remains an explicit product decision or a justified consequence of an already ratified objective.
 
-Le bootstrap ne construit pas un optimiseur générique, une plateforme de backtesting ou un moteur de market data. Les matrices sont une capacité bornée de `pine-local-test`, déclenchée uniquement par un workflow explicite. Aucun hook du socle ne lance automatiquement une matrice de datasets, paramètres ou stability probes.
+The bootstrap does not build a generic optimizer, a backtesting platform or a market data engine. Matrices are a bounded capability of `pine-local-test`, triggered only by an explicit workflow. No hook of the foundation automatically launches a matrix of datasets, parameters or stability probes.
 
-#### 24.4.13 Licence, données, conditions d’usage et distribution
+#### 24.4.13 Licence, data, terms of use and distribution
 
-PineTS reste une dépendance tierce indépendante du source Pine le titulaire.
+PineTS remains a third-party dependency independent of the holder's Pine source.
 
-Avant l’installation initiale et toute mise à niveau :
+Before the initial installation and any upgrade:
 
-- vérifier la licence upstream actuelle de PineTS ;
-- conserver les notices et fichiers de licence requis ;
-- ne pas supposer que les conditions de licence resteront identiques dans le temps.
+- check the current upstream licence of PineTS;
+- keep the required notices and licence files;
+- do not assume that the licence terms will remain identical over time.
 
-Enregistrer la base de licence réellement utilisée, sans la résumer artificiellement comme « dual licence » :
+Record the licence basis actually used, without artificially summarizing it as "dual licence":
 
 ```text
 license_basis = AGPL-3.0-only
 ```
 
-ou, uniquement si le titulaire détient réellement une licence commerciale séparée applicable :
+or, only if the holder actually holds an applicable separate commercial licence:
 
 ```text
 license_basis = separate-commercial-license
-license_evidence = <référence locale appropriée et non secrète>
+license_evidence = <appropriate, non-secret local reference>
 ```
 
-L'existence d'une offre de licence commerciale upstream ne prouve pas qu'une telle licence est détenue. Le rapport de provenance doit enregistrer la version exacte, l'intégrité de l'artefact installé, ses métadonnées de licence et le lockfile. Ce contrat de provenance ne remplace pas une analyse juridique.
+The existence of an upstream commercial licence offer does not prove that such a licence is held. The provenance report must record the exact version, the integrity of the installed artefact, its licence metadata and the lockfile. This provenance contract does not replace a legal analysis.
 
-Les droits et conditions applicables doivent être évalués selon la ressource réellement utilisée :
+The applicable rights and terms must be assessed according to the resource actually used:
 
-1. licence et conditions PineTS pour le runtime et son intégration ;
-2. licence, contrat ou conditions de la source de données pour tout dataset externe ;
-3. conditions TradingView pour toute interaction, automatisation, extraction, contenu ou donnée provenant effectivement des services TradingView.
+1. PineTS licence and terms for the runtime and its integration;
+2. licence, contract or terms of the data source for any external dataset;
+3. TradingView terms for any interaction, automation, extraction, content or data actually coming from TradingView services.
 
-Ne pas étendre par réflexe une restriction propre à un service externe à toute exécution locale indépendante ; inversement, ne pas supposer qu’une exécution locale rend libre un contenu ou une donnée provenant d’un service soumis à ses propres conditions.
+Do not reflexively extend a restriction specific to an external service to every independent local execution; conversely, do not assume that a local execution frees content or data coming from a service subject to its own terms.
 
-L’intégration ratifiée ici vise un usage local/interne du workspace. Aucun fournisseur de données externe n’est imposé ni configuré par défaut par le bootstrap.
+The integration ratified here targets a local/internal use of the workspace. No external data provider is imposed or configured by default by the bootstrap.
 
-Si le thin adapter, PineTS ou une application dérivée doit être distribué à des tiers, intégré à un produit distribué ou exposé comme service réseau, arrêter l’opération et effectuer une nouvelle analyse de licence et des conditions d’usage applicables avant de poursuivre.
+If the thin adapter, PineTS or a derived application is to be distributed to third parties, integrated into a distributed product or exposed as a network service, stop the operation and carry out a new analysis of the licence and of the applicable terms of use before continuing.
 
-Décision du titulaire du 2026-11-13, après l’analyse requise ci-dessus pour la distribution publique : le thin adapter (`tools/pine_exec/runner.mjs`, `normalize.mjs`, `datasets.mjs`, `fingerprint.mjs` et les métadonnées de son paquet) est distribué sous **AGPL-3.0-only** (texte officiel dans `tools/pine_exec/LICENSE`, identifiant SPDX et notice dans chaque fichier) ; le reste du cœur reste sous Apache-2.0 ; PineTS n’est jamais livré. Architecture constatée : l’adaptateur charge PineTS dans son propre processus Node ; le cœur Apache-2.0 ne charge jamais PineTS : son outillage Python lance les programmes de l’adaptateur comme processus séparés et échange des fichiers et du JSON, et ses tests contiennent de courts programmes JavaScript qui importent des modules de l’adaptateur (jamais PineTS directement). Cette décision fixe la licence du code de Pine Workspace ; elle ne tranche pas juridiquement la frontière entre les composants. Toute autre forme (PineTS ou un dérivé embarqué, PineTS modifié, intégration du moteur à un produit distribué, service réseau) reste soumise à l’arrêt et à une nouvelle analyse.
+Holder's decision of 2026-11-13, after the analysis required above for public distribution: the thin adapter (`tools/pine_exec/runner.mjs`, `normalize.mjs`, `datasets.mjs`, `fingerprint.mjs` and the metadata of its package) is distributed under **AGPL-3.0-only** (official text in `tools/pine_exec/LICENSE`, SPDX identifier and notice in each file); the rest of the core remains under Apache-2.0; PineTS is never shipped. Observed architecture: the adapter loads PineTS in its own Node process; the Apache-2.0 core never loads PineTS: its Python tooling launches the adapter's programs as separate processes and exchanges files and JSON, and its tests contain short JavaScript programs that import modules of the adapter (never PineTS directly). This decision sets the licence of the Pine Workspace code; it does not legally settle the boundary between the components. Any other form (PineTS or an embedded derivative, modified PineTS, integration of the engine into a distributed product, network service) remains subject to the stop and to a new analysis.
 
 ---
 
@@ -2044,61 +2046,61 @@ Décision du titulaire du 2026-11-13, après l’analyse requise ci-dessus pour 
 
 ### 25.1 Mission
 
-Produire de la recherche actuelle, traçable et utile au script.
+Produce current, traceable research that is useful to the script.
 
-### 25.2 Sources prioritaires
+### 25.2 Priority sources
 
-Pour les faits Pine :
+For Pine facts:
 
-- documentation officielle TradingView/Pine Script ;
-- release notes officielles ;
-- règles officielles de publication lorsque concernées.
+- official TradingView/Pine Script documentation;
+- official release notes;
+- official publication rules when relevant.
 
-Pour le benchmark :
+For the benchmark:
 
-- scripts publics open-source pertinents ;
-- Editors’ Picks pertinents ;
-- autres références open-source de haute qualité.
+- relevant public open-source scripts;
+- relevant Editors’ Picks;
+- other high-quality open-source references.
 
-### 25.3 Réutilisation
+### 25.3 Reuse
 
-Le benchmark n’autorise pas la réutilisation de code.
+The benchmark does not authorize code reuse.
 
-Appliquer strictement la frontière benchmark/réutilisation du standard maître.
+Strictly apply the benchmark/reuse boundary of the master standard.
 
-### 25.4 Persistance
+### 25.4 Persistence
 
-Ne pas écrire un run de recherche pour une recherche insignifiante.
+Do not write a research run for trivial research.
 
-Lorsqu’un résultat mérite d’être réutilisé :
+When a result deserves to be reused:
 
 ```text
 scripts/<slug>/research/runs/<timestamp>-<topic>.md
 ```
 
-Puis mettre à jour :
+Then update:
 
 ```text
 research/CURRENT.md
 ```
 
-avec une synthèse de routage.
+with a routing summary.
 
-Lorsqu’un agent chercheur est invoqué, le parent persiste son rapport en run de recherche dès réception, avec la date de consultation et la provenance. Un run écrit après coup porte la date de recherche initiale, la date de reconstitution et la provenance, sans heure inventée ; sa fraîcheur reste celle de sa date initiale tant qu’aucune revérification datée n’est faite. Une recherche non effectuée n’est jamais datée.
+When a researcher agent is invoked, the parent persists its report as a research run upon receipt, with the consultation date and the provenance. A run written after the fact carries the initial research date, the reconstruction date and the provenance, without an invented time; its freshness remains that of its initial date as long as no dated re-verification is made. Research that was not carried out is never dated.
 
-### 25.5 Fraîcheur
+### 25.5 Freshness
 
-Pas de TTL universel arbitraire.
+No arbitrary universal TTL.
 
-La fraîcheur dépend :
+Freshness depends on:
 
-- du sujet ;
-- de sa volatilité ;
-- de la date ;
-- du risque de changement ;
-- de la phase release.
+- the subject;
+- its volatility;
+- the date;
+- the risk of change;
+- the release phase.
 
-Toute règle TradingView de publication doit être revérifiée immédiatement avant une vraie release, quelle que soit l’ancienneté d’un run précédent.
+Any TradingView publication rule must be re-verified immediately before a real release, regardless of how old a previous run is.
 
 ---
 
@@ -2106,34 +2108,34 @@ Toute règle TradingView de publication doit être revérifiée immédiatement a
 
 ### 26.1 Mission
 
-Implémenter les quatre axes de revue du standard maître.
+Implement the four review axes of the master standard.
 
-Déclenchement : audit approfondi demandé (`pine-audit`), préparation de publication (`pine-release`) ou demande explicite du titulaire ; jamais enchaînée automatiquement par une création ou une modification, quelle que soit la classe de la tâche ; une seule revue par unité de travail, sans cascade de contre-revues (master §9.1, §36 ; amendement du 2026-11-13).
+Trigger: requested deep audit (`pine-audit`), publication preparation (`pine-release`) or explicit request from the holder; never chained automatically after a creation or a modification, whatever the class of the task; a single review per unit of work, without a cascade of counter-reviews (master §9.1, §36; amendment of 2026-11-13).
 
-### 26.2 Exécution
+### 26.2 Execution
 
-Déléguer le regard indépendant au subagent `pws-pine-reviewer`.
+Delegate the independent perspective to the `pws-pine-reviewer` subagent.
 
-Le reviewer :
+The reviewer:
 
-- ne modifie pas le code ;
-- ne possède pas de mémoire persistante ;
-- reçoit la demande, le source, le contexte nécessaire et le diff utile ;
-- reçoit la couverture attendue (ciblée, élargie, globale) et rend la couverture réellement lue ;
-- ne reçoit pas inutilement toute la conversation du développeur.
+- does not modify the code;
+- has no persistent memory;
+- receives the request, the source, the necessary context and the useful diff;
+- receives the expected coverage (targeted, extended, global) and returns the coverage actually read;
+- does not needlessly receive the developer's whole conversation.
 
-### 26.3 Sortie
+### 26.3 Output
 
-Retour structuré :
+Structured feedback:
 
-- problème ;
-- impact ;
-- emplacement ;
-- justification ;
-- règle ou objectif concerné ;
-- niveau de confiance.
+- problem;
+- impact;
+- location;
+- justification;
+- rule or objective concerned;
+- confidence level.
 
-Le parent décide des corrections et les implémente.
+The parent decides on the fixes and implements them.
 
 ---
 
@@ -2141,39 +2143,39 @@ Le parent décide des corrections et les implémente.
 
 ### 27.1 Mission
 
-Préparer une release, pas publier implicitement.
+Prepare a release, not publish implicitly.
 
-### 27.2 Étapes
+### 27.2 Steps
 
-Selon applicabilité :
+Depending on applicability:
 
-- déterminer l’impact SemVer ;
-- vérifier la version dans le header source ;
-- préparer changelog ;
-- préparer release notes ;
-- préparer tutoriel si requis ;
-- préparer description initiale si nouvelle publication ;
-- vérifier documentation dépendante ;
-- constater l'état des licences et conditions d'utilisation (`license status` ; les informations se complètent par le parcours `pine-license`, indépendant de cette skill) : une information manquante est signalée et bloque seulement la finalisation concernée, jamais complétée par invention ;
-- revalider règles TradingView actuelles ;
-- exécuter les tests comportementaux PineTS applicables lorsque des capabilities effectivement gating ou des `ACCEPTED_BEHAVIORAL_BASELINE` pertinentes existent ;
-- qualifier et résoudre toute régression locale `UNEXPECTED` réellement gating avant la validation TradingView finale ;
-- exécuter `pws-release-reviewer` ;
-- vérifier validation TradingView du hash final ;
-- préparer les artefacts de publication ;
-- pour toute publication `invite-only`, préparer et vérifier le contenu `Author's instructions` requis par les règles TradingView actuelles.
+- determine the SemVer impact;
+- check the version in the source header;
+- prepare the changelog;
+- prepare the release notes;
+- prepare the tutorial if required;
+- prepare the initial description if it is a new publication;
+- check the dependent documentation;
+- note the state of the licences and terms of use (`license status`; the information is completed through the `pine-license` guided path, independent of this skill): a missing piece of information is flagged and blocks only the finalization concerned, never completed by invention;
+- revalidate the current TradingView rules;
+- run the applicable PineTS behavioural tests when effectively gating capabilities or relevant `ACCEPTED_BEHAVIORAL_BASELINE` exist;
+- qualify and resolve any `UNEXPECTED` local regression that is actually gating before the final TradingView validation;
+- run `pws-release-reviewer`;
+- check the TradingView validation of the final hash;
+- prepare the publication artefacts;
+- for any `invite-only` publication, prepare and check the `Author's instructions` content required by the current TradingView rules.
 
 ### 27.3 Gate
 
-Une release ne peut pas être déclarée prête si le source final n’a pas passé la validation TradingView requise.
+A release cannot be declared ready if the final source has not passed the required TradingView validation.
 
-Un statut `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` ou `PINETS_INCONCLUSIVE` n’empêche pas à lui seul une release de poursuivre vers TradingView.
+A `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` or `PINETS_INCONCLUSIVE` status does not on its own prevent a release from proceeding to TradingView.
 
-La gate finale de release reste la validation TradingView du source final.
+The final release gate remains the TradingView validation of the final source.
 
 ### 27.4 Publication
 
-La skill ne finalise pas automatiquement une publication publique.
+The skill does not automatically finalize a public publication.
 
 ---
 
@@ -2181,269 +2183,269 @@ La skill ne finalise pas automatiquement une publication publique.
 
 ### 28.1 Invocation
 
-Cette skill est réservée au titulaire.
+This skill is reserved for the holder.
 
-Utiliser le frontmatter actuel permettant d’empêcher l’invocation automatique, par exemple :
+Use the current frontmatter that makes it possible to prevent automatic invocation, for example:
 
 ```yaml
 disable-model-invocation: true
 ```
 
-si ce champ existe toujours.
+if this field still exists.
 
-### 28.2 Commandes
+### 28.2 Commands
 
-Supporter :
+Support:
 
 ```text
 /tv-mode manual
 /tv-mode chrome-experimental
 ```
 
-### 28.3 Effet
+### 28.3 Effect
 
-La skill appelle le contrôleur déterministe partagé :
+The skill calls the shared deterministic controller:
 
 ```text
 python -m tools.pws_workspace tv-mode <mode>
 ```
 
-ou sa forme finale équivalente validée par le bootstrap. Ce contrôleur est l'unique propriétaire de la mutation et modifie uniquement :
+or its equivalent final form validated by the bootstrap. This controller is the sole owner of the mutation and modifies only:
 
 ```text
 tv_validation_mode
 ```
 
-dans `pws.config.json` (§19A). Les réglages de Claude Code ne sont jamais touchés.
+in `pws.config.json` (§19A). Claude Code settings are never touched.
 
-Préserver toutes les autres clés existantes.
+Preserve all the other existing keys.
 
-Appliquer le contrat atomique de §19A (sérialisation garantie entre écrivains du workspace par le verrou de la configuration ; refus des modifications concurrentes détectées).
+Apply the atomic contract of §19A (serialization guaranteed between workspace writers by the configuration lock; refusal of detected concurrent modifications).
 
-### 28.4 Interdiction
+### 28.4 Prohibition
 
-Claude ne change jamais le mode persistant de sa propre initiative.
+Claude never changes the persistent mode on its own initiative.
 
-`disable-model-invocation: true` interdit à Claude d'appeler la skill `/tv-mode`. Lorsque le titulaire choisit explicitement `Changer le mode TV` dans `/pws`, la façade ne tente donc pas `Skill(tv-mode)` : elle transmet ce choix utilisateur au même contrôleur déterministe partagé. Cette route explicite ne donne aucune autorisation de changement spontané hors de ce choix.
+`disable-model-invocation: true` forbids Claude from calling the `/tv-mode` skill. When the holder explicitly chooses the TradingView mode in `/pws` (Maintenance / configuration → Configuration → TradingView mode), the facade therefore does not attempt `Skill(tv-mode)`: it passes this user choice to the same shared deterministic controller. This explicit route gives no authorization for a spontaneous change outside this choice.
 
 ---
 
 ## 29. SKILL `tv-validate`
 
-### 29.1 Source du mode
+### 29.1 Source of the mode
 
-Lire le mode via le contrôleur (`python3 -m tools.pws_workspace tv-mode`, configuration `pws.config.json` ; source `config`, `legacy` ou `default`) — jamais la variable de processus :
+Read the mode through the controller (`python3 -m tools.pws_workspace tv-mode`, configuration `pws.config.json`; source `config`, `legacy` or `default`) — never the process variable:
 
 ```text
 tv_validation_mode
 ```
 
-### 29.2 Matrice
+### 29.2 Matrix
 
-La matrice de validation est dérivée :
+The validation matrix is derived from:
 
-- du standard maître ;
-- du type de script ;
-- du contexte produit ;
-- du changement réel.
+- the master standard;
+- the script type;
+- the product context;
+- the actual change.
 
-Elle n’est jamais un checklist fixe imposant des tests N/A.
+It is never a fixed checklist imposing N/A tests.
 
-### 29.3 Identité du source
+### 29.3 Source identity
 
-Avant tout run :
+Before any run:
 
-1. calculer SHA-256 du `.pine` ;
-2. capturer le commit Git courant s’il existe ;
-3. capturer l’état dirty/clean ;
-4. générer un `run_id`.
+1. compute the SHA-256 of the `.pine`;
+2. capture the current Git commit if it exists;
+3. capture the dirty/clean state;
+4. generate a `run_id`.
 
-La preuve centrale est le hash du source.
+The central evidence is the hash of the source.
 
-### 29.4 Après modification
+### 29.4 After a modification
 
-Toute modification du `.pine` après un run invalide la capacité de ce run à prouver le nouveau source.
+Any modification of the `.pine` after a run invalidates the ability of this run to prove the new source.
 
-Le dernier run reste historique.
+The last run remains historical.
 
-L’état effectif devient `STALE`.
+The effective state becomes `STALE`.
 
-### 29.5 Frontière PineTS
+### 29.5 PineTS boundary
 
-`tv-validate` ne consomme jamais un résultat PineTS comme substitut à une observation TradingView.
+`tv-validate` never consumes a PineTS result as a substitute for a TradingView observation.
 
-Une conclusion PineTS effectivement gating peut bloquer le cycle local avant `tv-validate` lorsqu’elle démontre la violation d’un contrat comportemental local valide. Ce blocage local doit être résolu, expliqué ou requalifié avant de poursuivre comme si le test était passé ; il ne crée toutefois aucun statut TradingView.
+An effectively gating PineTS conclusion may block the local cycle before `tv-validate` when it demonstrates the violation of a valid local behavioural contract. This local block must be resolved, explained or requalified before proceeding as if the test had passed; it does not, however, create any TradingView status.
 
-Les résultats de `pine-local-test` peuvent :
+The results of `pine-local-test` can:
 
-- aider à préparer la matrice de validation ;
-- cibler un scénario à reproduire ;
-- expliquer une anomalie ;
-- identifier un risque à vérifier.
+- help prepare the validation matrix;
+- target a scenario to reproduce;
+- explain an anomaly;
+- identify a risk to check.
 
-Ils ne peuvent pas :
+They cannot:
 
-- satisfaire une étape TradingView ;
-- créer une preuve TradingView ;
-- modifier directement le statut TradingView ;
-- transformer une validation effective `stale` ou persistée `unverified` / `in-progress` en `passed`.
+- satisfy a TradingView step;
+- create TradingView evidence;
+- directly modify the TradingView status;
+- turn a validation whose effective state is `stale`, or whose persisted state is `unverified` / `in-progress`, into `passed`.
 
-Lorsqu’une validation TradingView est requise par le workflow, elle reste obligatoire sur le source exact concerné, indépendamment du résultat PineTS.
+When a TradingView validation is required by the workflow, it remains mandatory on the exact source concerned, regardless of the PineTS result.
 
 ---
 
-## 30. MODE TRADINGVIEW `manual`
+## 30. TRADINGVIEW MODE `manual`
 
-### 30.1 Statut
+### 30.1 Status
 
-Mode par défaut.
+Default mode.
 
-### 30.2 Fonctionnement
+### 30.2 Operation
 
-Claude :
+Claude:
 
-1. termine les contrôles locaux ;
-2. construit une matrice de tests spécifique ;
-3. donne au titulaire des étapes précises ;
-4. attend les observations réelles ;
-5. enregistre les résultats ;
-6. ne persiste `passed` que lorsque tous les contrôles obligatoires applicables ont réellement réussi.
+1. completes the local checks;
+2. builds a specific test matrix;
+3. gives the holder precise steps;
+4. waits for the real observations;
+5. records the results;
+6. persists `passed` only when all the applicable mandatory checks have actually succeeded.
 
-### 30.3 Tests possibles selon applicabilité
+### 30.3 Possible tests depending on applicability
 
-- compilation Pine Editor ;
-- runtime ;
-- historical ;
-- realtime ;
-- Replay ;
-- MTF ;
-- changement symbole ;
-- changement timeframe ;
-- settings extrêmes ;
-- dark theme ;
-- light theme ;
-- labels/tables/boxes/lines/fills ;
-- alertes ;
-- stratégie/report si script de stratégie ;
-- performance/Profiler lorsque pertinent.
+- Pine Editor compilation;
+- runtime;
+- historical;
+- realtime;
+- Replay;
+- MTF;
+- symbol change;
+- timeframe change;
+- extreme settings;
+- dark theme;
+- light theme;
+- labels/tables/boxes/lines/fills;
+- alerts;
+- strategy/report if strategy script;
+- performance/Profiler when relevant.
 
-Ne pas exécuter mécaniquement un test sans objet.
+Do not mechanically run a test that has no purpose.
 
 ### 30.4 Evidence
 
-Conserver uniquement les preuves utiles.
+Keep only the useful evidence.
 
-Un compte rendu précis du titulaire peut constituer une observation réelle.
+A precise report from the holder can constitute a real observation.
 
-Une capture est utile lorsqu’elle prouve un état visuel ou une erreur, mais ne doit pas devenir une obligation artificielle pour chaque test.
+A screenshot is useful when it proves a visual state or an error, but must not become an artificial obligation for each test.
 
-Un compte rendu du titulaire peut couvrir un groupe de contrôles lorsque la liste exacte des contrôles du groupe lui a été présentée avant sa confirmation. Le run conserve cette liste, le texte présenté et la confirmation reçue. La confirmation ne s’étend à aucun contrôle non listé et n’autorise aucune mesure ou valeur non rapportée.
+A report from the holder may cover a group of checks when the exact list of the group's checks has been presented to the holder before their confirmation. The run keeps this list, the text presented and the confirmation received. The confirmation does not extend to any unlisted check and does not authorize any unreported measurement or value.
 
-### 30.5 Compilation minimale et campagne fonctionnelle
+### 30.5 Minimal compilation and functional campaign
 
-La compilation minimale est l’observation, dans le Pine Editor, du résultat de compilation du source exact identifié par son SHA-256 : erreurs et avertissements, rapportés séparément. Elle ne porte sur aucun comportement. La campagne fonctionnelle est l’exécution des contrôles comportementaux applicables de la matrice ; elle peut être regroupée sur le source stabilisé d’une série de modifications.
+The minimal compilation is the observation, in the Pine Editor, of the compilation result of the exact source identified by its SHA-256: errors and warnings, reported separately. It does not cover any behaviour. The functional campaign is the execution of the applicable behavioural checks of the matrix; it may be grouped on the stabilized source of a series of modifications.
 
-Une compilation minimale intermédiaire est demandée lorsque l’inventaire d’impact identifie une transformation transversale présentant un risque de typage, de profondeur d’historique ou de taille compilée. Elle est consignée avec le risque qui la justifie. Elle n’est demandée ni après chaque micro-edit, ni après une correction locale sans ce risque. Aucune marge de taille compilée n’est déduite sans mesure rapportée.
+An intermediate minimal compilation is requested when the impact inventory identifies a cross-cutting transformation presenting a typing, history-depth or compiled-size risk. It is recorded with the risk that justifies it. It is requested neither after each micro-edit nor after a local fix without this risk. No compiled-size margin is deduced without a reported measurement.
 
-Une compilation minimale réussie ne vaut pas validation : le run qui la consigne liste les contrôles comportementaux applicables comme `not-run` et ne peut pas être `passed`. L’absence d’erreur ne prouve pas l’absence d’avertissement.
+A successful minimal compilation does not count as validation: the run that records it lists the applicable behavioural checks as `not-run` and cannot be `passed`. The absence of an error does not prove the absence of a warning.
 
-Le run consigne séparément les erreurs et les avertissements. Pour chacun, il indique explicitement si une observation a été rapportée ; une absence d’observation est consignée comme telle, jamais déduite. Les résultats des contrôles comportementaux ne sont pas inventés.
+The run records errors and warnings separately. For each, it states explicitly whether an observation was reported; an absence of observation is recorded as such, never deduced. The results of the behavioural checks are not invented.
 
-L’enregistrement et la promotion sont distincts. Un rapport valide est toujours conservé comme run immuable. Sans run courant reconnu, sa promotion initiale suit le protocole normal. Sur le même SHA que le run courant reconnu, une compilation minimale qui n’est pas `failed` ne remplace pas ce run ; une compilation minimale `failed` peut le remplacer, avec le signalement explicite d’une contradiction si ce run était `passed`. Sur un autre SHA, la promotion suit le protocole normal et la fraîcheur reste calculée contre le source déclaré. Aucune de ces règles ne contourne les protections de §51.4. Un échec non promu pour conflit reste conservé et clairement signalé.
+Recording and promotion are distinct. A valid report is always kept as an immutable run. Without a recognized current run, its initial promotion follows the normal protocol. On the same SHA as the recognized current run, a minimal compilation that is not `failed` does not replace that run; a `failed` minimal compilation may replace it, with explicit flagging of a contradiction if that run was `passed`. On another SHA, the promotion follows the normal protocol and freshness remains computed against the declared source. None of these rules bypasses the protections of §51.4. A failure not promoted because of a conflict remains kept and clearly flagged.
 
-Le regroupement de la campagne fonctionnelle et la fréquence des sollicitations relèvent de l’organisation décidée par le titulaire pour chaque produit et sont consignés dans ses décisions. Une telle décision ne s’étend pas aux autres produits.
+The grouping of the functional campaign and the frequency of requests fall under the organization decided by the holder for each product and are recorded in its decisions. Such a decision does not extend to other products.
 
 ---
 
-## 31. MODE TRADINGVIEW `chrome-experimental`
+## 31. TRADINGVIEW MODE `chrome-experimental`
 
-### 31.1 Statut
+### 31.1 Status
 
-Expérimental et optionnel.
+Experimental and optional.
 
-### 31.2 Préflight
+### 31.2 Preflight
 
-Avant le run, vérifier les capacités réellement disponibles :
+Before the run, check the capabilities actually available:
 
-- version Claude Code ;
-- Chrome/Chromium compatible ;
-- extension compatible ;
-- authentification Claude compatible ;
-- outils navigateur présents ;
-- connexion TradingView déjà établie ou possibilité pour le titulaire de la compléter ;
-- restrictions de plateforme actuelles.
+- Claude Code version;
+- compatible Chrome/Chromium;
+- compatible extension;
+- compatible Claude authentication;
+- browser tools present;
+- TradingView login already established or possibility for the holder to complete it;
+- current platform restrictions.
 
-À la date de cette spécification, la documentation Claude Code indique notamment que l’intégration Chrome partage la session authentifiée du navigateur, s’arrête sur login/CAPTCHA et n’est pas supportée sous WSL.
+As of the date of this specification, the Claude Code documentation states in particular that the Chrome integration shares the browser's authenticated session, stops at login/CAPTCHA and is not supported under WSL.
 
-Toujours revérifier la documentation actuelle.
+Always re-verify the current documentation.
 
 ### 31.3 Activation
 
-Ne pas activer Chrome globalement si ce n’est pas nécessaire.
+Do not enable Chrome globally if it is not necessary.
 
-L’intégration navigateur augmente le contexte lorsque ses outils sont chargés.
+The browser integration increases the context when its tools are loaded.
 
-Utiliser `--chrome` seulement pour les sessions/runs qui en ont besoin, sauf décision contraire du titulaire.
+Use `--chrome` only for the sessions/runs that need it, unless the holder decides otherwise.
 
-### 31.4 Exécution
+### 31.4 Execution
 
-Le mode expérimental tente d’exécuter la même matrice que le mode manuel.
+The experimental mode attempts to run the same matrix as the manual mode.
 
-Avant toute mutation du Pine Editor, appliquer un pre-write gate. Il doit établir avec une confiance suffisante :
+Before any mutation of the Pine Editor, apply a pre-write gate. It must establish with sufficient confidence:
 
-1. la fenêtre Chrome attendue ;
-2. l'onglet TradingView cible et son domaine ;
-3. l'identité de l'éditeur ouvert ;
-4. l'identité du script ou buffer actif ;
-5. la présence éventuelle de modifications étrangères non sauvegardées ;
-6. la correspondance entre ce buffer et le produit/source local attendu.
+1. the expected Chrome window;
+2. the target TradingView tab and its domain;
+3. the identity of the open editor;
+4. the identity of the active script or buffer;
+5. the possible presence of unsaved foreign modifications;
+6. the correspondence between this buffer and the expected local product/source.
 
-Si une identité reste ambiguë :
+If an identity remains ambiguous:
 
 ```text
 NO WRITE
-→ fallback manual / action humaine
+→ fallback manual / human action
 ```
 
-Après toute écriture, réobserver le buffer et le contexte cible. Un clic ou une commande réussie ne prouve ni que le bon script a été modifié ni que le contenu attendu est présent.
+After any write, re-observe the buffer and the target context. A successful click or command proves neither that the right script was modified nor that the expected content is present.
 
-Il peut, lorsque techniquement fiable :
+It may, when technically reliable:
 
-- ouvrir TradingView ;
-- ouvrir Pine Editor ;
-- saisir/mettre à jour le source ;
-- sauvegarder ;
-- compiler ;
-- ajouter au chart ;
-- changer symbole/timeframe ;
-- manipuler des settings ;
-- observer runtime ;
-- inspecter console/DOM si utile ;
-- prendre des screenshots utiles.
+- open TradingView;
+- open Pine Editor;
+- enter/update the source;
+- save;
+- compile;
+- add to chart;
+- change symbol/timeframe;
+- manipulate settings;
+- observe the runtime;
+- inspect console/DOM if useful;
+- take useful screenshots.
 
-### 31.5 Frontière
+### 31.5 Boundary
 
-Ne pas confondre capacité à cliquer et capacité à prouver.
+Do not confuse the ability to click with the ability to prove.
 
-Si Claude ne peut pas établir de manière suffisamment fiable qu’une étape a réussi, cette étape n’est pas `passed`.
+If Claude cannot establish in a sufficiently reliable way that a step has succeeded, this step is not `passed`.
 
 ### 31.6 Fallback
 
-Déclencher le fallback manuel si notamment :
+Trigger the manual fallback in particular if:
 
-- login requis ;
-- CAPTCHA ;
-- extension non connectée ;
-- Pine Editor inaccessible ;
-- UI différente ;
-- résultat ambigu ;
-- action navigateur échouée ;
-- contrôle visuel incertain ;
-- élément nécessaire impossible à automatiser ;
-- étape demandant jugement humain ;
-- risque d’action de publication.
+- login required;
+- CAPTCHA;
+- extension not connected;
+- Pine Editor inaccessible;
+- different UI;
+- ambiguous result;
+- failed browser action;
+- uncertain visual check;
+- necessary element impossible to automate;
+- step requiring human judgement;
+- risk of a publication action.
 
-Le run enregistre :
+The run records:
 
 ```text
 requested_mode = chrome-experimental
@@ -2451,223 +2453,223 @@ effective_mode = manual
 fallback_reason = ...
 ```
 
-Le mode persistant reste inchangé.
+The persistent mode remains unchanged.
 
 ### 31.7 Screenshots
 
-Sauvegarder une capture sur disque uniquement lorsqu’elle constitue une preuve utile.
+Save a screenshot to disk only when it constitutes useful evidence.
 
-Les screenshots de validation appartiennent au dossier `validation/evidence/` du run concerné.
+Validation screenshots belong in the `validation/evidence/` folder of the run concerned.
 
-### 31.8 Publication exclue
+### 31.8 Publication excluded
 
-`chrome-experimental` s’arrête avant toute publication publique ou modification commerciale.
+`chrome-experimental` stops before any public publication or commercial modification.
 
-### 31.9 Apprentissage opérationnel contrôlé
+### 31.9 Controlled operational learning
 
-`chrome-experimental` doit pouvoir capitaliser progressivement les connaissances opérationnelles réellement utiles à la validation TradingView, sans introduire de modèle d’apprentissage autonome, de mémoire opaque, de nouvelle autorité ni de nouvelle couche d’architecture.
+`chrome-experimental` must be able to progressively capitalize on the operational knowledge actually useful to TradingView validation, without introducing any autonomous learning model, opaque memory, new authority or new architecture layer.
 
-L’objectif est de réduire les explorations répétitives, d’améliorer la fiabilité des interactions et de mieux reconnaître les états ambigus ou obsolètes, tout en conservant la même exigence de preuve pour chaque run réel.
+The objective is to reduce repetitive explorations, to improve the reliability of interactions and to better recognize ambiguous or obsolete states, while keeping the same evidence requirement for each real run.
 
-#### 31.9.1 Connaissances admissibles
+#### 31.9.1 Admissible knowledge
 
-Peuvent notamment devenir des apprentissages opérationnels :
+The following may in particular become operational learnings:
 
-- workflows TradingView réellement observés et réutilisables ;
-- landmarks UI sémantiques fiables ;
-- moyens robustes d’établir que Pine Editor est réellement ouvert et utilisable ;
-- états visuels attendus après une action connue ;
-- signes fiables de succès ou d’échec ;
-- dialogs, transitions et états intermédiaires connus ;
-- ambiguïtés déjà rencontrées ;
-- causes reproductibles de fallback manuel ;
-- différences observées après une évolution de l’UI ;
-- méthodes de preuve qui améliorent la qualité d’un run sans abaisser son seuil de validation.
+- TradingView workflows actually observed and reusable;
+- reliable semantic UI landmarks;
+- robust means of establishing that Pine Editor is actually open and usable;
+- expected visual states after a known action;
+- reliable signs of success or failure;
+- known dialogs, transitions and intermediate states;
+- ambiguities already encountered;
+- reproducible causes of manual fallback;
+- differences observed after a change in the UI;
+- evidence methods that improve the quality of a run without lowering its validation threshold.
 
-Ne pas confondre apprentissage opérationnel et apprentissage statistique ou machine learning.
+Do not confuse operational learning with statistical learning or machine learning.
 
-#### 31.9.2 Préférence pour les repères robustes
+#### 31.9.2 Preference for robust reference points
 
-Lorsqu’un workflow peut être décrit de plusieurs manières, préférer par ordre général :
+When a workflow can be described in several ways, prefer, in general order:
 
 ```text
-état sémantique observable
-> rôle / label accessible
-> relation structurelle stable dans l’UI
-> relation DOM stable
-> sélecteur fragile
-> coordonnée pixel absolue
+observable semantic state
+> accessible role / label
+> stable structural relation in the UI
+> stable DOM relation
+> fragile selector
+> absolute pixel coordinate
 ```
 
-Les sélecteurs fragiles et coordonnées absolues ne doivent être conservés que comme dernier recours clairement identifié comme tel.
+Fragile selectors and absolute coordinates must be kept only as a last resort clearly identified as such.
 
-#### 31.9.3 Promotion d’un apprentissage
+#### 31.9.3 Promotion of a learning
 
-Une observation ponctuelle ne devient pas automatiquement une connaissance durable.
+A one-off observation does not automatically become durable knowledge.
 
-Avant promotion, vérifier à une profondeur proportionnée que l’observation :
+Before promotion, check to a proportionate depth that the observation:
 
-1. provient d’un run réel ou d’une vérification réelle de TradingView ;
-2. est réutilisable au-delà du cas ponctuel qui l’a révélée ;
-3. est suffisamment établie par répétition, corroboration, documentation actuelle ou reproduction claire du comportement ;
-4. ne transforme pas un détail accidentel de l’UI en invariant ;
-5. ne transforme pas un résultat propre à un script en règle générale de TradingView ;
-6. améliore réellement navigation, observation, détection d’ambiguïté ou qualité de preuve.
+1. comes from a real run or a real TradingView check;
+2. is reusable beyond the one-off case that revealed it;
+3. is sufficiently established by repetition, corroboration, current documentation or clear reproduction of the behaviour;
+4. does not turn an accidental detail of the UI into an invariant;
+5. does not turn a result specific to one script into a general TradingView rule;
+6. actually improves navigation, observation, ambiguity detection or evidence quality.
 
-Ne pas imposer un nombre fixe de répétitions lorsqu’une observation peut être établie autrement de manière suffisamment fiable.
+Do not impose a fixed number of repetitions when an observation can be established otherwise in a sufficiently reliable way.
 
-#### 31.9.4 Persistance
+#### 31.9.4 Persistence
 
-Le guide versionné :
+The versioned guide:
 
 ```text
 .claude/skills/tv-validate/CHROME_EXPERIMENTAL.md
 ```
 
-est le lieu durable pour les connaissances opérationnelles explicitement promues de ce mode.
+is the durable place for the explicitly promoted operational knowledge of this mode.
 
-Il doit distinguer clairement :
+It must clearly distinguish:
 
-- les instructions stables du mode ;
-- les workflows ou landmarks réellement qualifiés ;
-- les limites et failure modes connus ;
-- les éléments fragiles ou susceptibles de devenir stale.
+- the stable instructions of the mode;
+- the actually qualified workflows or landmarks;
+- the known limits and failure modes;
+- the elements that are fragile or likely to become stale.
 
-L’auto-memory Claude Code peut servir de sas temporaire pour des observations candidates, mais ne remplace jamais cette promotion volontaire lorsqu’une connaissance doit être réutilisée durablement.
+The Claude Code auto-memory may serve as a temporary staging area for candidate observations, but never replaces this deliberate promotion when knowledge must be reused durably.
 
-Les preuves propres à un run restent dans le système de validation prévu ; elles ne doivent pas être copiées dans `CHROME_EXPERIMENTAL.md` comme vérités générales.
+Run-specific evidence remains in the intended validation system; it must not be copied into `CHROME_EXPERIMENTAL.md` as general truths.
 
-#### 31.9.5 Frontière connaissance / preuve
+#### 31.9.5 Knowledge / evidence boundary
 
-Une connaissance apprise décrit comment mieux observer ou naviguer. Elle ne prouve jamais que l’état courant correspond encore à ce qui a été appris.
+A piece of learned knowledge describes how to observe or navigate better. It never proves that the current state still corresponds to what was learned.
 
-En particulier :
+In particular:
 
 ```text
-workflow connu
-≠ étape courante réussie
+known workflow
+≠ successful current step
 
-landmark connu
-≠ preuve automatique
+known landmark
+≠ automatic evidence
 
-absence historique d’ambiguïté
-≠ absence actuelle d’ambiguïté
+historical absence of ambiguity
+≠ current absence of ambiguity
 ```
 
-Chaque run doit réobserver l’état réellement présent.
+Each run must re-observe the state actually present.
 
-L’apprentissage ne doit jamais abaisser le seuil de preuve de §31.5, ni convertir une supposition fondée sur l’historique en `passed`.
+Learning must never lower the evidence threshold of §31.5, nor convert an assumption based on history into `passed`.
 
-#### 31.9.6 Détection d’obsolescence et révision
+#### 31.9.6 Obsolescence detection and revision
 
-Le mode doit être capable de reconnaître qu’un workflow ou landmark appris ne correspond plus à l’UI actuelle.
+The mode must be capable of recognizing that a learned workflow or landmark no longer corresponds to the current UI.
 
-Lorsqu’un apprentissage devient contradictoire, absent, ambigu ou manifestement obsolète :
+When a learning becomes contradictory, absent, ambiguous or clearly obsolete:
 
-1. ne pas forcer l’ancien workflow ;
-2. considérer la connaissance concernée comme non fiable pour le run courant ;
-3. explorer prudemment l’état actuel ou déclencher le fallback manuel selon §31.6 ;
-4. corriger, qualifier comme fragile ou retirer la connaissance durable devenue fausse lorsqu’une nouvelle observation suffisamment établie le justifie.
+1. do not force the old workflow;
+2. consider the knowledge concerned as unreliable for the current run;
+3. carefully explore the current state or trigger the manual fallback according to §31.6;
+4. correct, qualify as fragile or remove the durable knowledge that has become false when a sufficiently established new observation justifies it.
 
-Une évolution de TradingView, Chrome, Claude Code ou de l’intégration navigateur peut justifier cette réévaluation sans qu’un changement de version soit à lui seul assimilé automatiquement à une preuve d’obsolescence.
+A change in TradingView, Chrome, Claude Code or the browser integration can justify this reassessment without a version change on its own being automatically equated with evidence of obsolescence.
 
-#### 31.9.7 Contenu interdit
+#### 31.9.7 Forbidden content
 
-Ne jamais promouvoir dans le savoir opérationnel durable :
+Never promote into the durable operational knowledge:
 
-- mot de passe ;
-- cookie ;
-- token ;
-- credential ou secret d’authentification ;
-- décision produit le titulaire qui appartient à un autre artefact ;
-- résultat d’une validation spécifique présenté comme règle générale ;
-- contenu propriétaire d’un script conservé uniquement pour apprendre l’UI ;
-- screenshot ou autre preuve de run lorsqu’il n’a pas de fonction durable distincte ;
-- coordonnées ou sélecteurs fragiles présentés comme invariants fiables.
+- password;
+- cookie;
+- token;
+- credential or authentication secret;
+- product decision by the holder that belongs to another artefact;
+- result of a specific validation presented as a general rule;
+- proprietary content of a script kept only to learn the UI;
+- screenshot or other run evidence when it has no distinct durable function;
+- fragile coordinates or selectors presented as reliable invariants.
 
-#### 31.9.8 Pas de nouvelle couche
+#### 31.9.8 No new layer
 
-Cet apprentissage reste une capacité interne du mode `chrome-experimental` et de la skill `tv-validate`.
+This learning remains an internal capability of the `chrome-experimental` mode and of the `tv-validate` skill.
 
-Il ne justifie pas la création d’une base de données, registry, nouveau dossier de mémoire, nouveau serveur, MCP, agent, skill, dashboard ou autre plateforme parallèle.
+It does not justify the creation of a database, registry, new memory folder, new server, MCP, agent, skill, dashboard or other parallel platform.
 
-Le bootstrap initial doit construire le mécanisme et les règles de promotion dans `CHROME_EXPERIMENTAL.md`, mais ne doit inventer aucun landmark, workflow ou failure mode présenté comme observé s’il n’a pas réellement été vérifié.
+The initial bootstrap must build the mechanism and the promotion rules in `CHROME_EXPERIMENTAL.md`, but must not invent any landmark, workflow or failure mode presented as observed if it has not actually been verified.
 
 ---
 
 ## 32. SKILL `project-doctor`
 
-### 32.1 Deux couches
+### 32.1 Two layers
 
-Le doctor possède :
+The doctor has:
 
-1. une couche déterministe ;
-2. une couche sémantique optionnelle pour la cohérence de configuration.
+1. a deterministic layer;
+2. an optional semantic layer for configuration consistency.
 
-### 32.2 Contrôles déterministes
+### 32.2 Deterministic checks
 
-Au minimum :
+At a minimum:
 
-- standard maître présent ;
-- hash index courant ;
-- hash traceability courant ;
-- JSON valides ;
-- manifests valides ;
-- source manifest présent ;
-- produit root cohérent ;
-- conformité normative de `SCRIPT.json`, y compris `schema_version` (2 ; 1 lu et signalé pour migration), champs inconnus, `id == slug`, unicité case-insensitive, cohérence des axes de licence (§45.4) et confinement du chemin source ;
-- configuration personnelle (`pws.config.json`) : présence (absence = INFO, défauts), validité, version du workspace, identité configurée ; clé legacy du mode TradingView signalée ;
-- identité de l’exécuteur PineTS installé : pin, lockfile, intégrité registry, SHA de l’artefact installé enregistré dans `PROVENANCE.json`, fingerprint ;
-- Git absent ou dossier non initialisé : mode dégradé signalé (WARNING), jamais une exception ;
-- `.pine` orphelins ;
-- contextes partiels ;
-- source manquante ;
-- source supplémentaire ambigu ;
-- local settings lisibles ;
-- TV mode valide ;
-- validation effective stale ;
-- intégrité de `validation/current.json`, de son run référencé et des hashes des preuves ;
-- références de baseline, descripteurs de dataset et hashes comportementaux durables ;
-- hooks exécutables ;
-- tests de tooling ;
-- Git disponible ;
-- remotes présents ;
-- worktree config ;
-- `.claude/worktrees/` effectivement ignoré par Git ;
-- absence de chemin ou symlink sortant du workspace physique ;
-- absence de configuration ou contrat exigeant l’existence, le nom, le chemin ou l’état d’un autre projet externe ;
-- dossiers/fichiers placeholder connus ;
-- présence et lisibilité du thin adapter PineTS lorsqu’il est configuré ;
-- dépendance PineTS pinée sur une version exacte ;
-- cohérence `package.json` / lockfile ;
-- absence de range flottant pour PineTS ;
-- cohérence entre `pinets_version`, `executor_fingerprint`, `normalization_schema` et l’état de calibration ;
-- cohérence des identités de cas, inputs, attendus, références et preuves qui soutiennent la fraîcheur des calibrations ;
-- absence de capability utilisée comme effectivement gating lorsque sa calibration n’est pas `CURRENT` ;
-- absence d’intégration PineTS sous forme de serveur, MCP, base de données ou service persistant non ratifié ;
-- résolution effective des skills critiques vers les skills projet attendues, avec diagnostic explicite de toute collision ;
-- provenance de la version PineTS installée et `license_basis` réellement enregistré.
+- master standard present;
+- current index hash;
+- current traceability hash;
+- valid JSON;
+- valid manifests;
+- manifest source present;
+- consistent product root;
+- normative conformity of `SCRIPT.json`, including `schema_version` (3; 2 and 1 read and flagged for migration), unknown fields, `id == slug`, case-insensitive uniqueness, consistency of the licence axes (§45.4) and confinement of the source path;
+- personal configuration (`pws.config.json`): presence (absence = INFO, defaults), validity, workspace version, configured identity; legacy key of the TradingView mode flagged;
+- identity of the installed PineTS executor: pin, lockfile, registry integrity, SHA of the installed artefact recorded in `PROVENANCE.json`, fingerprint;
+- Git missing or folder not initialized: degraded mode flagged (WARNING), never an exception;
+- orphan `.pine` files;
+- partial contexts;
+- missing source;
+- ambiguous additional source;
+- readable local settings;
+- valid TV mode;
+- stale effective validation;
+- integrity of `validation/current.json`, of its referenced run and of the evidence hashes;
+- baseline references, dataset descriptors and durable behavioural hashes;
+- executable hooks;
+- tooling tests;
+- Git available;
+- remotes present;
+- worktree config;
+- `.claude/worktrees/` actually ignored by Git;
+- absence of a path or symlink leading out of the physical workspace;
+- absence of a configuration or contract requiring the existence, the name, the path or the state of another external project;
+- known placeholder folders/files;
+- presence and readability of the PineTS thin adapter when it is configured;
+- PineTS dependency pinned to an exact version;
+- `package.json` / lockfile consistency;
+- absence of a floating range for PineTS;
+- consistency between `pinets_version`, `executor_fingerprint`, `normalization_schema` and the calibration state;
+- consistency of the identities of the cases, inputs, expected results, references and evidence that support the freshness of the calibrations;
+- absence of a capability used as effectively gating when its calibration is not `CURRENT`;
+- absence of a PineTS integration in the form of a server, MCP, database or persistent service not ratified;
+- effective resolution of the critical skills to the expected project skills, with an explicit diagnostic of any collision;
+- provenance of the installed PineTS version and `license_basis` actually recorded.
 
-`project-doctor` ne lance pas automatiquement les matrices comportementales lourdes.
+`project-doctor` does not automatically run the heavy behavioural matrices.
 
-Il vérifie l’intégrité et la fraîcheur de la couche PineTS.
+It checks the integrity and the freshness of the PineTS layer.
 
-Une calibration `STALE` ou `MISSING` interdit uniquement d’utiliser les capabilities concernées comme effectivement gating.
+A `STALE` or `MISSING` calibration only forbids using the capabilities concerned as effectively gating.
 
-Elle ne classe pas automatiquement le source Pine comme `BROKEN` et ne remplace pas la validation TradingView.
+It does not automatically classify the Pine source as `BROKEN` and does not replace the TradingView validation.
 
-### 32.3 Contrôle sémantique
+### 32.3 Semantic check
 
-Lorsqu’une évolution d’architecture a eu lieu, vérifier :
+When an evolution of the architecture has taken place, check:
 
-- duplications d’instructions ;
-- responsabilités devenues concurrentes ;
-- fichiers sans utilité ;
-- incohérences entre contracts et implémentation.
+- duplications of instructions;
+- responsibilities that have become competing;
+- files with no use;
+- inconsistencies between contracts and implementation.
 
-### 32.4 Sortie
+### 32.4 Output
 
-Statuts concis avec sévérité :
+Concise statuses with severity:
 
 ```text
 OK
@@ -2676,148 +2678,148 @@ WARNING
 BLOCKING
 ```
 
-Un `BLOCKING` doit être actionnable.
+A `BLOCKING` must be actionable.
 
 ---
 
 ## 33. SUBAGENT `pws-pine-cartographer`
 
-### 33.1 Outils
+### 33.1 Tools
 
 Read-only.
 
-### 33.2 Mémoire
+### 33.2 Memory
 
-Aucune mémoire persistante.
+No persistent memory.
 
-### 33.3 Rôle
+### 33.3 Role
 
-Lire un gros script sans saturer le contexte principal.
+Read a large script without saturating the main context.
 
-Produire :
+Produce:
 
-- carte structurelle ;
-- dépendances ;
-- état ;
-- requests ;
-- MTF ;
-- rendering ;
-- alertes ;
-- hotspots ;
-- risques ;
-- consumers importants.
+- structural map;
+- dependencies;
+- state;
+- requests;
+- MTF;
+- rendering;
+- alerts;
+- hotspots;
+- risks;
+- important consumers.
 
-### 33.4 Interdiction
+### 33.4 Prohibition
 
-Ne pas modifier le code.
+Do not modify the code.
 
-Ne pas inventer une intention produit.
+Do not invent a product intention.
 
 ---
 
 ## 34. SUBAGENT `pws-pine-researcher`
 
-### 34.1 Outils
+### 34.1 Tools
 
-Lecture locale + web/recherche selon capacités disponibles.
+Local reading + web/search depending on the available capabilities.
 
-Pas d’écriture projet directe sauf nécessité explicitement décidée par l’architecture finale.
+No direct writing to the project, except for a necessity explicitly decided by the final architecture.
 
-Le mode privilégié est de retourner le résultat au parent, qui persiste ce qui mérite de l’être.
+The preferred mode is to return the result to the parent, which persists what deserves to be persisted.
 
-### 34.2 Mémoire
+### 34.2 Memory
 
-Aucune mémoire persistante.
+No persistent memory.
 
-### 34.3 Rôle
+### 34.3 Role
 
-Vérifier :
+Check:
 
-- documentation officielle ;
-- comportement Pine actuel ;
-- benchmark pertinent ;
-- règles TradingView lorsque concernées.
+- official documentation;
+- current Pine behaviour;
+- relevant benchmark;
+- TradingView rules when they are concerned.
 
-### 34.4 Sortie
+### 34.4 Output
 
-Séparer :
+Separate:
 
-- faits officiels ;
-- observation benchmark ;
-- inférence ;
-- recommandation.
+- official facts;
+- benchmark observation;
+- inference;
+- recommendation.
 
 ---
 
 ## 35. SUBAGENT `pws-pine-reviewer`
 
-### 35.1 Contexte
+### 35.1 Context
 
-Subagent non-fork lorsque la version actuelle de Claude Code permet ainsi un contexte frais adapté.
+Non-fork subagent when the current version of Claude Code thereby allows a suitable fresh context.
 
-### 35.2 Mémoire
+### 35.2 Memory
 
-Aucune.
+None.
 
-### 35.3 Rôle
+### 35.3 Role
 
-Être réellement un regard frais.
+Be a genuinely fresh perspective.
 
-Le reviewer n’est invoqué que dans les cas du §26.1. Il relit selon la couverture indiquée dans la mission (ciblée, élargie ou globale, master §9.2) et le contexte produit réellement nécessaire ; sans indication, le source complet.
+The reviewer is invoked only in the cases of §26.1. It re-reads according to the coverage indicated in the mission (targeted, extended or global, master §9.2) and the product context actually necessary; without an indication, the complete source.
 
-Le diff peut servir de point d’attention ; il ne définit pas la couverture.
+The diff may serve as a point of attention; it does not define the coverage.
 
-### 35.4 Outils
+### 35.4 Tools
 
 Read-only.
 
-### 35.5 Interdiction
+### 35.5 Prohibition
 
-Ne pas appliquer directement ses propres corrections.
+Do not directly apply its own fixes.
 
-Le parent conserve la responsabilité d’implémentation.
+The parent keeps the implementation responsibility.
 
 ---
 
 ## 36. SUBAGENT `pws-release-reviewer`
 
-### 36.1 Outils
+### 36.1 Tools
 
-Lecture + web.
+Reading + web.
 
-### 36.2 Mémoire
+### 36.2 Memory
 
-Aucune.
+None.
 
-### 36.3 Rôle
+### 36.3 Role
 
-Juste avant release :
+Just before release:
 
-- vérifier règles TradingView actuelles ;
-- vérifier exigences spécifiques au type de script ;
-- vérifier cohérence des artefacts ;
-- rechercher divergences entre source final, docs et publication ;
-- signaler tout point non vérifié.
+- check the current TradingView rules;
+- check the requirements specific to the script type;
+- check the consistency of the artefacts;
+- look for divergences between the final source, the docs and the publication;
+- flag any unverified point.
 
 ---
 
-## 37. OUTIL DÉTERMINISTE LOCAL
+## 37. LOCAL DETERMINISTIC TOOL
 
-Créer un petit package local, sans ambition de reproduire TradingView.
+Create a small local package, without any ambition of reproducing TradingView.
 
-Commande conceptuelle :
+Conceptual command:
 
 ```text
 python -m tools.pws_workspace <subcommand>
 ```
 
-Le bootstrap doit adapter le launcher au runtime réel détecté.
+The bootstrap must adapt the launcher to the actual runtime detected.
 
-Ne pas ajouter de dépendance externe lorsqu’une bibliothèque standard suffit.
+Do not add an external dependency when a standard library suffices.
 
-### 37.1 Sous-commandes minimales
+### 37.1 Minimal subcommands
 
-Prévoir des fonctions équivalentes à :
+Provide functions equivalent to:
 
 ```text
 version
@@ -2836,127 +2838,127 @@ hook-session-start
 hook-stop
 init | config show | config set            (pws.config.json — §19A)
 migrate --plan | --apply | --rollback      (§55)
-tooling-status | pinets <action>           (PineTS : status, verify, check-update, install, rollback, recalibrate-plan)
+tooling-status | pinets <action>           (PineTS: status, verify, check-update, install, rollback, recalibrate-plan)
 github <action>                            (status, destinations, destination-add/remove, export-plan, fetch, export-diff, publish — §43.5)
 maintenance <action>                       (cleanup, archives-plan/import/verify/remove-source)
 license <action>                           (status, render, write, fields-skeleton, templates)
-build-distribution --target <dir>          (distribution publique — cœur commun, liste blanche)
+build-distribution --target <dir>          (public distribution — common core, allowlist)
 ```
 
-Le nom exact peut être ajusté pour cohérence. `menu` fournit l’arborescence déterministe et localisée du menu PWS (entrées applicables, ≤ 4 options par écran, parcours action → script) : la skill `pws` la rend sans la redéfinir.
+The exact name may be adjusted for consistency. `menu` provides the deterministic and localized tree of the PWS menu (applicable entries, ≤ 4 options per screen, action → script path): the `pws` skill renders it without redefining it.
 
-### 37.2 Responsabilités du package
+### 37.2 Responsibilities of the package
 
-Seulement des faits mécaniques :
+Only mechanical facts:
 
-- filesystem ;
-- Git local ;
-- JSON ;
-- hash ;
-- structure ;
-- header simple ;
-- chaînes interdites mécaniquement ;
-- état de validation ;
-- état du standard.
+- filesystem;
+- local Git;
+- JSON;
+- hash;
+- structure;
+- simple header;
+- mechanically forbidden strings;
+- validation state;
+- state of the standard.
 
-`session-status` doit pouvoir fournir une représentation structurée exploitable par la skill `pws` afin que le menu dérive ses choix de faits mécaniques déjà calculés au lieu de réimplémenter le scan du workspace.
+`session-status` must be able to provide a structured representation usable by the `pws` skill so that the menu derives its choices from mechanical facts already computed instead of reimplementing the workspace scan.
 
-### 37.3 Ce qu’il ne juge pas
+### 37.3 What it does not judge
 
-Interdit de prétendre déterminer :
+It is forbidden to claim to determine:
 
-- qualité du signal ;
-- pertinence d’un tooltip ;
-- repaint réel ;
-- correctness métier ;
-- bonne UX ;
-- originalité ;
-- qualité du benchmark ;
-- architecture Pine optimale ;
-- conformité visuelle TradingView.
+- signal quality;
+- relevance of a tooltip;
+- actual repaint;
+- business correctness;
+- good UX;
+- originality;
+- quality of the benchmark;
+- optimal Pine architecture;
+- TradingView visual conformity.
 
 ---
 
-## 38. GUARD PINE LOCAL
+## 38. LOCAL PINE GUARD
 
 ### 38.1 Scope
 
-Uniquement les contrôles déterministes réellement fiables.
+Only the deterministic checks that are truly reliable.
 
-### 38.2 Contrôles candidats
+### 38.2 Candidate checks
 
-Selon ce que le bootstrap peut implémenter proprement :
+Depending on what the bootstrap can implement cleanly:
 
-- source existant ;
-- `//@version=6` selon le standard ;
-- absence de `shorttitle` ;
-- absence de `short_title` ;
-- structure de header correspondant au modèle de distribution ;
-- version produit dans le header source ;
-- absence de version produit explicitement répétée dans les fichiers user-facing contrôlables ;
-- title vérifiable comme ASCII lorsqu’extractible sûrement ;
-- cohérence source/manifest ;
-- JSON contextuels valides ;
-- URLs manifestement interdites dans le header/source si une règle mécanique fiable existe.
+- existing source;
+- `//@version=6` according to the standard;
+- absence of `shorttitle`;
+- absence of `short_title`;
+- header structure matching the distribution model;
+- product version in the source header;
+- absence of a product version explicitly repeated in the checkable user-facing files;
+- title verifiable as ASCII when it can be extracted reliably;
+- source/manifest consistency;
+- valid contextual JSON;
+- manifestly forbidden URLs in the header/source if a reliable mechanical rule exists.
 
-### 38.3 Principe de prudence
+### 38.3 Principle of caution
 
-Un check déterministe qui produit trop de faux positifs doit être réduit ou supprimé.
+A deterministic check that produces too many false positives must be reduced or removed.
 
-Ne pas transformer une heuristique fragile en gate bloquant.
+Do not turn a fragile heuristic into a blocking gate.
 
 ---
 
-## 39. TESTS DU TOOLING
+## 39. TOOLING TESTS
 
-Le package local doit posséder de vrais tests.
+The local package must have real tests.
 
-Préférer `unittest` de la bibliothèque standard si cela évite une dépendance.
+Prefer `unittest` from the standard library if this avoids a dependency.
 
-Les tests doivent couvrir notamment :
+The tests must cover in particular:
 
-- détection d’un script enregistré ;
-- détection d’un `.pine` orphelin ;
-- manifest incomplet ;
-- manifest avec champ inconnu ;
-- collision de slug/ID ne différant que par la casse ;
-- source absolu, traversal `..` et symlink sortant du product root ;
-- matrice type/distribution, notamment rejet de `library + paid-closed-source` ;
-- source manquante ;
-- plusieurs sources ambiguës ;
-- détection `shorttitle` ;
-- distinction entre `shorttitle` réel et occurrence dans un commentaire, une string ou une documentation ;
-- URL Creative Commons légitime et URL promotionnelle interdite ;
-- title multilignes extractible et syntaxe de title non extractible sans faux verdict bloquant ;
-- header gratuit ;
-- header payant ;
-- hash source ;
-- validation stale ;
-- run de validation absent/invalide et preuve dont le hash diverge ;
-- update atomique où un run plus ancien ne remplace pas un run plus récent ;
-- mode TV valide/invalide ;
-- standard index stale ;
-- comportement hook Stop ;
-- sortie structurée de `session-status` suffisante pour alimenter le menu PWS sans logique sémantique ;
-- read-modify-write de `settings.local.json` préservant des approvals, selon la portée de §19.3 : sérialisation entre écrivains du workspace et refus des modifications externes détectables ;
-- workspace et source dont les chemins contiennent des espaces ;
-- détection d'un repository parent englobant et d'un symlink sortant ;
-- fonctionnement avec un sibling arbitrairement nommé, présent ou absent, sans dépendance, scan ni mutation de son contenu ;
-- tests durables du thin adapter et des contrats PineTS de §61.10 ;
-- attribution des findings du hook Stop : déplacement sans modification, anomalie préexistante, anomalie introduite, provenance indéterminée, décalage de lignes, occurrences multiples ; cohérence des verdicts d’un rapport de version 2 : priorité de `failed`, couverture, identifiants uniques, refus de promotion d’un rapport de version antérieure ; confirmations par groupe ; compilation minimale jamais `passed`, erreurs et avertissements consignés séparément, enregistrement sans promotion sur le même SHA, remplacement par un échec avec contradiction signalée, protections de §51.4 jamais contournées ; enregistrement d’import : import déclaré puis onboardé sans modification, modification après import, refus de réenregistrement après modification, égalité d’empreinte sans dispense, rattachement ambigu.
+- detection of a registered script;
+- detection of an orphan `.pine`;
+- incomplete manifest;
+- manifest with an unknown field;
+- slug/ID collision differing only by case;
+- absolute source, `..` traversal and symlink leading out of the product root;
+- type/distribution matrix, in particular rejection of `library + paid-closed-source`;
+- missing source;
+- several ambiguous sources;
+- `shorttitle` detection;
+- distinction between an actual `shorttitle` and an occurrence in a comment, a string or documentation;
+- legitimate Creative Commons URL and forbidden promotional URL;
+- extractable multi-line title and non-extractable title syntax without a false blocking verdict;
+- free header;
+- paid header;
+- source hash;
+- stale validation;
+- missing/invalid validation run and evidence whose hash diverges;
+- atomic update where an older run does not replace a more recent run;
+- valid/invalid TV mode;
+- stale standard index;
+- Stop hook behaviour;
+- structured output of `session-status` sufficient to feed the PWS menu without semantic logic;
+- read-modify-write of `settings.local.json` preserving approvals, according to the scope of §19.3: serialization between workspace writers and refusal of detectable external modifications;
+- workspace and source whose paths contain spaces;
+- detection of an enclosing parent repository and of an outgoing symlink;
+- operation with an arbitrarily named sibling, present or absent, without any dependency, scan or mutation of its content;
+- durable tests of the thin adapter and of the PineTS contracts of §61.10;
+- attribution of the Stop hook findings: move without modification, pre-existing anomaly, introduced anomaly, undetermined provenance, line shift, multiple occurrences; consistency of the verdicts of a version 2 report: precedence of `failed`, coverage, unique identifiers, refusal to promote a report of an earlier version; group confirmations; minimal compilation never `passed`, errors and warnings recorded separately, recording without promotion on the same SHA, replacement by a failure with the contradiction flagged, protections of §51.4 never bypassed; import record: import declared then onboarded without modification, modification after import, refusal of re-registration after modification, hash equality without exemption, ambiguous attachment.
 
-Principe des guards textuels :
+Principle of the textual guards:
 
 ```text
-incertitude du parseur
-≠ preuve de violation
+parser uncertainty
+≠ evidence of violation
 ```
 
-Un cas non extractible doit produire un diagnostic honnête ou une vérification complémentaire, pas un faux `BLOCKING`.
+A non-extractable case must produce an honest diagnostic or a complementary verification, not a false `BLOCKING`.
 
-Ne pas créer cinq fichiers de tests contenant chacun un test trivial uniquement pour satisfaire l’arborescence.
+Do not create five test files each containing a trivial test only to satisfy the tree structure.
 
-La factorisation réelle prime.
+Real factorization prevails.
 
 ---
 
@@ -2964,27 +2966,28 @@ La factorisation réelle prime.
 
 ### 40.1 Mission
 
-Donner à Claude un petit état dynamique au démarrage et fournir les faits mécaniques nécessaires au menu contextuel PWS.
+Give Claude a small dynamic state at startup and provide the mechanical facts needed by the PWS contextual menu.
 
 ### 40.2 Actions
 
-Le hook doit :
+The hook must:
 
-1. scanner `scripts/**`;
-2. déterminer les statuts de registration ;
-3. détecter les `.pine` orphelins ;
-4. vérifier l’état du standard index ;
-5. vérifier le mode TV ;
-6. vérifier l’état Git ;
-7. identifier les validations stale ;
-8. créer un snapshot de session éphémère des sources enregistrées ;
-9. injecter un résumé court dans le contexte ;
-10. rendre disponible un état structuré suffisamment petit pour que la skill `pws` puisse construire son menu sans rescanner sémantiquement le projet.
+1. scan `scripts/**`;
+2. determine the registration statuses;
+3. detect the orphan `.pine` files;
+4. check the state of the standard index;
+5. check the TV mode;
+6. check the Git state;
+7. identify the stale validations;
+8. create an ephemeral session snapshot of the registered sources;
+9. inject a short summary into the context, whose line following the title states the configured language explicitly (amendment of 2026-11-14);
+10. make available a structured state small enough for the `pws` skill to be able to build its menu without semantically rescanning the project.
 
-### 40.3 Exemple de sortie
+### 40.3 Output example
 
 ```text
 PWS
+Configured language: en — menus, explanations, questions, confirmations and reports in English
 Git: local / branch main / dirty
 TV validation mode: manual
 Registered scripts: 12
@@ -2999,230 +3002,245 @@ scripts/new-indicator/New Indicator.pine
 Required action before substantive edits: pine-onboard
 ```
 
-### 40.4 Onboarding automatique
+### 40.4 Automatic onboarding
 
-Le hook ne prétend pas invoquer une skill lui-même.
+The hook does not claim to invoke a skill itself.
 
-Il rend le statut visible.
+It makes the status visible.
 
-La description de `pine-onboard` et les instructions racine doivent permettre à Claude de l’invoquer automatiquement lorsqu’un script orphelin doit être traité.
+The description of `pine-onboard` and the root instructions must allow Claude to invoke it automatically when an orphan script must be processed.
 
-### 40.5 Menu contextuel PWS
+### 40.5 PWS contextual menu
 
-Créer la skill projet :
+Create the project skill:
 
 ```text
 .claude/skills/pws/SKILL.md
 ```
 
-Sa commande utilisateur est :
+Its user command is:
 
 ```text
 /pws
 ```
 
-Elle constitue la façade guidée du workspace. Elle ne remplace aucune skill métier.
+It constitutes the guided facade of the workspace. It replaces no business skill.
 
-#### 40.5.1 Primitive d’interaction
+#### 40.5.1 Interaction primitive
 
-Utiliser en priorité `AskUserQuestion`, primitive native Claude Code destinée aux choix multiples, tant qu’elle est disponible et adaptée sur la surface interactive courante.
+Use `AskUserQuestion` as a priority, the native Claude Code primitive intended for multiple choices, as long as it is available and suitable on the current interactive surface.
 
-Les limites exactes de `AskUserQuestion` peuvent évoluer. Les revérifier pendant la discovery et tester la primitive réellement installée. Concevoir dans tous les cas le menu comme une arborescence courte de sous-menus plutôt qu’une liste plate surchargée.
+The exact limits of `AskUserQuestion` may change. Recheck them during the discovery and test the primitive actually installed. In all cases, design the menu as a short tree of submenus rather than an overloaded flat list.
 
-Ne pas créer au bootstrap :
+Do not create at bootstrap:
 
-- TUI Python concurrent ;
-- application Electron ;
-- serveur local ;
-- dashboard web ;
-- base de données de navigation ;
-- MCP dédié au menu ;
-- plugin custom uniquement pour afficher ce menu.
+- competing Python TUI;
+- Electron application;
+- local server;
+- web dashboard;
+- navigation database;
+- MCP dedicated to the menu;
+- custom plugin only to display this menu.
 
-Si `AskUserQuestion` devient indisponible ou insuffisant dans une surface future, utiliser d’abord un fallback conversationnel simple puis réévaluer toute nouvelle couche selon §59.
+If `AskUserQuestion` becomes unavailable or insufficient in a future surface, first use a simple conversational fallback, then reassess any new layer according to §59.
 
-#### 40.5.2 Modèle de démarrage
+#### 40.5.2 Startup model
 
-Le menu vit DANS la session Claude Code.
+The menu lives INSIDE the Claude Code session.
 
-Architecture ratifiée :
+Ratified architecture:
 
 ```text
-Claude Code interactif
+Interactive Claude Code
         ↓
 SessionStart
         ↓
-état PWS compact
+compact PWS state
         ↓
-skill pws
+pws skill
         ↓
 AskUserQuestion
         ↓
-choix utilisateur
+user choice
         ↓
-skill métier correspondante
+corresponding business skill
 ```
 
-Un hook `SessionStart` ne doit pas tenter de piloter directement un TTY interactif ou de simuler des touches clavier. Il fournit le contexte ; l’interaction appartient à la skill `pws` dans la conversation.
+A `SessionStart` hook must not attempt to drive an interactive TTY directly or to simulate keystrokes. It provides the context; the interaction belongs to the `pws` skill in the conversation.
 
-Pour une nouvelle session CLI où le titulaire souhaite arriver immédiatement sur le menu, documenter la forme native actuelle :
+For a new CLI session where the holder wishes to land immediately on the menu, document the current native form:
 
 ```text
-claude "Ouvre le menu PWS."
+claude "Open the PWS menu."
 ```
 
-Claude Code démarre alors en mode interactif avec cette demande comme premier prompt.
+Claude Code then starts in interactive mode with this request as the first prompt.
 
-Le démarrage classique `claude` reste valide ; `/pws` ouvre alors le menu à tout moment.
+The classic `claude` startup remains valid; `/pws` then opens the menu at any time.
 
-Un resume, un compact ou un clear ne doit pas forcer la réouverture du menu et interrompre le travail en cours. Le titulaire peut toujours utiliser `/pws` explicitement.
+A resume, a compact or a clear must not force the reopening of the menu and interrupt the work in progress. The holder can always use `/pws` explicitly.
 
-#### 40.5.3 Menu contextuel
+#### 40.5.3 Contextual menu
 
-Le menu doit dériver ses choix de l’état réel du workspace.
+The menu must derive its choices from the real state of the workspace.
 
-Exemples de faits utiles, en conservant les axes distincts de §44 :
+Examples of useful facts, keeping the distinct axes of §44:
 
-- aucun produit enregistré ;
-- un ou plusieurs produits `REGISTERED` ;
-- présence de `.pine` `UNREGISTERED` ;
-- produit `INCOMPLETE` ou `BROKEN` ;
-- validation TradingView `STALE` ;
-- mode TV courant ;
-- état Git pertinent.
+- no registered product;
+- one or more `REGISTERED` products;
+- presence of `UNREGISTERED` `.pine` files;
+- `INCOMPLETE` or `BROKEN` product;
+- `STALE` TradingView validation;
+- current TV mode;
+- relevant Git state.
 
-Ne pas afficher artificiellement une action sans objet. Par exemple, ne pas proposer une release d’un produit inexistant.
+Do not artificially display an action that has no purpose. For example, do not offer a release of a non-existent product.
 
-Le premier niveau doit rester court. Une organisation de référence est :
+The first level must remain short. The menu is generated by the deterministic tooling (`python3 -m tools.pws_workspace menu --json`, `tools/pws_workspace/menu.py`), with its labels and descriptions taken from the catalogue `tools/pws_workspace/i18n.py` in the configured language; the `pws` skill renders it as it is and never rebuilds it. Current tree, English labels (with French menus, the labels of the same catalogue — for example "Qualité / publication", "Maintenance / configuration" — with the same identifiers and routes; description aligned on the generated menu on 2026-11-14):
 
 ```text
-PWS
-├── Travailler sur un script
-├── Nouveau / importer
-├── Qualité / validation
-└── Maintenance / autre
+PWS                                   (first level: work, new, quality, maintenance)
+├── Work on a script                  (action first, then the script)
+│   ├── Develop / fix                 → pine-develop
+│   ├── Documentation / tutorial      → pine-docs
+│   ├── Research                      → pine-research
+│   ├── Review                        → pine-review
+│   └── Deep audit                    → pine-audit
+├── New / import
+│   ├── New script                    → pine-new
+│   └── Import a script               → pine-onboard
+├── Quality / publication             (action first, then the script)
+│   ├── Local test (PineTS)           → pine-local-test
+│   ├── TradingView validation        → tv-validate
+│   ├── Licence and terms of use      → pine-license (independent of "Prepare a publication")
+│   ├── Prepare a publication         → pine-release
+│   └── GitHub export                 → pine-github
+└── Maintenance / configuration
+    ├── Workspace diagnostic          → project-doctor
+    ├── Detailed state                → session-status
+    ├── Configuration
+    │   ├── Language                  → config set language
+    │   ├── Copyright holder          → config set identity.copyright_holder
+    │   ├── Default profile           → config set identity.default_profile
+    │   ├── TradingView mode          → tv-mode <mode>
+    │   ├── GitHub destinations       → github destinations
+    │   └── Startup cleanup           → config set maintenance.startup_cleanup
+    ├── Tools and updates
+    │   ├── PineTS                    → pine-tools
+    │   └── Update Pine-Workspace     → pws-update
+    └── Archives and cleanup          → pine-maintenance
 ```
 
-Chaque branche ouvre uniquement les sous-options réellement applicables.
+The tooling paginates every level: at most four options per screen, "More…" opens the next screen of the same level, and "Back" closes every screen below the first level (the first level has none). Each branch opens only the sub-options that are actually applicable; an inapplicable entry is hidden with its reason (for example "Work on a script" while no script is ready).
 
-Exemple :
-
-```text
-Nouveau / importer
-├── Nouveau script
-├── Importer un script
-└── Retour
-```
-
-Pour la branche « Qualité / publication » (libellé ratifié) :
-
-```text
-Qualité / publication
-├── Test local (PineTS)
-├── Validation TradingView
-├── Licence et conditions d'utilisation     (consulter, compléter, prévisualiser, enregistrer et générer sur choix explicite ; indépendant de « Préparer une publication »)
-├── Préparer une publication
-├── Export GitHub
-└── Retour
-```
-
-Puis, pour un nouveau script :
+Then, for a new script (choices of the catalogue, canonical values passed to `pine-new`):
 
 ```text
 Type
 ├── Indicator
 ├── Strategy
 ├── Library
-└── Retour
+└── Back
 
-Distribution
-├── Gratuit / open-source
-├── Payant / closed-source
-└── Retour
+Profile
+├── FREE — public source, CC BY-NC-SA 4.0
+├── FREE with closed source — proprietary, free use granted
+├── PRIVATE — proprietary, personal or limited sharing
+├── COMMERCIAL — proprietary, configurable EULA
+└── Back
 ```
 
-Pour `Library`, ne pas ouvrir ce sous-menu avec une option payante. Dériver et afficher :
+These screens are paginated like the others. For `Library`, no other profile is offered: the profile is derived and displayed ("a library is always FREE with public source (TradingView rule)"), then confirmed.
 
-```text
-Distribution
-└── Gratuit / open-source (obligatoire pour les libraries TradingView)
-```
+The constraint must be rechecked before publication, but the menu, `pine-new` and the machine schema apply the current official rule as long as it remains in force.
 
-La contrainte doit être revérifiée avant publication, mais le menu, `pine-new` et le schéma machine appliquent la règle officielle actuelle tant qu'elle demeure en vigueur.
-
-Les libellés sont user-facing ; les valeurs transmises au workflow restent les valeurs canoniques du workspace, par exemple :
+The labels are user-facing; the values passed to the workflow remain the canonical values of the workspace, for example:
 
 ```text
 script_kind = indicator
-distribution = paid-closed-source
+profile = COMMERCIAL
 ```
 
-#### 40.5.4 Navigation et effets
+The licence axes and publication dimensions passed with the profile are its default values (`profile_defaults`; for FREE with closed source, profile FREE with the `free_closed_defaults` axes); nothing is created before "Start".
 
-Le menu doit respecter les invariants suivants :
+Historical: the bootstrap design of 2026-08-24 described another first level ("Quality / validation", "Maintenance / other"), a "Distribution" screen (Free / open-source, Paid / closed-source) and a "Change TV mode" entry; it was superseded by the deterministic menu of 2026-11-06. The current description is the one above.
 
-- `Retour` ne produit aucun effet de bord ;
-- annuler le menu ne modifie aucun fichier ;
-- une sélection ne vaut pas autorisation implicite de publication ;
-- un choix de workflow route vers la skill existante correspondante ;
-- une décision durable prise dans le menu n’est persistée que dans l’artefact canonique prévu par le workflow ;
-- aucune logique métier n’est dupliquée dans `pws/SKILL.md` ;
-- le menu ne contourne ni les confirmations le titulaire déjà exigées, ni les gates, ni la validation TradingView ;
-- si une information libre est nécessaire, sortir du menu et demander cette information conversationnellement au lieu de transformer le menu en formulaire généraliste.
+#### 40.5.4 Navigation and effects
 
-Pour une création de produit, afficher avant toute création un récapitulatif court des choix structurés et demander confirmation :
+The menu must respect the following invariants:
+
+- `Retour` (Back) produces no side effect;
+- cancelling the menu modifies no file;
+- a selection does not amount to an implicit authorization to publish;
+- a workflow choice routes to the corresponding existing skill;
+- a durable decision taken in the menu is persisted only in the canonical artefact provided for by the workflow;
+- no business logic is duplicated in `pws/SKILL.md`;
+- the menu bypasses neither the holder's confirmations already required, nor the gates, nor the TradingView validation;
+- if free-form information is needed, leave the menu and ask for this information conversationally instead of turning the menu into a general-purpose form.
+
+For a product creation, display before any creation a short summary of the structured choices and ask for confirmation:
 
 ```text
 Type: Indicator
-Distribution: Payant / closed-source
+Profile: COMMERCIAL — proprietary, configurable EULA
 
-Démarrer / Modifier / Annuler
+Start / Modify / Cancel
 ```
 
-#### 40.5.5 Routage de référence
+For an action that needs a script, the action is chosen first, then the script: with a single registered script, its label is shown ("Script: <slug> (<type>, <profile>)") with "Continue with this script" and "Back"; with several, the "Choose the script" screens (four scripts per screen, "Others…", "Back"); a product that is not ready leads to onboarding, never to a silent selection.
 
-Le menu route notamment vers :
+#### 40.5.5 Reference routing
+
+The menu routes in particular to:
 
 ```text
-Continuer / développer       → pine-develop
-Nouveau script              → pine-new
-Importer un script          → pine-onboard
-Recherche                   → pine-research
-Revue                       → pine-review
-Test local                  → pine-local-test
-Validation TradingView      → tv-validate
-Licence et conditions d'utilisation → pine-license (indépendant de pine-release)
-Préparer une release        → pine-release
-Changer le mode TV          → choix utilisateur explicite → contrôleur déterministe partagé `pws_workspace tv-mode`
-Maintenance                 → project-doctor ou état déterministe approprié
+Develop / fix               → pine-develop
+Documentation / tutorial    → pine-docs
+Research                    → pine-research
+Review                      → pine-review
+Deep audit                  → pine-audit
+New script                  → pine-new
+Import a script             → pine-onboard
+Local test (PineTS)         → pine-local-test
+TradingView validation      → tv-validate
+Licence and terms of use    → pine-license (independent of pine-release)
+Prepare a publication       → pine-release
+GitHub export               → pine-github
+Workspace diagnostic        → project-doctor
+Detailed state              → deterministic state (`session-status`)
+Configuration settings      → the deterministic subcommand of each setting (`config set …`, `github destinations`)
+TradingView mode            → explicit user choice → shared deterministic controller `pws_workspace tv-mode`
+PineTS                      → pine-tools
+Update Pine-Workspace       → pws-update
+Archives and cleanup        → pine-maintenance
 ```
 
-`Changer le mode TV` ne route pas vers `Skill(tv-mode)`, puisque `/tv-mode` reste user-only avec `disable-model-invocation: true`. La façade et la skill directe partagent le même contrôleur ; aucune logique de mutation n'est dupliquée dans le menu.
+The TradingView mode setting (Maintenance / configuration → Configuration → TradingView mode; "Change TV mode" in the historical bootstrap design) does not route to `Skill(tv-mode)`, since `/tv-mode` remains user-only with `disable-model-invocation: true`. The facade and the direct skill share the same controller; no mutation logic is duplicated in the menu.
 
-Les commandes directes restent disponibles. Le menu est une façade UX, pas une obligation pour Claude ni une couche d’autorité.
+The direct commands remain available. The menu is a UX facade, not an obligation for Claude nor a layer of authority.
 
-#### 40.5.6 Fraîcheur
+#### 40.5.6 Freshness
 
-Lorsqu’un `/pws` est invoqué longtemps après `SessionStart` ou après des changements significatifs, rafraîchir les faits mécaniques nécessaires via le tooling déterministe, de préférence `session-status`, avant de construire le menu.
+When a `/pws` is invoked long after `SessionStart` or after significant changes, refresh the necessary mechanical facts through the deterministic tooling, preferably `session-status`, before building the menu.
 
-Ne pas utiliser une ancienne observation de session comme vérité courante si elle peut avoir changé.
+Do not use an old session observation as the current truth if it may have changed.
 
 ### 40.6 Snapshot
 
-Le snapshot de session est éphémère et associé au `session_id`.
+The session snapshot is ephemeral and associated with the `session_id`.
 
-Il sert au Stop hook à distinguer :
+It is used by the Stop hook to distinguish:
 
-- fichiers déjà présents au premier démarrage de la session ;
-- sources réellement changés pendant cette session.
+- files already present at the first startup of the session;
+- sources actually changed during this session.
 
-Créer la baseline une seule fois pour un `session_id`.
+Create the baseline only once for a `session_id`.
 
-Si `SessionStart` se déclenche de nouveau à cause d’un resume, d’un compact, d’un clear ou d’un autre mécanisme qui conserve le même travail logique, ne pas écraser silencieusement une baseline déjà existante.
+If `SessionStart` fires again because of a resume, a compact, a clear or another mechanism that keeps the same logical work, do not silently overwrite an already existing baseline.
 
-Les sessions de subagents doivent utiliser un état séparé ou ignorer cette baseline lorsqu’elles sont read-only ; elles ne doivent jamais réinitialiser l’état de la session principale.
+Subagent sessions must use a separate state or ignore this baseline when they are read-only; they must never reset the state of the main session.
 
-Ne pas versionner ce snapshot.
+Do not version this snapshot.
 
 ---
 
@@ -3230,158 +3248,159 @@ Ne pas versionner ce snapshot.
 
 ### 41.1 Mission
 
-Empêcher une clôture avec une violation mécanique réparable introduite pendant la session.
+Prevent closing with a repairable mechanical violation introduced during the session.
 
-Garde-fou mécanique du travail courant (master §9.1, niveau 1) : il ne déclenche ni lecture intégrale, ni agent, ni revue (amendement du 2026-11-13).
+Mechanical safeguard of routine work (master §9.1, level 1): it triggers neither a full reading, nor an agent, nor a review (amendment of 2026-11-13).
 
-### 41.2 Source des changements
+### 41.2 Source of the changes
 
-Comparer avec le snapshot SessionStart et l’état Git pour identifier les `.pine` réellement modifiés depuis le démarrage. Le snapshot conserve, par fichier, le chemin, le SHA-256, les findings bloquants du guard évalués au démarrage et les checks non évaluables à ce moment. Chaque fichier présent au Stop est rattaché à la baseline par chemin, sinon par SHA-256 (déplacé, inchangé), sinon par un renommage détecté par Git lorsque la correspondance entre le fichier de la baseline et le fichier courant est non ambiguë (déplacé et modifié) ; à défaut, sa provenance est indéterminée. Un renommage détecté par Git est une correspondance technique ; il ne prouve pas à lui seul l’historique réel du fichier. Le nom du fichier ou l’appartenance au même produit ne suffisent pas ; toute correspondance ambiguë reste indéterminée. L’absence de correspondance ne prouve pas qu’un fichier est nouveau. L’attribution se fait finding par finding, un finding étant identifié par son check et par l’objet de l’anomalie (élément manquant, valeur ou URL en cause), indépendamment de sa position dans le fichier ; les occurrences multiples d’un même objet sont comptées. Un finding est introduit si le fichier est nouveau ou si le check était évaluable au démarrage sans ce finding ; préexistant si le même finding existait au démarrage, même si le fichier a changé ailleurs ; rendu visible par le contexte si le check n’était pas évaluable au démarrage ; indéterminé si la provenance du fichier ne peut pas être établie. Le guard est toujours ré-exécuté avec le contexte courant ; une empreinte connue ne dispense d’aucun check.
+Compare with the SessionStart snapshot and the Git state to identify the `.pine` files actually modified since startup. The snapshot keeps, per file, the path, the SHA-256, the blocking guard findings evaluated at startup and the checks not evaluable at that moment. Each file present at Stop is attached to the baseline by path, otherwise by SHA-256 (moved, unchanged), otherwise by a rename detected by Git when the correspondence between the baseline file and the current file is unambiguous (moved and modified); failing that, its provenance is undetermined. A rename detected by Git is a technical correspondence; it does not on its own prove the actual history of the file. Neither the file name nor membership of the same product is sufficient; any ambiguous correspondence remains undetermined. The absence of correspondence does not prove that a file is new. Attribution is done finding by finding, a finding being identified by its check and by the object of the anomaly (missing element, value or URL in question), regardless of its position in the file; multiple occurrences of the same object are counted. A finding is introduced if the file is new or if the check was evaluable at startup without this finding; pre-existing if the same finding existed at startup, even if the file has changed elsewhere; made visible by the context if the check was not evaluable at startup; undetermined if the provenance of the file cannot be established. The guard is always re-run with the current context; a known hash does not exempt from any check.
 
-Un source importé pendant la session peut faire l’objet d’un enregistrement d’import (§52.5). Le fichier rattaché à cet enregistrement est comparé à l’état du guard relevé à l’import, selon les mêmes règles : un finding déjà présent à l’import est préexistant à l’import, un finding apparu ensuite est introduit, un check non évaluable à l’import est rendu visible par le contexte. Un enregistrement se rattache à un seul fichier ; une simple égalité d’empreinte ne dispense aucun autre fichier des contrôles, et tout rattachement ambigu reste indéterminé. Un fichier absent de la baseline et sans enregistrement d’import reste nouveau.
+A source imported during the session may be the subject of an import record (§52.5). The file attached to this record is compared with the guard state recorded at import, according to the same rules: a finding already present at import is pre-existing at import, a finding that appeared afterwards is introduced, a check not evaluable at import is made visible by the context. A record is attached to a single file; a mere hash equality exempts no other file from the checks, and any ambiguous attachment remains undetermined. A file absent from the baseline and without an import record remains new.
 
-### 41.3 Comportement
+### 41.3 Behaviour
 
-Pour les `.pine` changés durant la session :
+For the `.pine` files changed during the session:
 
-- vérifier qu’ils appartiennent à un produit onboardé ;
-- exécuter le guard mécanique ;
-- signaler validation TradingView stale ;
-- bloquer seulement sur les violations mécaniques réellement bloquantes introduites pendant la session ; signaler sans bloquer les violations préexistantes, rendues visibles par le contexte ou d’attribution indéterminée, avec leur catégorie.
+- check that they belong to an onboarded product;
+- run the mechanical guard;
+- flag a stale TradingView validation;
+- block only on the truly blocking mechanical violations introduced during the session; flag without blocking the violations that are pre-existing, made visible by the context or of undetermined attribution, with their category;
+- word its messages — blocking reason, non-blocking information and its category, warning on legal mentions — in the configured language in force when they are shown (`language`; English when the configuration is absent or the value unknown); the non-blocking information handed to the next summary is recorded as structured items and worded when it is shown; information recorded as text by an earlier version is shown as recorded, marked as such; paths, check identifiers and guard details are reproduced exactly (amendment of 2026-11-14).
 
-### 41.4 Validation TradingView stale
+### 41.4 Stale TradingView validation
 
-Une validation stale n’empêche pas automatiquement chaque réponse Claude.
+A stale validation does not automatically prevent every Claude response.
 
-Elle empêche de présenter le script comme finalement validé/prêt si la tâche exige cette validation.
+It prevents presenting the script as finally validated/ready if the task requires this validation.
 
-Le Stop hook peut ajouter un contexte informatif sans boucle inutile.
+The Stop hook may add informative context without a needless loop.
 
-### 41.5 Boucles
+### 41.5 Loops
 
-Respecter `stop_hook_active` ou l’équivalent actuel.
+Respect `stop_hook_active` or the current equivalent.
 
-Ne pas créer une condition impossible à satisfaire.
+Do not create a condition that is impossible to satisfy.
 
-Claude Code limite actuellement les continuations successives d’un Stop hook.
+Claude Code currently limits the successive continuations of a Stop hook.
 
-Le hook doit être :
+The hook must be:
 
-- rapide ;
-- déterministe ;
-- actionnable ;
-- peu bruyant.
-
----
-
-## 42. PAS DE HOOK SÉMANTIQUE PAR DÉFAUT
-
-Ne pas créer initialement :
-
-- prompt hook jugeant la qualité du Pine à chaque edit ;
-- agent hook de revue après chaque ligne ;
-- hook réseau ;
-- hook de publication ;
-- hook de benchmark automatique à chaque changement ;
-- hook lançant PineTS ;
-- hook exécutant des régressions comportementales ;
-- hook exécutant une matrice de datasets, de paramètres ou de stability probes.
-
-Les checks sémantiques appartiennent aux workflows/agents.
-
-PineTS n’est exécuté ni par `SessionStart`, ni par `PostToolUse`, ni par le `Stop` hook du socle.
-
-L’exécution comportementale appartient exclusivement aux workflows explicites tels que `pine-new`, `pine-develop`, `pine-release` ou `pine-local-test`.
-
-Les hooks restent des garde-fous mécaniques ou de contexte.
+- fast;
+- deterministic;
+- actionable;
+- low-noise.
 
 ---
 
-## 43. GIT LOCAL
+## 42. NO SEMANTIC HOOK BY DEFAULT
 
-### 43.1 Initialisation
+Do not create initially:
 
-Avant `git init` ou toute mutation, appliquer la frontière physique de §6.1. Si `pine workspace` est déjà englobé par un repository parent, ne pas initialiser un repository imbriqué ni accepter silencieusement la racine parent : arrêter et demander une décision au titulaire.
+- prompt hook judging the quality of the Pine at every edit;
+- review agent hook after every line;
+- network hook;
+- publication hook;
+- automatic benchmark hook at every change;
+- hook launching PineTS;
+- hook running behavioural regressions;
+- hook running a matrix of datasets, parameters or stability probes.
 
-Si le workspace n’est pas un repo Git :
+Semantic checks belong to the workflows/agents.
 
-- initialiser localement ;
-- utiliser le défaut Git de la machine lorsqu’il est sain ;
-- sinon utiliser une branche de travail conventionnelle telle que `main` ;
-- ne pas créer de remote.
+PineTS is run neither by `SessionStart`, nor by `PostToolUse`, nor by the `Stop` hook of the foundation.
 
-Si un remote existe déjà dans un workspace préexistant :
+Behavioural execution belongs exclusively to explicit workflows such as `pine-new`, `pine-develop`, `pine-release` or `pine-local-test`.
 
-- le signaler ;
-- ne pas le supprimer silencieusement ;
-- ne pas l’utiliser pour pousser sans décision explicite du titulaire.
+Hooks remain mechanical or context safeguards.
+
+---
+
+## 43. LOCAL GIT
+
+### 43.1 Initialization
+
+Before `git init` or any mutation, apply the physical boundary of §6.1. If `pine workspace` is already enclosed by a parent repository, do not initialize a nested repository nor silently accept the parent root: stop and ask the holder for a decision.
+
+If the workspace is not a Git repo:
+
+- initialize locally;
+- use the machine's Git default when it is sound;
+- otherwise use a conventional working branch such as `main`;
+- do not create a remote.
+
+If a remote already exists in a pre-existing workspace:
+
+- flag it;
+- do not remove it silently;
+- do not use it to push without an explicit decision of the holder.
 
 ### 43.2 Commit
 
-Ne pas créer automatiquement un commit sans approbation explicite du titulaire.
+Do not automatically create a commit without explicit approval from the holder.
 
-Le bootstrap peut préparer les changements et proposer le premier commit.
+The bootstrap may prepare the changes and propose the first commit.
 
 ### 43.3 Worktrees
 
-Utiliser les worktrees pour :
+Use worktrees for:
 
-- changement structurel risqué ;
-- expérimentation ;
-- travail parallèle ;
-- futur agent modificateur ;
-- isolation utile.
+- risky structural change;
+- experimentation;
+- parallel work;
+- future modifying agent;
+- useful isolation.
 
-Ne pas imposer un worktree pour une typo.
+Do not impose a worktree for a typo.
 
-Les worktrees Git ne sont utilisables qu'après l'existence d'un commit de base exploitable. Avant le premier commit autorisé, documenter cette limitation au lieu de prétendre que l'isolation worktree est opérationnelle.
+Git worktrees are usable only after a usable base commit exists. Before the first authorized commit, document this limitation instead of claiming that worktree isolation is operational.
 
-### 43.4 Subagents actuels
+### 43.4 Current subagents
 
-Les quatre subagents de base sont read-only.
+The four base subagents are read-only.
 
-Ils n’ont donc pas besoin de worktree.
+They therefore do not need a worktree.
 
-Tout futur subagent autorisé à modifier du code doit être évalué pour `isolation: worktree`.
+Any future subagent authorized to modify code must be evaluated for `isolation: worktree`.
 
 ### 43.5 Backup
 
-Git local sur le même disque n’est pas un backup matériel.
+Local Git on the same disk is not a hardware backup.
 
-`OPERATIONS.md` peut recommander, sans l’imposer :
+`OPERATIONS.md` may recommend, without imposing it:
 
-- un second repo bare local ;
-- un disque externe ;
-- un NAS ;
-- autre stockage privé décidé par le titulaire.
+- a second local bare repo;
+- an external disk;
+- a NAS;
+- other private storage decided by the holder.
 
-Ne pas introduire GitHub par défaut. Les archives locales regroupées sous `docs/maintenance/archives/` ne tiennent pas lieu de backup indépendant du disque.
+Do not introduce GitHub by default. The local archives grouped under `docs/maintenance/archives/` do not stand in for a backup independent of the disk.
 
-**Parcours d’export GitHub (ratifié le 2026-11-06)** : destinations déclarées dans `pws.config.json` (`name`, `repo`, `visibility`, `path_prefix`, `branch`) ; `github export-plan` construit, pour un produit REGISTERED, l’ensemble exporté à partir d’une liste de contenus autorisés (source seulement si `source_visibility = public` ou destination `private` ; documents de release, tutoriel, conditions référencées) et liste les exclusions motivées (manifeste, contexte interne, décisions, recherche, preuves de validation, suivi) ; jamais le workspace, `pws.config.json`, `.claude/`, `docs/maintenance/`, des archives ni des secrets. `github fetch` (clone local, acte réseau explicite) puis `github export-diff` montrent ajouté/modifié/inchangé ; `github publish --yes` copie, committe et pousse dans le clone après autorisation explicite du titulaire pour ce plan précis (`git push` reste soumis à confirmation). Tout envoi, contenu public compris, exige avant toute écriture dans le clone que l’URL de la destination et le clone (une seule URL de fetch et de push, `pushurl` et réécritures appliqués) désignent le dépôt de github.com configuré pour la destination, sous des formes d’URL strictes ; le remote est relu juste avant le push et, s’il a changé après le commit local, rien n’est poussé et l’état laissé sur disque est décrit (demande du titulaire du 2026-11-14 : identité du dépôt autorisé, distincte de la confidentialité ; un contenu public peut aller vers un dépôt privé choisi explicitement). Ce qui part est exactement le plan : une entrée d’URL vide ou un réglage qui fait se connecter Git ailleurs que l’URL affichée ou sans la vérifier (programme SSH ou de connexion remplacé, assistant distant, adresse imposée, vérification TLS désactivée, dans la configuration ou l’environnement) est refusé ; une cible qui ne diffère que par la casse d’une entrée du dépôt ou qui exige un dossier là où il a un fichier est refusée ; un fichier dont Git modifierait les octets au commit est refusé avant toute écriture ; aucun hook ne s’exécute dans le clone de publication ; le commit local est vérifié avant le push. Un envoi qui contient un source fermé exige en outre, immédiatement avant le push, que GitHub rapporte comme `PRIVATE` le dépôt configuré lui-même (`gh repo view`, authentification courante) ; à défaut, refus (décision du titulaire du 2026-11-13, constat I-06). La visibilité peut changer entre ce contrôle et l’envoi : aucune garantie atomique. Un script importé est exporté avec ses documents juridiques d’origine déclarés (`license.documents`, §45.2), à l’identique (nom, octets, encodage, langue), jamais remplacés par un modèle PWS ; un fichier de nom juridique n’est jamais inclus pour son seul nom ni écarté en silence : tant qu’un document n’est pas déclaré, est absent, modifié depuis le plan ou refusé par un contrôle (lien, fichier spécial, contenu non contrôlable, syntaxe de modèle PWS, code d’un source fermé vers une destination publique), l’export entier attend, avec la résolution. Un dossier privé dans un dépôt public n’est jamais supposé possible ; un dépôt existant est une destination à configurer, jamais à restructurer ; retrait de fichiers, réécriture d’historique et changement de visibilité restent des actes du titulaire hors workflow.
+**Guided GitHub export path (ratified on 2026-11-06)**: destinations declared in `pws.config.json` (`name`, `repo`, `visibility`, `path_prefix`, `branch`); `github export-plan` builds, for a REGISTERED product, the exported set from a list of allowed contents (source only if `source_visibility = public` or destination `private`; release documents, tutorial, referenced terms) and lists the justified exclusions (manifest, internal context, decisions, research, validation evidence, tracking); never the workspace, `pws.config.json`, `.claude/`, `docs/maintenance/`, archives or secrets. `github fetch` (local clone, explicit network act) then `github export-diff` show added/modified/unchanged; `github publish --yes` copies, commits and pushes in the clone after explicit authorization from the holder for this precise plan (`git push` remains subject to confirmation). Any send, public content included, requires before any write in the clone that the URL of the destination and the clone (a single fetch and push URL, `pushurl` and rewrites applied) designate the github.com repository configured for the destination, in strict URL forms; the remote is re-read just before the push and, if it has changed after the local commit, nothing is pushed and the state left on disk is described (holder's request of 2026-11-14: identity of the authorized repository, distinct from privacy; public content may go to a private repository chosen explicitly). What leaves is exactly the plan: an empty URL entry or a setting that makes Git connect elsewhere than the displayed URL or without verifying it (replaced SSH or connection program, remote helper, imposed address, disabled TLS verification, in the configuration or the environment) is refused; a target that differs only by case from an entry of the repository or that requires a folder where it has a file is refused; a file whose bytes Git would modify at commit is refused before any write; no hook runs in the publication clone; the local commit is verified before the push. A send that contains a closed source additionally requires, immediately before the push, that GitHub report the configured repository itself as `PRIVATE` (`gh repo view`, current authentication); failing that, refusal (holder's decision of 2026-11-13, finding I-06). The visibility may change between this check and the send: no atomic guarantee. An imported script is exported with its declared original legal documents (`license.documents`, §45.2), as is (name, bytes, encoding, language), never replaced by a PWS template; a file with a legal name is never included on the strength of its name alone nor discarded silently: as long as a document is not declared, is missing, modified since the plan or refused by a check (link, special file, uncheckable content, PWS template syntax, code of a closed source to a public destination), the entire export waits, with the resolution. A private folder in a public repository is never assumed possible; an existing repository is a destination to configure, never to restructure; removal of files, rewriting of history and change of visibility remain acts of the holder outside the workflow.
 
 ---
 
-## 44. MODÈLE DE REGISTRATION DES SCRIPTS
+## 44. SCRIPT REGISTRATION MODEL
 
-Ne pas maintenir de registry centrale séparée.
+Do not maintain a separate central registry.
 
-La vérité est distribuée par produit :
+The truth is distributed per product:
 
 ```text
 scripts/<slug>/SCRIPT.json
 ```
 
-Le workspace reconstruit la liste des produits en scannant ces manifests.
+The workspace rebuilds the list of products by scanning these manifests.
 
-Cela évite :
+This avoids:
 
 ```text
-central registry ≠ dossiers réels
+central registry ≠ actual folders
 ```
 
-### 44.1 Axes d'état déterministes
+### 44.1 Deterministic state axes
 
-Ne pas réduire plusieurs constats indépendants à un statut unique. Le scanner expose au minimum :
+Do not reduce several independent findings to a single status. The scanner exposes at a minimum:
 
 ```text
 product_structure_status:
@@ -3406,14 +3425,14 @@ validation_integrity_status:
   BROKEN
 
 validation_effective_status derived:
-  valeur persistée applicable
+  applicable persisted value
   stale
-  null si l'intégrité est BROKEN
+  null if the integrity is BROKEN
 ```
 
-Un product root peut donc être `BROKEN` tout en contenant un `.pine` `UNREGISTERED`, sans qu'un constat écrase l'autre.
+A product root can therefore be `BROKEN` while containing an `UNREGISTERED` `.pine`, without one finding overwriting the other.
 
-Dans l'axe `product_structure_status`, appliquer l'ordre déterministe suivant uniquement pour produire la valeur synthétique :
+In the `product_structure_status` axis, apply the following deterministic order only to produce the synthetic value:
 
 ```text
 AMBIGUOUS
@@ -3422,59 +3441,59 @@ AMBIGUOUS
 > REGISTERED
 ```
 
-`AMBIGUOUS` signifie que l'identité sûre du produit ou de sa source ne peut pas être établie ; `BROKEN` qu'un contrat présent est invalide ou incohérent ; `INCOMPLETE` qu'un élément requis manque sans ambiguïté ni contrat cassé ; `REGISTERED` que les critères mécaniques sont satisfaits. Le scanner conserve parallèlement une liste structurée de tous les findings applicables afin que la valeur synthétique ne masque pas les causes secondaires.
+`AMBIGUOUS` means that the reliable identity of the product or of its source cannot be established; `BROKEN` that a present contract is invalid or inconsistent; `INCOMPLETE` that a required element is missing without ambiguity or broken contract; `REGISTERED` that the mechanical criteria are satisfied. The scanner keeps in parallel a structured list of all the applicable findings so that the synthetic value does not mask the secondary causes.
 
 ### 44.2 `product_structure_status = REGISTERED`
 
-Un produit est structurellement onboardé si :
+A product is structurally onboarded if:
 
-- root produit valide ;
-- `SCRIPT.json` valide ;
-- source déclarée présente dans ce root ;
-- `PRODUCT.md` présent, lisible, non vide et sans placeholder explicitement connu ;
-- `ARCHITECTURE.md` présent, lisible, non vide et sans placeholder explicitement connu ;
-- `CLAUDE.md` local présent, lisible, non vide et sans placeholder explicitement connu ;
-- `validation/current.json` présent ;
-- modèle de distribution résolu ;
-- aucune ambiguïté de source principale.
+- valid product root;
+- valid `SCRIPT.json`;
+- declared source present in this root;
+- `PRODUCT.md` present, readable, non-empty and without an explicitly known placeholder;
+- `ARCHITECTURE.md` present, readable, non-empty and without an explicitly known placeholder;
+- local `CLAUDE.md` present, readable, non-empty and without an explicitly known placeholder;
+- `validation/current.json` present;
+- distribution model resolved;
+- no ambiguity about the main source.
 
-Le scanner ne prétend pas juger mécaniquement que ces documents sont sémantiquement « substantiels » ou de bonne qualité. Cette revue appartient à l'onboarding, au reviewer ou à un contrôle sémantique explicite du doctor.
+The scanner does not claim to judge mechanically that these documents are semantically "substantial" or of good quality. This review belongs to the onboarding, to the reviewer or to an explicit semantic check of the doctor.
 
 ### 44.3 `source_registration_status`
 
-`REGISTERED` signifie que le `.pine` est la source canonique d'un `SCRIPT.json` v1 valide dont le chemin se résout dans le même product root.
+`REGISTERED` means that the `.pine` is the canonical source of a valid `SCRIPT.json` (schema 3, or a legacy schema 2 or 1 manifest still read and flagged until `migrate --apply`, §45.2) whose path resolves within the same product root.
 
-`UNREGISTERED` signifie qu'un `.pine` existe sous `scripts/**` mais n'appartient à aucun manifest valide.
+`UNREGISTERED` means that a `.pine` exists under `scripts/**` but belongs to no valid manifest.
 
-Un même `.pine` ne peut pas être revendiqué par plusieurs manifests. Toute revendication multiple est signalée comme ambiguïté structurelle sans choix silencieux.
+The same `.pine` cannot be claimed by several manifests. Any multiple claim is flagged as a structural ambiguity without a silent choice.
 
 ### 44.4 `product_structure_status = INCOMPLETE`
 
-Des éléments d’onboarding existent mais le contexte minimal est incomplet.
+Onboarding elements exist but the minimal context is incomplete.
 
 ### 44.5 `product_structure_status = BROKEN`
 
-Le manifest pointe vers une source absente ou une structure incohérente.
+The manifest points to a missing source or an inconsistent structure.
 
 ### 44.6 `product_structure_status = AMBIGUOUS`
 
-Plusieurs `.pine` ou plusieurs contextes empêchent de déterminer de manière sûre le produit/source principal.
+Several `.pine` files or several contexts prevent reliably determining the main product/source.
 
-### 44.7 `.pine` directement sous `/scripts`
+### 44.7 `.pine` directly under `/scripts`
 
-Le signaler comme structurellement non onboardé.
+Flag it as structurally not onboarded.
 
-Ne pas le déplacer silencieusement si le slug cible n’est pas évident.
+Do not move it silently if the target slug is not obvious.
 
 ---
 
-## 45. `SCRIPT.json` — CONTRAT
+## 45. `SCRIPT.json` — CONTRACT
 
-### 45.1 But
+### 45.1 Purpose
 
-Routage machine minimal.
+Minimal machine routing.
 
-### 45.2 Schéma 3 normatif (ratifié le 2026-11-06, dimensions de publication séparées)
+### 45.2 Normative schema 3 (ratified on 2026-11-06, separate publication dimensions)
 
 ```json
 {
@@ -3498,25 +3517,25 @@ Routage machine minimal.
 }
 ```
 
-Pour `schema_version = 3`, les sept champs `schema_version`, `id`, `source`, `script_kind`, `profile`, `license`, `publication` sont obligatoires, `migration` est facultatif, et tout autre champ est rejeté. `license` porte quatre axes obligatoires (`id`, `grant`, `source_visibility`, `access`) et quatre champs facultatifs (`copyright_holder` : null → identité configurée ; `created_year` : année de création, conservée lors des mises à jour ; `terms_ref` : chemin relatif, confiné au product root, vers les conditions rendues ; `terms_url` : URL https de la référence légale déclarée du produit, seule URL non standard admise par le guard, par correspondance exacte). `publication` porte exactement trois dimensions indépendantes, chacune nullable (null = inconnu, signalé, jamais déduit) : `state` ∈ `unpublished`, `published` ; `privacy` ∈ `public`, `private` (confidentialité de la publication TradingView) ; `mode` ∈ `open`, `protected`, `invite-only` (mode du script : source visible, source masqué, accès par invitation). Aucune de ces valeurs n’est dérivée d’une autre ; les cohérences de §45.4 les contrôlent entre elles. Toute extension passe par une évolution explicite du schéma.
+For `schema_version = 3`, the seven fields `schema_version`, `id`, `source`, `script_kind`, `profile`, `license`, `publication` are mandatory, `migration` is optional, and any other field is rejected. `license` carries four mandatory axes (`id`, `grant`, `source_visibility`, `access`) and four optional fields (`copyright_holder`: null → configured identity; `created_year`: creation year, kept during updates; `terms_ref`: relative path, confined to the product root, to the rendered terms; `terms_url`: https URL of the declared legal reference of the product, the only non-standard URL admitted by the guard, by exact match). `publication` carries exactly three independent dimensions, each nullable (null = unknown, flagged, never inferred): `state` ∈ `unpublished`, `published`; `privacy` ∈ `public`, `private` (privacy of the TradingView publication); `mode` ∈ `open`, `protected`, `invite-only` (script mode: source visible, source hidden, access by invitation). None of these values is derived from another; the consistency rules of §45.4 check them against each other. Any extension goes through an explicit evolution of the schema.
 
-Schémas antérieurs, lus par compatibilité et migrés explicitement (`migrate --apply`, étape m005) : schéma 1 (`distribution` ∈ `free-open-source`, `paid-closed-source` → profil et axes dérivés des défauts, état de publication inconnu) ; schéma 2 (`license.publication` en une seule chaîne qui confondait confidentialité et mode → `tradingview-open|protected|invite-only` = mode correspondant et confidentialité INCONNUE (jamais déduite), `tradingview-private` = confidentialité privée et mode INCONNU, `unpublished` = état non publié ; l’état reste inconnu sauf pour `unpublished`) ; schéma 1 → publication entièrement inconnue (les défauts de profil sont des propositions pour un nouveau projet, jamais des faits d’un projet migré). Les deux formes sont signalées (`MANIFEST_LEGACY_SCHEMA`) ; la migration conserve les seules informations enregistrées, laisse les inconnues nulles et les rapporte comme ambiguïtés ; une migration antérieure ayant déduit une valeur est rectifiée de façon tracée (`migration.rectifications`) sans toucher une valeur confirmée par le titulaire (`migration.holder_confirmed`, `license confirm`). Une année de création inconnue n’est jamais remplacée par l’année courante.
+Earlier schemas, read for compatibility and migrated explicitly (`migrate --apply`, step m005): schema 1 (`distribution` ∈ `free-open-source`, `paid-closed-source` → profile and axes derived from the defaults, publication state unknown); schema 2 (`license.publication` as a single string that conflated privacy and mode → `tradingview-open|protected|invite-only` = corresponding mode and UNKNOWN privacy (never inferred), `tradingview-private` = private privacy and UNKNOWN mode, `unpublished` = unpublished state; the state remains unknown except for `unpublished`); schema 1 → publication entirely unknown (the profile defaults are proposals for a new project, never facts of a migrated project). Both forms are flagged (`MANIFEST_LEGACY_SCHEMA`); the migration keeps only the recorded information, leaves the unknowns null and reports them as ambiguities; an earlier migration that inferred a value is rectified in a traced way (`migration.rectifications`) without touching a value confirmed by the holder (`migration.holder_confirmed`, `license confirm`). An unknown creation year is never replaced by the current year.
 
-`id` est exactement égal au slug du product root. Les IDs/slugs sont uniques dans le workspace avec une comparaison case-insensitive afin d'éviter les collisions sur les filesystems macOS généralement insensibles à la casse.
+`id` is exactly equal to the slug of the product root. IDs/slugs are unique in the workspace with a case-insensitive comparison in order to avoid collisions on the generally case-insensitive macOS filesystems.
 
-`source` est un chemin relatif au product root vers un fichier `.pine`. Sa résolution physique finale doit rester dans ce root. Sont rejetés :
+`source` is a path relative to the product root to a `.pine` file. Its final physical resolution must remain within this root. The following are rejected:
 
-- chemin absolu ;
-- traversal `..` sortant ;
-- symlink ou chaîne de symlinks sortant du product root ;
-- référence à une source située dans un autre product root, un autre projet ou tout emplacement extérieur au product root ;
-- chemin ambigu ou source principale non unique.
+- absolute path;
+- outgoing `..` traversal;
+- symlink or chain of symlinks leading out of the product root;
+- reference to a source located in another product root, another project or any location outside the product root;
+- ambiguous path or non-unique main source.
 
-Aucun outil ne lit un source dont le chemin résolu sort du product root (scanner, guard, `validation-status`, hooks) ; un manifeste invalide ne provoque jamais une lecture hors périmètre.
+No tool reads a source whose resolved path leaves the product root (scanner, guard, `validation-status`, hooks); an invalid manifest never causes a read outside the perimeter.
 
-`SCRIPT.json` est la source machine canonique de `script_kind`, du profil et des axes de licence. `PRODUCT.md` et `CLAUDE.md` peuvent les expliquer, mais ne les redéfinissent pas comme autorités concurrentes.
+`SCRIPT.json` is the canonical machine source of `script_kind`, of the profile and of the licence axes. `PRODUCT.md` and `CLAUDE.md` may explain them, but do not redefine them as competing authorities.
 
-**Licence existante d’un script importé** (évolution explicite décidée par le titulaire le 2026-11-13, constat C-19 ; extension compatible : `schema_version` reste 3, tout manifeste antérieur reste valide et inchangé, aucune migration). `license` admet deux champs facultatifs supplémentaires : `origin` ∈ `profile` (défaut quand il est absent ou nul : licence d’un profil) | `imported` (licence existante d’un script importé, conservée) ; `status` ∈ `confirmed` | `to-analyse`, obligatoire quand `origin = imported` et interdit sinon. Avec `origin = imported` : `status = confirmed` ⇒ `id` ∈ liste fermée d’identifiants SPDX exacts confirmés par le titulaire (`CC-BY-NC-SA-4.0`, `MPL-2.0`, `MIT`, `Apache-2.0`, `BSD-2-Clause`, `BSD-3-Clause`, `GPL-2.0-only`, `GPL-2.0-or-later`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-2.1-only`, `LGPL-2.1-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`) ; `status = to-analyse` ⇒ `id = null` ; `grant = license` (droits définis par la licence elle-même ; `cc` pour `CC-BY-NC-SA-4.0`). `grant = license` est réservé à `origin = imported` ; `PROPRIETARY` n’est jamais une licence importée. Les identifiants SPDX dépréciés (`GPL-2.0`, `GPL-3.0`, `LGPL-2.1`, `LGPL-3.0`, `AGPL-3.0` et leurs formes « + ») ne sont jamais enregistrés ; « only » et « or later » ne sont jamais assimilés. Un manifeste de schéma 2 ne porte jamais ces champs. La vue validée n’expose `origin` et `status` que lorsqu’ils sont enregistrés. Documents juridiques d’origine (demande du titulaire du 2026-11-14, même extension compatible) : `license.documents`, facultatif et réservé à `origin = imported`, liste les fichiers qui accompagnent la licence existante (texte de licence, `NOTICE`, attributions), déclarés par le titulaire — chemins relatifs à la racine du produit ou directement sous `release/` portant un nom juridique (`LICENSE`, `LICENCE`, `COPYING`, `COPYRIGHT`, `NOTICE`, `PATENTS`, `AUTHORS`, `CREDITS`, `ATTRIBUTION`, `CONTRIBUTORS`, `THIRD_PARTY_NOTICES` et leurs variantes), ou textes `LICENSES/<licence>.txt` (disposition REUSE) ; jamais un fichier caché, un source Pine, un JSON, un verrou, un fichier interne de Pine Workspace ni un nom portant un caractère invisible ; un fichier de nom juridique situé ailleurs dans le produit (dossiers internes exceptés), un dossier de nom juridique ou un `release/` / `LICENSES/` qui est un lien fait attendre l’export jusqu’à ce que le titulaire le déplace ; `[]` = aucun document séparé ; absent ou nul = non déclaré. L’identifiant SPDX enregistré ne dit pas à lui seul quels documents une redistribution exige.
+**Existing licence of an imported script** (explicit evolution decided by the holder on 2026-11-13, finding C-19; compatible extension: `schema_version` remains 3, any earlier manifest remains valid and unchanged, no migration). `license` admits two additional optional fields: `origin` ∈ `profile` (default when it is absent or null: licence of a profile) | `imported` (existing licence of an imported script, kept); `status` ∈ `confirmed` | `to-analyse`, mandatory when `origin = imported` and forbidden otherwise. With `origin = imported`: `status = confirmed` ⇒ `id` ∈ closed list of exact SPDX identifiers confirmed by the holder (`CC-BY-NC-SA-4.0`, `MPL-2.0`, `MIT`, `Apache-2.0`, `BSD-2-Clause`, `BSD-3-Clause`, `GPL-2.0-only`, `GPL-2.0-or-later`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-2.1-only`, `LGPL-2.1-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`); `status = to-analyse` ⇒ `id = null`; `grant = license` (rights defined by the licence itself; `cc` for `CC-BY-NC-SA-4.0`). `grant = license` is reserved for `origin = imported`; `PROPRIETARY` is never an imported licence. Deprecated SPDX identifiers (`GPL-2.0`, `GPL-3.0`, `LGPL-2.1`, `LGPL-3.0`, `AGPL-3.0` and their "+" forms) are never recorded; "only" and "or later" are never treated as equivalent. A schema 2 manifest never carries these fields. The validated view exposes `origin` and `status` only when they are recorded. Original legal documents (holder's request of 2026-11-14, same compatible extension): `license.documents`, optional and reserved for `origin = imported`, lists the files that accompany the existing licence (licence text, `NOTICE`, attributions), declared by the holder — paths relative to the root of the product or directly under `release/` bearing a legal name (`LICENSE`, `LICENCE`, `COPYING`, `COPYRIGHT`, `NOTICE`, `PATENTS`, `AUTHORS`, `CREDITS`, `ATTRIBUTION`, `CONTRIBUTORS`, `THIRD_PARTY_NOTICES` and their variants), or `LICENSES/<licence>.txt` texts (REUSE layout); never a hidden file, a Pine source, a JSON, a lock, an internal Pine Workspace file or a name bearing an invisible character; a file with a legal name located elsewhere in the product (except internal folders), a folder with a legal name or a `release/` / `LICENSES/` that is a link makes the export wait until the holder moves it; `[]` = no separate document; absent or null = not declared. The recorded SPDX identifier does not on its own say which documents a redistribution requires.
 
 ```json
 "license": { "id": "MPL-2.0", "grant": "license", "source_visibility": "public", "access": "free",
@@ -3524,9 +3543,9 @@ Aucun outil ne lit un source dont le chemin résolu sort du product root (scanne
              "copyright_holder": null, "created_year": null, "terms_ref": null, "terms_url": null }
 ```
 
-### 45.3 Valeurs `script_kind`
+### 45.3 `script_kind` values
 
-Supporter selon Pine actuel :
+Support according to current Pine:
 
 ```text
 indicator
@@ -3534,195 +3553,195 @@ strategy
 library
 ```
 
-### 45.4 Profils, axes de licence et dimensions de publication
+### 45.4 Profiles, licence axes and publication dimensions
 
-Profils (configurations de départ, jamais des niveaux de qualité ni des modes imposés — master §5) :
+Profiles (starting configurations, never quality levels or imposed modes — master §5):
 
-| Profil | `license.id` / `grant` | `source_visibility` | `access` | `publication` par défaut (state / privacy / mode) |
+| Profile | `license.id` / `grant` | `source_visibility` | `access` | default `publication` (state / privacy / mode) |
 | --- | --- | --- | --- | --- |
 | `FREE` | `CC-BY-NC-SA-4.0` / `cc` | `public` | `free` | `unpublished` / `public` / `open` |
-| `FREE` à source fermé (même profil, axes ajustés) | `PROPRIETARY` / `free-use` | `closed` | `free` | `unpublished` / `public` / `protected` |
+| `FREE` with closed source (same profile, adjusted axes) | `PROPRIETARY` / `free-use` | `closed` | `free` | `unpublished` / `public` / `protected` |
 | `PRIVATE` | `PROPRIETARY` / `none` | `closed` | `restricted` | `unpublished` / null / null |
 | `COMMERCIAL` | `PROPRIETARY` / `eula` | `closed` | `paid` | `unpublished` / `public` / `invite-only` |
 
-`PRIVATE` est un profil d’usage : il ne désigne ni une publication privée TradingView (`publication.privacy`) ni un dépôt GitHub privé. Règles TradingView consultées le 2026-11-06 (Pine Script User Manual, « Publishing scripts ») : confidentialité et mode sont deux réglages distincts de la publication ; seul un script public `invite-only` peut être payant ; la vente d’accès à un script privé est interdite, comme la facturation d’un script `open` ou `protected`.
+`PRIVATE` is a usage profile: it designates neither a private TradingView publication (`publication.privacy`) nor a private GitHub repository. TradingView rules consulted on 2026-11-06 (Pine Script User Manual, "Publishing scripts"): privacy and mode are two distinct settings of the publication; only a public `invite-only` script may be paid; selling access to a private script is forbidden, as is charging for an `open` or `protected` script.
 
-**Licence existante d’un script importé.** Les profils sont les configurations proposées aux nouveaux projets ; ils ne forcent jamais la licence d’un script importé. Quatre notions restent distinctes : profil d’usage, licence (`license.id` exact), visibilité du source, publication (état, confidentialité, mode). Une licence importée conserve son texte, ses notices et ses attributions ; aucune licence n’est attribuée automatiquement ; une détection d’en-tête est une proposition à confirmer par le titulaire, jamais une preuve juridique. Proposition : « either version N of the License, or (at your option) any later version » → `-or-later` ; « version N » seule → `-only` ; toute autre formulation → à analyser (notamment plusieurs versions ou un choix entre versions — « version 2 or 3 », « v2 or v3 », expression SPDX `GPL-2.0-only OR GPL-3.0-only` — jamais un identifiant `-only` ou `-or-later` unique ; un identifiant SPDX déprécié, sur une ligne SPDX comme dans le texte de la notice) ; `MIT` désigne le texte Expat (notice X11 ou seule mention « MIT License » → à analyser).
+**Existing licence of an imported script.** The profiles are the configurations proposed to new projects; they never force the licence of an imported script. Four notions remain distinct: usage profile, licence (exact `license.id`), visibility of the source, publication (state, privacy, mode). An imported licence keeps its text, its notices and its attributions; no licence is assigned automatically; a header detection is a proposal to be confirmed by the holder, never legal evidence. Proposal: "either version N of the License, or (at your option) any later version" → `-or-later`; "version N" alone → `-only`; any other wording → to analyse (in particular several versions or a choice between versions — "version 2 or 3", "v2 or v3", SPDX expression `GPL-2.0-only OR GPL-3.0-only` — never a single `-only` or `-or-later` identifier; a deprecated SPDX identifier, on an SPDX line as in the text of the notice); `MIT` designates the Expat text (X11 notice or the "MIT License" mention alone → to analyse).
 
-Licence importée — BROKEN : `grant = license` sans `origin = imported` ; `origin = imported` sans `status`, avec un grant autre que `license` (`cc` pour CC-BY-NC-SA-4.0), avec `status = confirmed` et un identifiant hors liste fermée ou déprécié, ou avec `status = to-analyse` et un identifiant renseigné ; `documents` sans `origin = imported`, qui n’est pas une liste de chemins, ou dont une entrée sort des noms et emplacements admis ou est déclarée deux fois. Avertissements (jamais bloquants pour le développement) : `LICENSE_DOCUMENT_UNAVAILABLE` (document déclaré absent, lien symbolique ou fichier non ordinaire : l’export attend) ; `LICENSE_TO_ANALYSE` (licence importée à analyser : la préparation de publication et l’export ne la tiennent pas pour réglée tant que le titulaire n’a pas enregistré l’identifiant exact) ; `IMPORTED_LICENSE_CONFLICT` (licence copyleft — MPL, GPL, LGPL, AGPL — avec source fermé, mode `protected` ou `invite-only`, ou accès payant ; CC BY-NC-SA avec mode `protected` ou `invite-only`, ou accès payant (clause NonCommercial) — une CC BY-NC-SA importée avec source fermé reste BROKEN par la règle mécanique CC ⇒ source public ; licence permissive dont la notice doit accompagner l’œuvre : points à analyser, jamais un blocage automatique ni une conclusion juridique) ; `IMPORTED_LICENSE_TERMS` (`terms_ref` déclaré : aucun document PWS ne s’applique). Pour une licence importée, `PROFILE_AXES_DIVERGENCE` ne compare que l’accès ; `ACCESS_PAID_WITHOUT_EULA` et `TERMS_URL_WITHOUT_TERMS` ne s’appliquent pas. Guard : la notice existante doit rester présente et cohérente avec `license.id` (lue dans l’en-tête et dans le bloc de commentaires initial qui suit `//@version`, jusqu’à la première ligne de code ; jamais déplacée) (absente, ou établissant une autre licence de la même famille → bloquant ; l’enregistrement se corrige avec le titulaire, jamais la notice ; une notice qui n’établit pas exactement l’identifiant enregistré — plusieurs versions ou choix entre versions, identifiant déprécié, formulation ambiguë → avertissement, jamais un blocage ni une acceptation silencieuse) ; ni en-tête CC, ni `All Rights Reserved`, ni ligne © du titulaire configuré exigés (les auteurs d’origine restent cités ; absence de toute ligne de copyright → avertissement) ; licence à analyser → modèle d’en-tête non vérifiable ; la règle ciblée des URL de licence reste celle de la décision D.
+Imported licence — BROKEN: `grant = license` without `origin = imported`; `origin = imported` without `status`, with a grant other than `license` (`cc` for CC-BY-NC-SA-4.0), with `status = confirmed` and an identifier outside the closed list or deprecated, or with `status = to-analyse` and a filled-in identifier; `documents` without `origin = imported`, that is not a list of paths, or of which an entry falls outside the admitted names and locations or is declared twice. Warnings (never blocking for development): `LICENSE_DOCUMENT_UNAVAILABLE` (declared document missing, symbolic link or non-regular file: the export waits); `LICENSE_TO_ANALYSE` (imported licence to analyse: publication preparation and the export do not treat it as settled as long as the holder has not recorded the exact identifier); `IMPORTED_LICENSE_CONFLICT` (copyleft licence — MPL, GPL, LGPL, AGPL — with closed source, `protected` or `invite-only` mode, or paid access; CC BY-NC-SA with `protected` or `invite-only` mode, or paid access (NonCommercial clause) — an imported CC BY-NC-SA with closed source remains BROKEN by the mechanical rule CC ⇒ public source; permissive licence whose notice must accompany the work: points to analyse, never an automatic block nor a legal conclusion); `IMPORTED_LICENSE_TERMS` (`terms_ref` declared: no PWS document applies). For an imported licence, `PROFILE_AXES_DIVERGENCE` compares only the access; `ACCESS_PAID_WITHOUT_EULA` and `TERMS_URL_WITHOUT_TERMS` do not apply. Guard: the existing notice must remain present and consistent with `license.id` (read in the header and in the initial comment block that follows `//@version`, up to the first line of code; never moved) (missing, or establishing another licence of the same family → blocking; the record is corrected with the holder, never the notice; a notice that does not establish exactly the recorded identifier — several versions or a choice between versions, deprecated identifier, ambiguous wording → warning, never a block nor a silent acceptance); neither a CC header, nor `All Rights Reserved`, nor a © line of the configured copyright holder is required (the original authors remain cited; absence of any copyright line → warning); licence to analyse → header template not verifiable; the targeted licence URL rule remains that of decision D.
 
-Cohérences mécaniques (BROKEN) : `CC-BY-NC-SA-4.0` ⇒ `grant = cc` et `source_visibility = public` ; `grant = cc` ⇒ licence CC ; `publication.mode = open` ⇒ `source_visibility = public` ; `library` ⇒ `source_visibility = public`, `mode` ∈ `open`, null et `access ≠ paid` (règle library open-source telle qu’enregistrée par le master à sa date de vérification, revérifiée avant publication ; une évolution officielle exige un amendement du contrat plutôt qu'un contournement local silencieux) ; `terms_url` doit être une URL https. Avertissements (jamais bloquants pour le développement, signalés avant une publication) : `access = paid` sans `grant = eula` ; `access = paid` avec `privacy ≠ public` ou `mode ≠ invite-only` ; `grant = eula` sans `terms_ref` (EULA en brouillon) ; `terms_url` sans `terms_ref` ; `state = published` avec `privacy` ou `mode` inconnu ; `state` inconnu (manifeste migré, à confirmer). Le scanner, `pine-new`, `pine-onboard`, le menu PWS, `project-doctor`, `license status`, le parcours `pine-license` et les self-tests appliquent les mêmes règles.
+Mechanical consistency rules (BROKEN): `CC-BY-NC-SA-4.0` ⇒ `grant = cc` and `source_visibility = public`; `grant = cc` ⇒ CC licence; `publication.mode = open` ⇒ `source_visibility = public`; `library` ⇒ `source_visibility = public`, `mode` ∈ `open`, null and `access ≠ paid` (library open-source rule as recorded by the master at its verification date, rechecked before publication; an official evolution requires an amendment of the contract rather than a silent local workaround); `terms_url` must be an https URL. Warnings (never blocking for development, flagged before a publication): `access = paid` without `grant = eula`; `access = paid` with `privacy ≠ public` or `mode ≠ invite-only`; `grant = eula` without `terms_ref` (draft EULA); `terms_url` without `terms_ref`; `state = published` with unknown `privacy` or `mode`; unknown `state` (migrated manifest, to be confirmed). The scanner, `pine-new`, `pine-onboard`, the PWS menu, `project-doctor`, `license status`, the `pine-license` guided path and the self-tests apply the same rules.
 
-### 45.4bis Parcours guidé « Licence et conditions d'utilisation » (ratifié le 2026-11-07)
+### 45.4bis Guided path "Licence and terms of use" (ratified on 2026-11-07)
 
-Entrée `Qualité / publication → Licence et conditions d'utilisation → choix du script` (skill `pine-license`), indépendante de `pine-release` : elle ne déclenche aucun contrôle de release, aucune revue, ni PineTS ni TradingView. Fonctions : consulter le profil, la licence, les références légales et les informations déjà enregistrées ; identifier ce qui manque ou reste à confirmer ; compléter ou modifier par un dialogue guidé en groupes cohérents (identification du produit, fournisseur et contact, bénéficiaire ou compte autorisé, modèle commercial et durée, renouvellement et résiliation, support, remboursements, droit applicable, autres conditions — seuls les champs réellement prévus par les modèles du profil) ; prévisualiser les documents ; enregistrer les informations et générer les documents sur choix explicite. Documents servis sans imposer une EULA à tous : FREE à source public → en-tête CC ; FREE à source fermé → autorisation gratuite d'utilisation ; PRIVATE → notice propriétaire et autorisation particulière facultative ; COMMERCIAL → EULA configurable. Données et commandes réutilisées : manifeste (`license confirm`, y compris `--terms-ref` / `--terms-url`), `release/eula-fields.json` (`license set-fields`, valeurs existantes conservées, suppression explicite), modèles (`license preview` / `license write`) — aucune seconde logique ni second stockage. Règles : rien d'inventé (année, identité juridique, juridiction, conditions commerciales, URL) ; titulaire des droits distinct de l'identité juridique du fournisseur ; profil de licence, visibilité du source et dimensions de publication jamais confondus ; informations inconnues laissées vides et reprises plus tard ; statut brouillon tant que des informations indispensables manquent ; récapitulatif puis confirmation groupée avant enregistrement ; consultation et prévisualisation sans écriture ; Retour ou Annuler abandonne les changements non enregistrés ; un document techniquement complet n'est jamais présenté comme un contrat juridiquement validé. Interface dans la langue configurée, documents en anglais.
+Entry `Qualité / publication → Licence et conditions d'utilisation → choix du script` (Quality / publication → Licence and terms of use → script choice; skill `pine-license`), independent of `pine-release`: it triggers no release check, no review, neither PineTS nor TradingView. Functions: view the profile, the licence, the legal references and the information already recorded; identify what is missing or remains to be confirmed; complete or modify through a guided dialogue in consistent groups (product identification, provider and contact, beneficiary or authorized account, commercial model and term, renewal and termination, support, refunds, governing law, additional terms — only the fields actually provided for by the templates of the profile); preview the documents; save the information and generate the documents on explicit choice. Documents served without imposing an EULA on everyone: FREE with public source → CC header; FREE with closed source → free-use grant; PRIVATE → proprietary notice and optional particular permission; COMMERCIAL → configurable EULA. Data and commands reused: manifest (`license confirm`, including `--terms-ref` / `--terms-url`), `release/eula-fields.json` (`license set-fields`, existing values kept, explicit deletion), templates (`license preview` / `license write`) — neither a second logic nor a second storage. Rules: nothing invented (year, legal identity, jurisdiction, commercial terms, URL); copyright holder distinct from the legal identity of the provider; licence profile, source visibility and publication dimensions never conflated; unknown information left empty and taken up again later; draft status as long as indispensable information is missing; summary then grouped confirmation before saving; viewing and previewing without writing; Back or Cancel discards the unsaved changes; a technically complete document is never presented as a legally validated contract. Interface in the configured language, documents in English.
 
-Licence existante d’un script importé : aucun document de conditions PWS (ni en-tête de modèle, ni EULA, notice ou autorisation : `license write` et `license confirm --terms-ref` refusent) ; `overview` et `status` l’affichent « licence existante conservée » (`kept`) ou « à analyser » (`to-analyse`) avec la proposition lue dans l’en-tête ; `license confirm --license-id` enregistre l’identifiant exact confirmé par le titulaire (liste fermée ; déprécié, ambigu, hors liste ou licence de profil refusés), `--clear license_id` le remet à « à analyser » ; `license detect --source` donne la proposition d’un source non encore onboardé (lecture seule) ; elle lit l’en-tête (`header_lines`) et le bloc de commentaires initial qui suit `//@version` (`after_version_lines`), et liste les fichiers de nom juridique du dossier du produit (`legal_document_candidates`, proposition jamais enregistrée). `license confirm --license-document <chemin>` (répétable ; la déclaration liste tous les documents et remplace la précédente) enregistre `license.documents` après vérification de chaque fichier (nom et emplacement admis, fichier ordinaire du produit sans lien, texte UTF-8 ou mono-octet contrôlable, aucun nom exporté partagé) ; `--no-license-documents` enregistre qu’aucun document séparé n’accompagne le script ; `--clear license_documents` revient à « non déclaré » ; refusés pour une licence de profil. `overview` et `status` montrent les documents déclarés, les fichiers de nom juridique trouvés, ceux qui ne sont pas déclarés et ce qui fait attendre l’export ; les documents ne sont jamais réécrits, traduits ni remplacés par un modèle.
+Existing licence of an imported script: no PWS terms document (neither a template header, nor an EULA, notice or grant: `license write` and `license confirm --terms-ref` refuse); `overview` and `status` display it as "existing licence kept" (`kept`) or "to analyse" (`to-analyse`) with the proposal read in the header; `license confirm --license-id` records the exact identifier confirmed by the holder (closed list; deprecated, ambiguous, off-list or profile licence refused), `--clear license_id` resets it to "to analyse"; `license detect --source` gives the proposal for a source not yet onboarded (read-only); it reads the header (`header_lines`) and the initial comment block that follows `//@version` (`after_version_lines`), and lists the files with a legal name in the product folder (`legal_document_candidates`, a proposal never recorded). `license confirm --license-document <path>` (repeatable; the declaration lists all the documents and replaces the previous one) records `license.documents` after checking each file (admitted name and location, regular file of the product without a link, checkable UTF-8 or single-byte text, no shared exported name); `--no-license-documents` records that no separate document accompanies the script; `--clear license_documents` returns to "not declared"; refused for a profile licence. `overview` and `status` show the declared documents, the files with a legal name found, those that are not declared and what makes the export wait; the documents are never rewritten, translated or replaced by a template.
 
-### 45.5 Interdictions
+### 45.5 Prohibitions
 
-Ne jamais stocker ici :
+Never store here:
 
-- numéro de version produit ;
-- détails algorithmiques ;
-- secrets ;
-- benchmark ;
-- historique de décisions ;
-- duplication de PRODUCT.md ;
-- hash de validation courant.
+- product version number;
+- algorithmic details;
+- secrets;
+- benchmark;
+- decision history;
+- duplication of PRODUCT.md;
+- current validation hash.
 
 ---
 
-## 46. `PRODUCT.md` — CONTRAT
+## 46. `PRODUCT.md` — CONTRACT
 
-### 46.1 But
+### 46.1 Purpose
 
-Décrire le produit réellement construit.
+Describe the product actually built.
 
 ### 46.2 Construction
 
-Doit être écrit après analyse du vrai script ou conception du nouveau produit.
+Must be written after analysis of the real script or design of the new product.
 
-### 46.3 Contenu utile selon applicabilité
+### 46.3 Useful content depending on applicability
 
-- problème trader résolu ;
-- audience ;
-- promesse fonctionnelle ;
-- comportement principal ;
-- workflow utilisateur ;
-- éléments de différenciation ;
-- philosophie de configuration ;
-- frontières ;
-- non-goals ;
-- modèle de distribution ;
-- aspects propriétaires à ne pas exposer pour un produit payant.
+- trader problem solved;
+- audience;
+- functional promise;
+- main behaviour;
+- user workflow;
+- differentiating elements;
+- configuration philosophy;
+- boundaries;
+- non-goals;
+- distribution model;
+- proprietary aspects not to be exposed for a paid product.
 
 ### 46.4 Provenance
 
-Distinguer clairement :
+Clearly distinguish:
 
 ```text
-Confirmed by le titulaire
+Confirmed by the holder
 Observed in source
 Pending confirmation
 ```
 
-Utiliser uniquement les catégories réellement utiles.
+Use only the categories that are actually useful.
 
-### 46.5 Interdiction
+### 46.5 Prohibition
 
-Ne pas remplir des rubriques vides.
+Do not fill empty sections.
 
-Ne pas présenter une inférence comme décision.
-
----
-
-## 47. `ARCHITECTURE.md` DU SCRIPT — CONTRAT
-
-### 47.1 Statut
-
-Cartographie vivante dérivée du code.
-
-### 47.2 Contenu selon applicabilité
-
-- sections logiques ;
-- types/enums/UDTs ;
-- helpers centraux ;
-- flux de calcul ;
-- input dependency tree ;
-- état persistant ;
-- collections ;
-- requests ;
-- MTF flow ;
-- signal pipeline ;
-- rendering pipeline ;
-- object lifecycle ;
-- tables ;
-- alert dependencies ;
-- hotspots performance ;
-- zones repaint-sensitive ;
-- consumers des fonctions importantes ;
-- invariants propres au script.
-
-### 47.3 Noms plutôt que lignes
-
-Préférer les noms de symboles, sections et relations.
-
-Les numéros de lignes peuvent être ajoutés comme aide dérivée, mais ne doivent pas constituer l’identité d’un composant.
-
-### 47.4 Mise à jour
-
-Mettre à jour uniquement lorsqu’une modification rend la cartographie fausse.
-
-Ne pas réécrire ce fichier mécaniquement après chaque micro-edit.
+Do not present an inference as a decision.
 
 ---
 
-## 48. `CLAUDE.md` LOCAL DU SCRIPT — CONTRAT
+## 47. SCRIPT `ARCHITECTURE.md` — CONTRACT
 
-### 48.1 Chargement
+### 47.1 Status
 
-Conçu pour être chargé à la demande quand Claude travaille dans le product root.
+Living map derived from the code.
 
-### 48.2 Taille
+### 47.2 Content depending on applicability
 
-Viser environ 30 à 80 lignes.
+- logical sections;
+- types/enums/UDTs;
+- central helpers;
+- calculation flow;
+- input dependency tree;
+- persistent state;
+- collections;
+- requests;
+- MTF flow;
+- signal pipeline;
+- rendering pipeline;
+- object lifecycle;
+- tables;
+- alert dependencies;
+- performance hotspots;
+- repaint-sensitive zones;
+- consumers of the important functions;
+- script-specific invariants.
 
-### 48.3 Contenu
+### 47.3 Names rather than lines
 
-Seulement l’information que Claude doit avoir en contexte lorsqu’il touche CE produit :
+Prefer the names of symbols, sections and relations.
 
-- identité ;
-- source principal ;
-- objectif court ;
-- distribution ;
-- invariants produit critiques ;
-- zones à risque ;
-- fichiers contextuels à consulter ;
-- non-goals importants ;
-- règles propres au produit non couvertes par le master.
+Line numbers may be added as a derived aid, but must not constitute the identity of a component.
+
+### 47.4 Update
+
+Update only when a modification makes the map incorrect.
+
+Do not rewrite this file mechanically after each micro-edit.
+
+---
+
+## 48. LOCAL `CLAUDE.md` OF THE SCRIPT — CONTRACT
+
+### 48.1 Loading
+
+Designed to be loaded on demand when Claude works in the product root.
+
+### 48.2 Size
+
+Aim for about 30 to 80 lines.
+
+### 48.3 Content
+
+Only the information Claude must have in context when it touches THIS product:
+
+- identity;
+- main source;
+- short objective;
+- distribution;
+- critical product invariants;
+- risk areas;
+- contextual files to consult;
+- important non-goals;
+- product-specific rules not covered by the master.
 
 ### 48.4 Non-duplication
 
-Ne pas résumer intégralement :
+Do not summarize in full:
 
-- PRODUCT.md ;
-- ARCHITECTURE.md ;
+- PRODUCT.md;
+- ARCHITECTURE.md;
 - master standard.
 
-Le fichier local est un routeur et un rappel des invariants critiques.
+The local file is a router and a reminder of the critical invariants.
 
 ---
 
-## 49. `DECISIONS.md` — CRÉATION À LA DEMANDE
+## 49. `DECISIONS.md` — CREATION ON DEMAND
 
-### 49.1 Déclencheur
+### 49.1 Trigger
 
-Créer seulement lorsqu’une première décision durable doit être persistée.
+Create only when a first durable decision must be persisted.
 
-### 49.2 Entrées valides
+### 49.2 Valid entries
 
-Exemples :
+Examples:
 
-- décision produit du titulaire ;
-- décision architecturale durable ;
-- comportement volontaire dont la conservation future importe ;
-- dérogation explicite.
+- product decision of the holder;
+- durable architectural decision;
+- intentional behaviour whose future preservation matters;
+- explicit derogation.
 
-### 49.3 Entrées invalides
+### 49.3 Invalid entries
 
-Ne pas enregistrer :
+Do not record:
 
-- micro-refactor ;
-- renommage banal ;
-- résumé de session ;
-- simple observation du source ;
-- découverte temporaire ;
-- hypothèse non ratifiée.
+- micro-refactor;
+- trivial renaming;
+- session summary;
+- mere observation of the source;
+- temporary discovery;
+- unratified hypothesis.
 
 ### 49.4 Structure
 
-Chaque décision contient au minimum :
+Each decision contains at least:
 
 ```text
 ID
@@ -3731,72 +3750,72 @@ Status
 Decision
 Rationale
 Scope
-Supersedes (si applicable)
+Supersedes (if applicable)
 Evidence/context
 ```
 
-### 49.5 Historique
+### 49.5 History
 
-Préférer append-only et `SUPERSEDED` plutôt qu’une réécriture silencieuse du passé.
+Prefer append-only and `SUPERSEDED` rather than a silent rewrite of the past.
 
 ---
 
-## 50. RESEARCH PAR SCRIPT
+## 50. RESEARCH PER SCRIPT
 
-### 50.1 Création
+### 50.1 Creation
 
-`research/` apparaît seulement lorsqu’une recherche réellement utile est persistée.
+`research/` appears only when genuinely useful research is persisted.
 
 ### 50.2 Run
 
-Nom recommandé :
+Recommended name:
 
 ```text
 runs/YYYY-MM-DDTHHMMSS-<topic>.md
 ```
 
-### 50.3 Contenu
+### 50.3 Content
 
-- question ;
-- contexte ;
-- date ;
-- sources consultées ;
-- faits ;
-- benchmark ;
-- limites ;
-- conclusion ;
-- implications ;
-- sujets à revérifier.
+- question;
+- context;
+- date;
+- sources consulted;
+- facts;
+- benchmark;
+- limits;
+- conclusion;
+- implications;
+- topics to re-verify.
 
 ### 50.4 `CURRENT.md`
 
-Synthèse de navigation.
+Navigation summary.
 
-Il ne remplace pas les runs.
+It does not replace the runs.
 
-Inclure :
+Include:
 
-- sujets actuellement pertinents ;
-- date de dernière vérification ;
-- run source ;
-- statut `CURRENT`, `STALE` ou `NON REVÉRIFIÉ`.
+- currently relevant topics;
+- date of last verification;
+- source run;
+- status `CURRENT`, `STALE` or `NON REVÉRIFIÉ`.
 
-Statuts admis dans `CURRENT.md` : `CURRENT` (revérification datée), `STALE` (changement connu ou revérification due), `NON REVÉRIFIÉ` (recherche reconstituée ou ancienne, sans revérification depuis sa date initiale). Un run reconstitué ne reçoit jamais `CURRENT` sans revérification.
+Statuses allowed in `CURRENT.md`: `CURRENT` (dated re-verification), `STALE` (known change or re-verification due), `NON REVÉRIFIÉ` (reconstructed or old research, without re-verification since its initial date). A reconstructed run never receives `CURRENT` without re-verification.
 
 ---
 
-## 51. VALIDATION PAR SCRIPT
+## 51. VALIDATION PER SCRIPT
 
-### 51.1 Dossier minimal
+### 51.1 Minimal folder
 
-Après onboarding :
+After onboarding:
 
 ```text
 validation/
 └── current.json
 ```
 
-Créer `runs/` et `evidence/` seulement lorsqu’ils servent. Dès qu'un run réel durable existe, utiliser la convention :
+Create `runs/` and `evidence/` only when they serve a purpose. As soon as a durable real run exists, use the convention:
 
 ```text
 validation/current.json
@@ -3804,13 +3823,13 @@ validation/runs/<run_id>.json
 validation/evidence/<run_id>/<evidence-file>
 ```
 
-`validation/` est exclusivement réservé aux observations, runs et preuves TradingView. Les artefacts PineTS appartiennent à `tests/behavioral/` ou à l’espace runtime éphémère approprié et ne doivent jamais être mélangés ici.
+`validation/` is exclusively reserved for TradingView observations, runs and evidence. PineTS artefacts belong to `tests/behavioral/` or to the appropriate ephemeral runtime space and must never be mixed in here.
 
 ### 51.2 `current.json`
 
-Représente le dernier état de validation connu, pas une vérité éternelle.
+Represents the last known validation state, not an eternal truth.
 
-Exemple initial normatif :
+Normative initial example:
 
 ```json
 {
@@ -3820,7 +3839,7 @@ Exemple initial normatif :
 }
 ```
 
-`last_run` est soit `null`, soit un objet de référence déterministe contenant au minimum :
+`last_run` is either `null` or a deterministic reference object containing at least:
 
 ```json
 {
@@ -3831,11 +3850,11 @@ Exemple initial normatif :
 }
 ```
 
-`current.json` désigne le run courant reconnu ; il ne contient pas une copie concurrente de tout le rapport.
+`current.json` designates the recognized current run; it does not contain a competing copy of the whole report.
 
-### 51.3 États de run
+### 51.3 Run states
 
-Supporter au minimum :
+Support at least:
 
 ```text
 unverified
@@ -3845,516 +3864,516 @@ failed
 partial
 ```
 
-Une seule taxonomie est persistée : les cinq valeurs ci-dessus. Les tokens historiques ou d'affichage tels que `PENDING`, `TV_VALIDATION_PENDING`, `PASSED` ou `TV_VALIDATED` ne sont pas des valeurs machine supplémentaires ; ils doivent être supprimés ou mappés explicitement vers cette taxonomie.
+A single taxonomy is persisted: the five values above. Historical or display tokens such as `PENDING`, `TV_VALIDATION_PENDING`, `PASSED` or `TV_VALIDATED` are not additional machine values; they must be removed or explicitly mapped to this taxonomy.
 
-Mapping normatif lorsqu'un ancien label ou un affichage humain doit être interprété :
+Normative mapping when a legacy label or a human display must be interpreted:
 
-| Label historique / affichage | Valeur machine |
+| Historical label / display | Machine value |
 | --- | --- |
-| `PENDING`, `TV_VALIDATION_PENDING` | `unverified` ou `in-progress` selon l'existence d'un run commencé |
-| `PASSED`, claim humain `TV_VALIDATED` | `passed`, uniquement si §51.5 est satisfait |
-| `STALE` | dérivé `stale`, jamais persisté |
+| `PENDING`, `TV_VALIDATION_PENDING` | `unverified` or `in-progress` depending on whether a started run exists |
+| `PASSED`, human claim `TV_VALIDATED` | `passed`, only if §51.5 is satisfied |
+| `STALE` | derived `stale`, never persisted |
 
-Le statut effectif devient `stale` lorsque le SHA-256 du source courant diffère du `source_sha256` du run courant reconnu. La comparaison porte sur le source déclaré par `SCRIPT.json`. Un run enregistré sur un autre SHA reste historique et ne valide pas le source courant.
+The effective status becomes `stale` when the SHA-256 of the current source differs from the `source_sha256` of the recognized current run. The comparison applies to the source declared by `SCRIPT.json`. A run recorded on another SHA remains historical and does not validate the current source.
 
-`stale` est dérivé et n'est pas persisté comme sixième statut, afin de ne pas muter un fichier à chaque edit.
+`stale` is derived and is not persisted as a sixth status, so as not to mutate a file at each edit.
 
-Si `current.json` référence un rapport absent, invalide ou dont l'identité ne correspond pas, définir `validation_integrity_status = BROKEN`, ne jamais considérer la validation comme `passed` et ne pas inventer une nouvelle valeur persistée. `validation_effective_status` reste alors nul/indisponible et un diagnostic actionnable explique la validation cassée/incomplète.
+If `current.json` references a report that is missing, invalid or whose identity does not match, set `validation_integrity_status = BROKEN`, never consider the validation as `passed` and do not invent a new persisted value. `validation_effective_status` then remains null/unavailable and an actionable diagnostic explains the broken/incomplete validation.
 
 ### 51.4 Run report
 
-Chaque run réel conserve au minimum :
+Each real run keeps at least:
 
-- `run_id` collision-resistant ;
-- timestamps RFC 3339 UTC ;
-- statut persistable parmi `in-progress`, `passed`, `failed` ou `partial` ;
-- source ;
-- SHA-256 ;
-- commit Git ou null ;
-- working tree clean/dirty ;
-- requested mode ;
-- effective mode ;
-- fallback reason ;
-- matrice appliquée ;
-- résultats ; pour un rapport de version 2, chaque contrôle de la matrice porte un identifiant unique et chaque contrôle applicable un verdict parmi `passed`, `failed`, `not-run` ou `indeterminate`, avec l’observation, l’auteur et l’horodatage ; `n-a` est réservé aux contrôles explicitement non applicables. Amendement du 2026-11-06 : pour un verdict `not-run` ou `n-a`, aucune observation n’a eu lieu, donc l’auteur (`observed_by`) peut être nul — l’observation consigne alors pourquoi le contrôle n’a pas été exécuté, et l’horodatage reste requis ; on n’invente jamais un observateur, une observation ni une compilation pour satisfaire le schéma. Un rapport existant qui violait le contrat n’est jamais réécrit : un rectificatif est un nouveau fichier à côté de l’original, qui cite son empreinte et décrit chaque correction ;
-- anomalies ;
-- preuves, chacune avec chemin relatif sous `evidence/<run_id>/`, type et SHA-256 ;
+- collision-resistant `run_id`;
+- RFC 3339 UTC timestamps;
+- persistable status among `in-progress`, `passed`, `failed` or `partial`;
+- source;
+- SHA-256;
+- Git commit or null;
+- working tree clean/dirty;
+- requested mode;
+- effective mode;
+- fallback reason;
+- applied matrix;
+- results; for a version 2 report, each check of the matrix carries a unique identifier and each applicable check a verdict among `passed`, `failed`, `not-run` or `indeterminate`, with the observation, the author and the timestamp; `n-a` is reserved for checks explicitly not applicable. Amendment of 2026-11-06: for a `not-run` or `n-a` verdict, no observation took place, so the author (`observed_by`) may be null — the observation then records why the check was not executed, and the timestamp remains required; an observer, an observation or a compilation is never invented to satisfy the schema. An existing report that violated the contract is never rewritten: a corrigendum is a new file next to the original, which cites its hash and describes each fix;
+- anomalies;
+- evidence items, each with a relative path under `evidence/<run_id>/`, type and SHA-256;
 - conclusion.
 
-Le rapport référence les preuves ; une capture n'est pas obligatoire lorsqu'elle n'apporte aucune preuve utile.
+The report references the evidence; a screenshot is not mandatory when it provides no useful evidence.
 
-Le rapport de run est écrit de manière immuable avant la mise à jour de `current.json`. Le contrôleur :
+The run report is written immutably before the update of `current.json`. The controller:
 
-1. mémorise l'identité ou le hash du `current.json` lu au démarrage du run ;
-2. écrit et vérifie le rapport complet ;
-3. relit `current.json` avant promotion ;
-4. refuse la promotion si le pointeur a changé de manière concurrente ou si l'ordre des runs ne peut pas être établi ;
-5. empêche un run dont `completed_at` est antérieur au run courant reconnu de le remplacer ;
-6. effectue le remplacement final de `current.json` atomiquement.
+1. remembers the identity or the hash of the `current.json` read at the start of the run;
+2. writes and verifies the complete report;
+3. re-reads `current.json` before promotion;
+4. refuses the promotion if the pointer has changed concurrently or if the order of the runs cannot be established;
+5. prevents a run whose `completed_at` is earlier than the recognized current run from replacing it;
+6. performs the final replacement of `current.json` atomically.
 
-Une égalité ou anomalie d'horloge produit un conflit actionnable plutôt qu'un choix silencieux.
+A clock tie or clock anomaly produces an actionable conflict rather than a silent choice.
 
-Un run de compilation minimale suit en outre les règles d'enregistrement et de promotion de §30.5, appliquées après ces protections.
+A minimal compilation run additionally follows the recording and promotion rules of §30.5, applied after these protections.
 
 ### 51.5 `passed`
 
-`passed` signifie :
+`passed` means:
 
-> Tous les contrôles TradingView obligatoires applicables à ce run ont réellement réussi sur le source identifié par ce hash.
+> All the mandatory TradingView checks applicable to this run have actually succeeded on the source identified by this hash.
 
-Les verdicts sont examinés avant la couverture. Un contrôle applicable `failed` impose le statut `failed`, même si d’autres contrôles n’ont pas de résultat ; il n’est jamais ramené à `in-progress` ni à `partial`. En l’absence de `failed`, un contrôle applicable `not-run`, `indeterminate` ou sans résultat interdit `passed` ; un contrôle sans résultat, ou l’absence de tout `passed`, n’admet que `in-progress`. `partial` exige au moins un `passed` et au moins un `not-run` ou `indeterminate`, tous les contrôles applicables ayant un résultat. Un contrôle sans résultat est « non renseigné » : rien n’est affirmé sur son exécution. Aucun run sans contrôle applicable ne peut être `passed`. Les rapports enregistrés sous une version antérieure du schéma restent lisibles et recevables sur leur SHA sans réécriture ; un nouveau rapport utilise la version courante. Cette compatibilité de lecture n’établit pas la date de création d’un fichier.
+The verdicts are examined before the coverage. An applicable `failed` check imposes the `failed` status, even if other checks have no result; it is never reduced to `in-progress` or to `partial`. In the absence of `failed`, an applicable check that is `not-run`, `indeterminate` or without a result forbids `passed`; a check without a result, or the absence of any `passed`, admits only `in-progress`. `partial` requires at least one `passed` and at least one `not-run` or `indeterminate`, all the applicable checks having a result. A check without a result is "not filled in": nothing is asserted about its execution. No run without an applicable check can be `passed`. Reports recorded under an earlier version of the schema remain readable and admissible on their SHA without rewriting; a new report uses the current version. This read compatibility does not establish the creation date of a file.
 
 ---
 
-## 52. DÉTECTION AUTOMATIQUE DES `.pine` ORPHELINS — RATIFIÉE
+## 52. AUTOMATIC DETECTION OF ORPHAN `.pine` FILES — RATIFIED
 
-Cette fonction est obligatoire.
+This function is mandatory.
 
-### 52.1 À chaque session
+### 52.1 At each session
 
-`SessionStart` scanne `scripts/**`.
+`SessionStart` scans `scripts/**`.
 
 ### 52.2 Doctor
 
-`project-doctor` effectue la même détection indépendamment.
+`project-doctor` performs the same detection independently.
 
-### 52.3 Comportement Claude
+### 52.3 Claude's behaviour
 
-Lorsqu’un `.pine` est `UNREGISTERED` :
+When a `.pine` is `UNREGISTERED`:
 
-- le signaler ;
-- utiliser automatiquement `pine-onboard` avant toute modification fonctionnelle substantielle ;
-- demander au titulaire seulement ce qui ne peut pas être déterminé proprement.
+- flag it;
+- automatically use `pine-onboard` before any substantial functional modification;
+- ask the holder only what cannot be determined properly.
 
-### 52.4 Silence interdit
+### 52.4 Silence forbidden
 
-Un `.pine` orphelin ne doit jamais être ignoré silencieusement.
+An orphan `.pine` must never be silently ignored.
 
-### 52.5 Onboarding non destructif
+### 52.5 Non-destructive onboarding
 
-Le processus d’onboarding n’altère pas le source existant.
+The onboarding process does not alter the existing source.
 
-Toute correction du code constitue une tâche distincte.
+Any fix of the code constitutes a separate task.
 
-Lorsqu’un source est importé pendant la session, l’onboarding enregistre l’import avant toute modification : chemin, SHA-256 et état du guard à cet instant, conservés dans l’état de session. Le déplacement du fichier inchangé déplace l’enregistrement. Un enregistrement n’est jamais renouvelé : une fois le contenu modifié, l’import ne peut plus être enregistré de nouveau. L’enregistrement est déclaratif ; il distingue un import d’une création et ne prouve pas l’origine du fichier.
-
----
-
-## 53. MISE À JOUR DU CONTEXTE APRÈS UNE MODIFICATION
-
-Ne pas régénérer tout le contexte par réflexe.
-
-Après un changement :
-
-- `PRODUCT.md` seulement si le produit a changé ;
-- `ARCHITECTURE.md` si la cartographie est devenue fausse ;
-- `DECISIONS.md` si une vraie décision durable a été prise ;
-- `research/` si une recherche durable a été faite ;
-- `validation` via un vrai run ;
-- docs/release seulement si concernés.
-
-Le contexte doit rester utile, pas devenir un journal de chaque edit.
-
-Chaque produit désigne dans son `CLAUDE.md` local un artefact de suivi ; celui-ci consigne, par modification cohérente, la classe de tâche, la couverture de relecture lue, la conclusion de benchmark et la provenance des rapports d’agents utilisés. Sa forme est libre ; il ne remplace ni `DECISIONS.md` ni `validation/`.
+When a source is imported during the session, the onboarding records the import before any modification: path, SHA-256 and guard state at that moment, kept in the session state. Moving the unchanged file moves the record. A record is never renewed: once the content is modified, the import can no longer be recorded again. The record is declarative; it distinguishes an import from a creation and does not prove the origin of the file.
 
 ---
 
-## 54. REDONDANCE — GATE OBLIGATOIRE
+## 53. CONTEXT UPDATE AFTER A MODIFICATION
 
-Après bootstrap, puis après toute restructuration du workspace, effectuer une passe de non-redondance.
+Do not regenerate the whole context by reflex.
 
-### 54.1 Question pour chaque règle répétée
+After a change:
 
-La répétition possède-t-elle une fonction distincte ?
+- `PRODUCT.md` only if the product has changed;
+- `ARCHITECTURE.md` if the map has become incorrect;
+- `DECISIONS.md` if a real durable decision has been made;
+- `research/` if durable research has been done;
+- `validation` through a real run;
+- docs/release only if affected.
 
-Exemple acceptable :
+The context must remain useful, not become a log of every edit.
+
+Each product designates in its local `CLAUDE.md` a tracking artefact; it records, per coherent modification, the task class, the re-reading coverage read, the benchmark conclusion and the provenance of the agent reports used. Its form is free; it replaces neither `DECISIONS.md` nor `validation/`.
+
+---
+
+## 54. REDUNDANCY — MANDATORY GATE
+
+After the bootstrap, then after any restructuring of the workspace, perform a non-redundancy pass.
+
+### 54.1 Question for each repeated rule
+
+Does the repetition have a distinct function?
+
+Acceptable example:
 
 ```text
 master
-→ convention normative
+→ normative convention
 
 rule
-→ routage contextuel concis
+→ concise contextual routing
 
 guard
-→ enforcement mécanique
+→ mechanical enforcement
 ```
 
-Exemple inutile :
+Useless example:
 
 ```text
 master
-→ 20 lignes
+→ 20 lines
 
 CLAUDE.md
-→ mêmes 20 lignes
+→ same 20 lines
 
 skill
-→ mêmes 20 lignes
+→ same 20 lines
 
 agent
-→ mêmes 20 lignes
+→ same 20 lines
 ```
 
-### 54.2 Référencer plutôt que recopier
+### 54.2 Reference rather than copy
 
-Les workflows doivent renvoyer au standard ou à la traceability lorsque le détail n’a pas besoin d’être répété.
+Workflows must refer to the standard or to the traceability when the detail does not need to be repeated.
 
 ### 54.3 Workflows
 
-Une certaine répétition d’étapes dans un workflow est acceptable si elle rend la séquence exécutable.
+Some repetition of steps in a workflow is acceptable if it makes the sequence executable.
 
-La duplication de doctrine ne l’est pas.
+Duplication of doctrine is not.
 
 ---
 
-## 55. IDÉMPOTENCE DU BOOTSTRAP
+## 55. BOOTSTRAP IDEMPOTENCE
 
-La spécification doit pouvoir être réexécutée sans détruire un workspace mature.
+The specification must be re-executable without destroying a mature workspace.
 
-### 55.1 Avant toute réexécution
+### 55.1 Before any re-execution
 
-Détecter :
+Detect:
 
-- fichiers existants ;
-- modifications locales ;
-- version du standard ;
-- architecture actuelle ;
-- contextes script ;
-- hooks ;
-- skills ;
-- agents ;
-- settings locaux.
+- existing files;
+- local modifications;
+- version of the standard;
+- current architecture;
+- script contexts;
+- hooks;
+- skills;
+- agents;
+- local settings.
 
-### 55.2 Interdictions
+### 55.2 Prohibitions
 
-Ne pas :
+Do not:
 
-- écraser `DECISIONS.md` ;
-- réinitialiser `validation/` ;
-- supprimer les research runs ;
-- remplacer un `PRODUCT.md` par un generic ;
-- réécrire les skills sans diff/revue ;
-- écraser `settings.local.json` ;
-- supprimer les approvals locaux.
+- overwrite `DECISIONS.md`;
+- reset `validation/`;
+- delete the research runs;
+- replace a `PRODUCT.md` with a generic one;
+- rewrite the skills without diff/review;
+- overwrite `settings.local.json`;
+- delete the local approvals.
 
 ### 55.3 Migration
 
-Si l’architecture doit évoluer, produire d’abord :
+If the architecture must evolve, first produce:
 
-- diff attendu ;
-- risques ;
-- plan de migration ;
-- compatibilité ;
-- fichiers affectés.
+- expected diff;
+- risks;
+- migration plan;
+- compatibility;
+- affected files.
 
-Une migration importante nécessite validation du titulaire.
-
----
-
-## 56. ABSENCE DE VERSION PRODUIT HORS SOURCE
-
-Le workspace respecte la Convention Personnelle :
-
-> La version produit apparaît uniquement dans le header du code source, sauf dérogation explicite.
-
-Par conséquent, ne pas inclure la version produit dans :
-
-- `SCRIPT.json` ;
-- `PRODUCT.md` ;
-- `ARCHITECTURE.md` ;
-- `CLAUDE.md` local ;
-- research ;
-- validation state ;
-- tutoriel ;
-- changelog ;
-- release notes ;
-- description ;
-- fichiers d’architecture workspace.
-
-Le hash du source et le commit Git suffisent pour identifier techniquement une validation.
+A significant migration requires the holder's validation.
 
 ---
 
-## 57. NOUVEAUX DOSSIERS À LA DEMANDE
+## 56. NO PRODUCT VERSION OUTSIDE THE SOURCE
+
+The workspace respects the Personal Convention:
+
+> The product version appears only in the source code header, except by explicit derogation.
+
+Consequently, do not include the product version in:
+
+- `SCRIPT.json`;
+- `PRODUCT.md`;
+- `ARCHITECTURE.md`;
+- local `CLAUDE.md`;
+- research;
+- validation state;
+- tutorial;
+- changelog;
+- release notes;
+- description;
+- workspace architecture files.
+
+The hash of the source and the Git commit suffice to identify a validation technically.
+
+---
+
+## 57. NEW FOLDERS ON DEMAND
 
 ### 57.1 `docs/`
 
-Créer lorsqu’un livrable documentaire réel existe.
+Create when a real documentation deliverable exists.
 
 ### 57.2 `release/`
 
-Créer lorsqu’une vraie release nécessite des artefacts de préparation.
+Create when a real release requires preparation artefacts.
 
 ### 57.3 `research/`
 
-Créer lorsqu’une recherche mérite persistance.
+Create when research deserves persistence.
 
 ### 57.4 `validation/evidence/`
 
-Créer lorsqu’un fichier de preuve existe.
+Create when an evidence file exists.
 
-`scripts/<slug>/tests/behavioral/` est également créé uniquement lorsqu’un vrai contrat de test comportemental, une fixture spécifique ou une baseline acceptée existe pour ce produit. Ne pas créer ce dossier pendant l’onboarding seul ou pour matérialiser l’arborescence.
+`scripts/<slug>/tests/behavioral/` is likewise created only when a real behavioural test contract, a specific fixture or an accepted baseline exists for this product. Do not create this folder during onboarding alone or to materialize the tree structure.
 
 ### 57.5 Dynamic workflows
 
-Ne pas créer `.claude/workflows/` au bootstrap initial.
+Do not create `.claude/workflows/` at the initial bootstrap.
 
-L’ajouter seulement lorsqu’un besoin multi-script récurrent est démontré.
+Add it only when a recurring multi-script need is demonstrated.
 
-Exemple futur légitime :
+Legitimate future example:
 
-> Une évolution Pine V6 est publiée ; analyser tous les scripts le titulaire et identifier lesquels sont affectés.
-
----
-
-## 58. CAPACITÉS VOLONTAIREMENT EXCLUES DU SOCLE INITIAL
-
-Ne pas installer par défaut :
-
-- GitHub comme dépendance du workspace (remote, CI) — le parcours d’export explicite de §43.5 n’en est pas une ;
-- GitHub Actions ;
-- tout MCP configuré par le projet ou serveur MCP custom ;
-- Agent Teams ;
-- dynamic workflows prédéfinis ;
-- CI distante ;
-- base SQLite ;
-- registry centrale ;
-- serveur local ;
-- dashboard web ;
-- plugin custom Claude ;
-- automatisation de publication TradingView ;
-- agent d’édition parallèle ;
-- mémoire persistante des reviewers ;
-- gros moteur de règles sémantiques ;
-- copie locale de la documentation TradingView entière.
-
-Toute nouvelle couche doit répondre à un besoin réel démontré.
-
-L’introduction du thin adapter PineTS ne constitue une exception à aucune de ces exclusions.
-
-En particulier, elle n’autorise pas la création d’un serveur local, MCP, base de données, dashboard, CI comportementale distante ou plateforme parallèle autour de PineTS.
-
-L'intégration native Claude in Chrome peut exposer aujourd'hui un transport interne nommé `claude-in-chrome` MCP. Ce transport fourni par Claude Code lui-même est autorisé uniquement comme détail d'implémentation de la primitive native utilisée par `chrome-experimental` :
-
-- PWS ne l'installe pas comme dépendance projet ;
-- PWS ne crée pas de `.mcp.json` pour lui ;
-- cette exception n'autorise ni `tradingview-mcp`, ni un MCP tiers, ni un bridge CDP externe ;
-- tout MCP projet, serveur custom, MCP PineTS ou MCP dédié au menu reste exclu sans ratification explicite.
+> A Pine V6 evolution is published; analyse all of the holder's scripts and identify which ones are affected.
 
 ---
 
-## 59. CRITÈRE POUR AJOUTER UNE NOUVELLE COUCHE
+## 58. CAPABILITIES DELIBERATELY EXCLUDED FROM THE INITIAL FOUNDATION
 
-Avant d’ajouter un outil, agent, skill, hook ou stockage :
+Do not install by default:
 
-1. Quel manque concret corrige-t-il ?
-2. Une primitive native actuelle couvre-t-elle déjà le besoin ?
-3. Le problème est-il réel ou hypothétique ?
-4. Quel est le coût contextuel ?
-5. Quel est le coût de maintenance ?
-6. Crée-t-il une deuxième source de vérité ?
-7. Peut-il devenir stale ?
-8. Quel incident empêche-t-il ?
-9. Peut-il être ajouté plus tard sans dette importante ?
+- GitHub as a dependency of the workspace (remote, CI) — the explicit guided export path of §43.5 is not one;
+- GitHub Actions;
+- any MCP configured by the project or custom MCP server;
+- Agent Teams;
+- predefined dynamic workflows;
+- remote CI;
+- SQLite database;
+- central registry;
+- local server;
+- web dashboard;
+- custom Claude plugin;
+- TradingView publication automation;
+- parallel editing agent;
+- persistent memory of the reviewers;
+- large semantic rules engine;
+- local copy of the entire TradingView documentation.
 
-Si le besoin n’est pas démontré, ne pas ajouter la couche.
+Any new layer must meet a real, demonstrated need.
 
-### 59.1 Application ratifiée — PineTS
+The introduction of the PineTS thin adapter constitutes an exception to none of these exclusions.
 
-La couche `LOCAL BEHAVIORAL EXECUTION` répond au gate de cette section parce qu’elle couvre un manque concret non couvert par les primitives existantes :
+In particular, it does not authorize the creation of a local server, MCP, database, dashboard, remote behavioural CI or parallel platform around PineTS.
+
+The native Claude in Chrome integration can currently expose an internal transport named `claude-in-chrome` MCP. This transport, provided by Claude Code itself, is authorized only as an implementation detail of the native primitive used by `chrome-experimental`:
+
+- PWS does not install it as a project dependency;
+- PWS does not create a `.mcp.json` for it;
+- this exception authorizes neither `tradingview-mcp`, nor a third-party MCP, nor an external CDP bridge;
+- any project MCP, custom server, PineTS MCP or MCP dedicated to the menu remains excluded without explicit ratification.
+
+---
+
+## 59. CRITERION FOR ADDING A NEW LAYER
+
+Before adding a tool, agent, skill, hook or storage:
+
+1. What concrete gap does it remedy?
+2. Does a current native primitive already cover the need?
+3. Is the problem real or hypothetical?
+4. What is the contextual cost?
+5. What is the maintenance cost?
+6. Does it create a second source of truth?
+7. Can it become stale?
+8. What incident does it prevent?
+9. Can it be added later without significant debt?
+
+If the need is not demonstrated, do not add the layer.
+
+### 59.1 Ratified application — PineTS
+
+The `LOCAL BEHAVIORAL EXECUTION` layer meets the gate of this section because it covers a concrete gap not covered by the existing primitives:
 
 ```text
-checks déterministes
-→ aucune exécution réelle du Pine
-→ validation TradingView
+deterministic checks
+→ no real execution of the Pine
+→ TradingView validation
 ```
 
-Le manque couvert est l’absence d’un runtime local permettant d’observer programmatiquement le comportement du source avant TradingView et, lorsque les preuves le permettent, de faire respecter un contrat comportemental local reproductible.
+The gap covered is the absence of a local runtime making it possible to observe the behaviour of the source programmatically before TradingView and, when the evidence allows it, to enforce a reproducible local behavioural contract.
 
-La frontière d’autorité est la suivante :
+The authority boundary is as follows:
 
-- la documentation officielle Pine Script reste l’autorité sur la syntaxe, les APIs et la sémantique officielle du langage ;
-- TradingView reste l’autorité empirique sur le comportement propre à sa plateforme et sur toute étape `tv-validate` ;
-- PineTS peut être une autorité d’exécution locale pour une conclusion strictement bornée lorsque toutes les capabilities nécessaires sont effectivement gating et que le source, le dataset, la configuration et l’environnement exacts sont identifiés ;
-- une conclusion locale PineTS, même bloquante, ne devient jamais `TV_VALIDATED` et ne prouve jamais une parité générale avec TradingView.
+- the official Pine Script documentation remains the authority on the syntax, the APIs and the official semantics of the language;
+- TradingView remains the empirical authority on the behaviour specific to its platform and on any `tv-validate` step;
+- PineTS can be a local execution authority for a strictly bounded conclusion when all the necessary capabilities are effectively gating and the exact source, dataset, configuration and environment are identified;
+- a local PineTS conclusion, even a blocking one, never becomes `TV_VALIDATED` and never proves a general parity with TradingView.
 
-Cette couche est admise uniquement sous les contraintes suivantes :
+This layer is admitted only under the following constraints:
 
-- son utilisation est capability-gated ;
-- les capabilities sont qualifiées avec une granularité suffisante, sans condamner ou promouvoir une famille entière par principe ;
-- `capability_status` et `calibration_status` restent deux dimensions distinctes ;
-- toute capability effectivement gating possède une calibration indépendante `CURRENT` pour le triplet exact `pinets_version + executor_fingerprint + normalization_schema` ;
-- les capabilities effectivement utilisées par chaque run sont enregistrées ;
-- les datasets sont reproductibles, hashés et accompagnés d’une provenance suffisante ;
-- les snapshots indépendants sont admis lorsque leurs conditions d’usage le permettent ;
-- les matrices locales et parameter sweeps restent bornés, explicites et traçables, sans optimiseur générique ni déclenchement automatique par hook ;
-- les licences et conditions d’usage de PineTS, des sources de données et de TradingView sont évaluées selon la ressource réellement utilisée ;
-- la version PineTS est exactement pinée ;
-- aucun auto-upgrade ;
-- aucune correction du Pine uniquement destinée à satisfaire PineTS ;
-- aucun hook de base ne lance PineTS ;
-- aucune architecture serveur, MCP, base de données ou dashboard n’est créée ;
-- les artefacts comportementaux restent séparés des preuves TradingView ;
-- l’intégration reste un thin adapter et une skill, pas une seconde plateforme.
+- its use is capability-gated;
+- the capabilities are qualified with sufficient granularity, without condemning or promoting an entire family on principle;
+- `capability_status` and `calibration_status` remain two distinct dimensions;
+- every effectively gating capability has an independent `CURRENT` calibration for the exact triplet `pinets_version + executor_fingerprint + normalization_schema`;
+- the capabilities actually used by each run are recorded;
+- the datasets are reproducible, hashed and accompanied by sufficient provenance;
+- independent snapshots are admitted when their terms of use allow it;
+- local matrices and parameter sweeps remain bounded, explicit and traceable, without a generic optimizer or automatic triggering by hook;
+- the licences and terms of use of PineTS, of the data sources and of TradingView are assessed according to the resource actually used;
+- the PineTS version is pinned exactly;
+- no auto-upgrade;
+- no fix of the Pine intended only to satisfy PineTS;
+- no base hook launches PineTS;
+- no server, MCP, database or dashboard architecture is created;
+- behavioural artefacts remain separate from TradingView evidence;
+- the integration remains a thin adapter and a skill, not a second platform.
 
-Si ces contraintes cessent d’être vraies, l’intégration doit être réévaluée selon le gate principal de §59.
+If these constraints cease to be true, the integration must be re-evaluated according to the main gate of §59.
 
-### 59.2 Application ratifiée — menu contextuel PWS
+### 59.2 Ratified application — PWS contextual menu
 
-La skill `pws` répond au gate de cette section parce qu’elle couvre un besoin UX explicite : permettre au titulaire de choisir un workflow et ses décisions structurées courtes dans une session Claude Code sans mémoriser les commandes directes ni transformer la conversation en suite de prompts répétitifs.
+The `pws` skill meets the gate of this section because it covers an explicit UX need: allowing the holder to choose a workflow and its short structured decisions in a Claude Code session without memorizing the direct commands or turning the conversation into a series of repetitive prompts.
 
-Le besoin est couvert par une primitive native actuelle, `AskUserQuestion`. L’architecture retenue exploite donc cette primitive au lieu de créer une application, un TUI externe ou une nouvelle plateforme.
+The need is covered by a current native primitive, `AskUserQuestion`. The chosen architecture therefore uses this primitive instead of creating an application, an external TUI or a new platform.
 
-Cette skill est admise uniquement sous les contraintes suivantes :
+This skill is admitted only under the following constraints:
 
-- une seule skill de façade `pws` ;
-- aucune logique métier dupliquée ;
-- routage vers les skills existantes ;
-- état dérivé du tooling déterministe déjà présent ;
-- aucune base de données ou registry supplémentaire ;
-- aucun hook interactif fragile ;
-- aucun serveur, MCP, plugin custom ou dashboard ;
-- aucune persistance propre au menu hors décisions déjà prévues par les artefacts canoniques ;
-- possibilité de contourner totalement le menu par les commandes directes ou la conversation ;
-- fallback conversationnel si la primitive native n’est pas disponible.
+- a single facade skill `pws`;
+- no duplicated business logic;
+- routing to the existing skills;
+- state derived from the deterministic tooling already present;
+- no additional database or registry;
+- no fragile interactive hook;
+- no server, MCP, custom plugin or dashboard;
+- no menu-specific persistence except for decisions already provided for by the canonical artefacts;
+- possibility of bypassing the menu entirely through the direct commands or the conversation;
+- conversational fallback if the native primitive is not available.
 
-Son coût contextuel doit rester faible : description courte toujours visible, corps de skill chargé seulement lorsqu’il est invoqué selon le mécanisme courant des skills Claude Code.
+Its contextual cost must remain low: short description always visible, skill body loaded only when it is invoked according to the current mechanism of Claude Code skills.
 
-Si le menu commence à acquérir sa propre logique, son propre stockage ou un runtime d’interface distinct, il doit être réévalué selon le gate principal de §59.
+If the menu starts to acquire its own logic, its own storage or a distinct interface runtime, it must be re-evaluated according to the main gate of §59.
 
 ---
 
-## 60. BOOTSTRAP — PHASE D’IMPLÉMENTATION
+## 60. BOOTSTRAP — IMPLEMENTATION PHASE
 
-Après discovery, extraction, design gate et critique indépendante :
+After discovery, extraction, design gate and independent critique:
 
-### 60.1 Construire d’abord les autorités
+### 60.1 Build the authorities first
 
 - `standards/PINE_SCRIPT_V6_STANDARD.md`
-- déplacement de cette bootstrap spec dans `docs/architecture/BOOTSTRAP_SPEC.md`
+- move of this bootstrap spec to `docs/architecture/BOOTSTRAP_SPEC.md`
 
-Appliquer le contrat de cycle de vie et de hashes de §5 ; ne pas conserver deux autorités normatives ambiguës.
+Apply the lifecycle and hash contract of §5; do not keep two ambiguous normative authorities.
 
-### 60.2 Construire l’index et la traceability
+### 60.2 Build the index and the traceability
 
-- parser les headings réels ;
-- générer INDEX ;
-- créer TRACEABILITY après analyse complète.
+- parse the real headings;
+- generate INDEX;
+- create TRACEABILITY after complete analysis.
 
-### 60.3 Construire l’architecture opérationnelle
+### 60.3 Build the operational architecture
 
 - `CLAUDE.md`
 - rules
-- skills, y compris la skill `pws` servant de menu contextuel natif
+- skills, including the `pws` skill serving as the native contextual menu
 - agents
 - settings
 - Git files
 - tooling
 - tests
-- skill `pine-local-test`
-- thin adapter `tools/pine_exec`
-- dépendance PineTS exactement pinée + lockfile
-- calibration initiale des capabilities, sans obligation de promouvoir une capability `GATING`
-- protocole d’apprentissage opérationnel contrôlé de `chrome-experimental` dans `tv-validate/CHROME_EXPERIMENTAL.md`, sans apprentissage fictif
+- `pine-local-test` skill
+- `tools/pine_exec` thin adapter
+- exactly pinned PineTS dependency + lockfile
+- initial calibration of the capabilities, without any obligation to promote a `GATING` capability
+- controlled operational learning protocol of `chrome-experimental` in `tv-validate/CHROME_EXPERIMENTAL.md`, without fictitious learning
 - architecture docs
 
-Ne pas créer `scripts/<slug>/tests/behavioral/` pendant le bootstrap s’il n’existe encore aucun vrai produit nécessitant un contrat comportemental.
+Do not create `scripts/<slug>/tests/behavioral/` during the bootstrap if no real product requiring a behavioural contract exists yet.
 
-Les dossiers comportementaux par produit restent à la demande.
+The per-product behavioural folders remain on demand.
 
-### 60.4 Ne pas créer de faux produits
+### 60.4 Do not create fake products
 
-Le dossier `scripts/` peut exister vide localement.
+The `scripts/` folder may exist empty locally.
 
-Ne pas créer de `.gitkeep`.
+Do not create a `.gitkeep`.
 
-Ne pas créer de script exemple.
+Do not create an example script.
 
-### 60.5 Mode TV
+### 60.5 TV mode
 
-Créer les settings locaux avec `manual`.
+Create the local settings with `manual`.
 
 ---
 
-## 61. SELF-VALIDATION DU BOOTSTRAP
+## 61. BOOTSTRAP SELF-VALIDATION
 
-Avant de déclarer le workspace construit :
+Before declaring the workspace built:
 
-### 61.1 Syntaxe
+### 61.1 Syntax
 
-Vérifier :
+Verify:
 
-- JSON parse ;
-- YAML frontmatter ;
-- Markdown structure ;
-- Python compile ;
-- imports locaux.
-- UTF-8 valide, fins de ligne LF et newline terminal pour les documents canoniques ;
-- headings principaux continus et code fences équilibrés ;
-- tous les blocs JSON parsables.
+- JSON parse;
+- YAML frontmatter;
+- Markdown structure;
+- Python compile;
+- local imports.
+- valid UTF-8, LF line endings and terminal newline for the canonical documents;
+- continuous main headings and balanced code fences;
+- all JSON blocks parsable.
 
 ### 61.2 Tooling
 
-Exécuter tous les tests.
+Run all the tests.
 
 ### 61.3 Standard
 
-Vérifier :
+Verify:
 
-- SHA ;
-- INDEX ;
-- TRACEABILITY ;
-- aucune modification involontaire du master.
+- SHA;
+- INDEX;
+- TRACEABILITY;
+- no unintended modification of the master.
 
 ### 61.4 Claude Code
 
-Vérifier avec les commandes actuelles appropriées :
+Verify with the appropriate current commands:
 
-- settings chargés ;
-- `CLAUDE.md` chargé ;
-- rules détectées ;
-- skills détectées ;
-- agents détectés ;
-- hooks détectés ;
-- `/pws`, `/tv-mode` et les autres skills critiques résolus vers les skills projet attendues sans collision silencieuse ;
-- transport Chrome natif distingué de tout MCP projet et absence de `.mcp.json` créé pour ce transport.
+- settings loaded;
+- `CLAUDE.md` loaded;
+- rules detected;
+- skills detected;
+- agents detected;
+- hooks detected;
+- `/pws`, `/tv-mode` and the other critical skills resolved to the expected project skills without silent collision;
+- native Chrome transport distinguished from any project MCP and absence of a `.mcp.json` created for this transport.
 
-Utiliser notamment les diagnostics officiels disponibles comme `/context`, `/status`, `/doctor` ou leurs équivalents actuels.
+Use in particular the available official diagnostics such as `/context`, `/status`, `/doctor` or their current equivalents.
 
 ### 61.5 Hooks
 
-Tester les scripts de hook directement avec des inputs JSON de fixture.
+Test the hook scripts directly with fixture JSON inputs.
 
-Puis effectuer un vrai redémarrage de session si nécessaire pour confirmer `SessionStart`.
+Then perform a real session restart if necessary to confirm `SessionStart`.
 
-Tester le Stop hook sur une fixture contrôlée.
+Test the Stop hook on a controlled fixture.
 
 ### 61.6 Orphan detection
 
-Créer temporairement dans un espace de test un faux arbre minimal comportant un `.pine` orphelin.
+Temporarily create, in a test space, a fake minimal tree containing an orphan `.pine`.
 
-Vérifier qu’il est détecté.
+Verify that it is detected.
 
-Ne pas laisser ce faux script dans `/scripts`.
+Do not leave this fake script in `/scripts`.
 
-### 61.7 Validation stale
+### 61.7 Stale validation
 
-Tester :
+Test:
 
-1. un run lié à hash A ;
-2. source modifié vers hash B ;
-3. `validation-status` doit produire `STALE`.
+1. a run tied to hash A;
+2. source modified to hash B;
+3. `validation-status` must produce `STALE`.
 
-Tester également :
+Also test:
 
-- `current.json` pointant vers un rapport absent ou invalide ne produit jamais `passed` ;
-- chaque preuve référencée est vérifiée par son SHA-256 ;
-- un run plus ancien ne peut pas remplacer atomiquement le run courant plus récent.
+- `current.json` pointing to a missing or invalid report never produces `passed`;
+- each referenced evidence item is verified by its SHA-256;
+- an older run cannot atomically replace the more recent current run.
 
 ### 61.8 TV mode
 
-Tester :
+Test:
 
 ```text
 manual
@@ -4362,148 +4381,148 @@ manual
 → manual
 ```
 
-sans perdre les autres clés du local settings.
+without losing the other keys of the local settings.
 
-Tester une modification concurrente simulée détectable (survenant avant la relecture pré-écriture) et vérifier que le contrôleur refuse l'écrasement ; documenter la fenêtre non détectable de §19.3 comme limitation déclarée. Confirmer que la route explicite `/pws → Changer le mode TV` appelle le contrôleur partagé sans invoquer `Skill(tv-mode)`, tandis que `/tv-mode` reste user-only.
+Test a detectable simulated concurrent modification (occurring before the pre-write re-read) and verify that the controller refuses the overwrite; document the undetectable window of §19.3 as a declared limitation. Confirm that the explicit route `/pws → Maintenance / configuration → Configuration → TradingView mode` calls the shared controller without invoking `Skill(tv-mode)`, while `/tv-mode` remains user-only.
 
-Vérifier également que `.claude/skills/tv-validate/CHROME_EXPERIMENTAL.md` :
+Also verify that `.claude/skills/tv-validate/CHROME_EXPERIMENTAL.md`:
 
-- décrit le protocole d’apprentissage opérationnel contrôlé de §31.9 ;
-- distingue connaissance opérationnelle, observation courante et preuve de validation ;
-- prévoit la détection d’obsolescence et la révision prudente ;
-- n’invente aucun landmark, workflow ou failure mode présenté comme réellement observé pendant le bootstrap s’il ne l’a pas été.
+- describes the controlled operational learning protocol of §31.9;
+- distinguishes operational knowledge, current observation and validation evidence;
+- provides for obsolescence detection and cautious revision;
+- invents no landmark, workflow or failure mode presented as actually observed during the bootstrap if it was not.
 
-### 61.9 Menu contextuel PWS
+### 61.9 PWS contextual menu
 
-Vérifier dans une vraie session interactive compatible :
+Verify in a real compatible interactive session:
 
-1. que `.claude/skills/pws/SKILL.md` est détectée et invocable par `/pws` ;
-2. que la skill utilise `AskUserQuestion` lorsque cette primitive native est disponible ;
-3. que chaque question respecte les limites courantes de la primitive et que les arborescences ne surchargent pas un écran unique ;
-4. que le menu se comporte correctement dans au moins quatre états : workspace sans produit, produits enregistrés, présence d’un `.pine` `UNREGISTERED`, état mixte avec validation `STALE` ;
-5. que `Retour` et `Annuler` ne produisent aucun effet de bord ;
-6. que `Nouveau script → Indicator → COMMERCIAL` transmet les valeurs canoniques attendues (profil et axes) à `pine-new` sans créer de produit avant la confirmation finale ;
-7. que `Nouveau script → Library` dérive FREE à source public, ne propose aucun autre profil et que le scanner rejette toute autre combinaison si elle est injectée autrement ;
-7a. que le parcours « Travailler sur un script » propose l’action avant le script, affiche l’identité explicite du script unique, et que le premier niveau ne présente jamais un produit comme seul périmètre ;
-8. qu’un `.pine` `UNREGISTERED` route vers `pine-onboard` ;
-9. que les actions de développement, documentation/tutoriel, recherche, revue, audit, test local, validation TradingView, licence et conditions d'utilisation, publication, export GitHub, diagnostic, outils et archives routent vers les skills existantes au lieu de dupliquer leur logique, que la structure vient de `menu --json` (libellés dans la langue configurée) et que le changement de mode suit le contrôleur partagé ;
-10. que le menu peut être réouvert avec `/pws` pendant une session ;
-11. qu’un resume, un compact ou un clear n’impose pas la réouverture du menu ;
-12. que `SessionStart` ne tente pas de manipuler un TTY ou de simuler des touches ;
-13. qu’un fallback conversationnel simple existe si `AskUserQuestion` n’est pas disponible sur la surface courante.
+1. that `.claude/skills/pws/SKILL.md` is detected and invocable through `/pws`;
+2. that the skill uses `AskUserQuestion` when this native primitive is available;
+3. that each question respects the current limits of the primitive and that the trees do not overload a single screen;
+4. that the menu behaves correctly in at least four states: workspace without a product, registered products, presence of an `UNREGISTERED` `.pine`, mixed state with `STALE` validation;
+5. that `Retour` (Back) and `Annuler` (Cancel) produce no side effect;
+6. that `Nouveau script → Indicator → COMMERCIAL` (New script → Indicator → COMMERCIAL) transmits the expected canonical values (profile and axes) to `pine-new` without creating a product before the final confirmation;
+7. that `Nouveau script → Library` (New script → Library) derives FREE with public source, offers no other profile and that the scanner rejects any other combination if it is injected otherwise;
+7a. that the "Work on a script" guided path offers the action before the script, displays the explicit identity of the single script, and that the first level never presents a product as the only scope;
+8. that an `UNREGISTERED` `.pine` routes to `pine-onboard`;
+9. that the development, documentation/tutorial, research, review, audit, local test, TradingView validation, licence and terms of use, publication, GitHub export, diagnostic, tools and archives actions route to the existing skills instead of duplicating their logic, that the structure comes from `menu --json` (labels in the configured language) and that the mode change follows the shared controller;
+10. that the menu can be reopened with `/pws` during a session;
+11. that a resume, a compact or a clear does not force the reopening of the menu;
+12. that `SessionStart` does not attempt to manipulate a TTY or to simulate keystrokes;
+13. that a simple conversational fallback exists if `AskUserQuestion` is not available on the current surface.
 
-La self-validation doit également confirmer la forme CLI actuelle de démarrage interactif avec prompt initial si elle est documentée dans `OPERATIONS.md`.
+The self-validation must also confirm the current CLI form of interactive startup with an initial prompt if it is documented in `OPERATIONS.md`.
 
 ### 61.10 PineTS
 
-Si la couche PineTS a été construite, vérifier :
+If the PineTS layer has been built, verify:
 
-1. que PineTS est piné sur une version exacte ;
-2. qu’aucun range flottant n’est utilisé ;
-3. que le lockfile correspond à la dépendance déclarée ;
-4. que la version et l'artefact installés proviennent du registry npm et que leurs métadonnées, intégrité, licence et lockfile sont enregistrés sans déduction depuis `main` seul ;
-5. que `license_basis` décrit la base réellement utilisée et ne prétend jamais à une licence commerciale sans preuve locale applicable ;
-6. que l’`executor_fingerprint` couvre les artefacts d’exécution et de normalisation réellement influents, `package.json`, la version Node exacte et les faits d'environnement pertinents sans secrets ;
-7. que le runner peut exécuter un cas minimal déterministe ;
-8. que la sortie normalisée est reproductible ;
-9. que le manifest de calibration correspond au triplet courant `pinets_version + executor_fingerprint + normalization_schema` ;
-10. qu'une modification simulée de cas, input, attendu, référence ou preuve rend stale uniquement les calibrations concernées et qu'aucun TTL arbitraire n'est appliqué ;
-11. qu’une capability non encore qualifiée n’est ni promue `GATING` ni déclarée `UNSUPPORTED` sans preuve, et peut rester provisoirement `EXPERIMENTAL` avec `calibration_status = MISSING` ;
-12. que deux sous-capabilities d’une même famille peuvent recevoir des statuts différents lorsque les calibrations le justifient, sans classification globale forcée de la famille ;
-13. qu’un changement simulé de `pinets_version`, d’`executor_fingerprint` ou de `normalization_schema` rend correctement `calibration_status = STALE` sans réécrire automatiquement `capability_status` ;
-14. que `effective_gating` est faux pour toute capability dont `capability_status != GATING` ou `calibration_status != CURRENT` ;
-15. que les `capabilities_used` d’un run empêchent une conclusion gating lorsque celle-ci dépend matériellement d’une capability non effectivement gating ;
-16. appliquer le test conditionnel suivant :
-    - si au moins une capability a légitimement obtenu `GATING + CURRENT`, vérifier qu'une violation volontaire d'un contrat reposant uniquement sur des capabilities effectivement gating bloque le cycle local sans produire ni modifier aucun statut TradingView ;
-    - sinon, vérifier le chemin non-gating et confirmer qu'aucune capability n'est promue artificiellement pour satisfaire la self-validation ;
-17. que l'absence totale de capability `GATING` est acceptée comme résultat valide du bootstrap et déclarée explicitement ;
-18. que `PINETS_EXECUTION_PASS` et `PINETS_REGRESSION_CHANGED` peuvent coexister sans être assimilés à un échec d’exécution ;
-19. que `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` et `PINETS_INCONCLUSIVE` ne sont pas transformés en échec du source ;
-20. qu’un dataset synthétique déterministe possède un `dataset_descriptor` reproductible et un `dataset_sha256` stable ;
-21. qu’un fixture de snapshot OHLCV importé peut être consommé avec provenance explicite et hash stable sans nécessiter de fournisseur réseau ;
-22. qu’une baseline durable possède son dataset descriptor, ses hashes et sa preuve ou justification d'acceptation vérifiables ;
-23. qu’une petite matrice explicite de configurations produit un manifeste déterministe et conserve l’identité de chaque run élémentaire ;
-24. qu’aucun hook du socle ne lance PineTS ni une matrice de datasets, paramètres ou stability probes ;
-25. qu’aucune exécution PineTS n’écrit sous `validation/` ;
-26. que les tests PineTS automatisables sont persistés durablement sous `tools/tests/` ou une factorisation équivalente justifiée et sont exécutés par le framework de test déjà retenu ;
-27. que la documentation opérationnelle distingue les conditions de PineTS, celles d’une éventuelle source de données externe et celles de TradingView selon l’usage réel.
+1. that PineTS is pinned to an exact version;
+2. that no floating range is used;
+3. that the lockfile matches the declared dependency;
+4. that the installed version and artefact come from the npm registry and that their metadata, integrity, licence and lockfile are recorded without deduction from `main` alone;
+5. that `license_basis` describes the basis actually used and never claims a commercial licence without applicable local evidence;
+6. that the `executor_fingerprint` covers the actually influential execution and normalization artefacts, `package.json`, the exact Node version and the relevant environment facts without secrets;
+7. that the runner can execute a minimal deterministic case;
+8. that the normalized output is reproducible;
+9. that the calibration manifest matches the current triplet `pinets_version + executor_fingerprint + normalization_schema`;
+10. that a simulated modification of a case, input, expected result, reference or evidence makes only the calibrations concerned stale and that no arbitrary TTL is applied;
+11. that a not yet qualified capability is neither promoted to `GATING` nor declared `UNSUPPORTED` without evidence, and may provisionally remain `EXPERIMENTAL` with `calibration_status = MISSING`;
+12. that two sub-capabilities of the same family can receive different statuses when the calibrations justify it, without forced global classification of the family;
+13. that a simulated change of `pinets_version`, of `executor_fingerprint` or of `normalization_schema` correctly yields `calibration_status = STALE` without automatically rewriting `capability_status`;
+14. that `effective_gating` is false for any capability whose `capability_status != GATING` or `calibration_status != CURRENT`;
+15. that the `capabilities_used` of a run prevent a gating conclusion when it materially depends on a capability that is not effectively gating;
+16. apply the following conditional test:
+    - if at least one capability has legitimately obtained `GATING + CURRENT`, verify that a deliberate violation of a contract resting only on effectively gating capabilities blocks the local cycle without producing or modifying any TradingView status;
+    - otherwise, verify the non-gating path and confirm that no capability is artificially promoted to satisfy the self-validation;
+17. that the total absence of a `GATING` capability is accepted as a valid result of the bootstrap and explicitly declared;
+18. that `PINETS_EXECUTION_PASS` and `PINETS_REGRESSION_CHANGED` can coexist without being treated as an execution failure;
+19. that `PINETS_UNSUPPORTED`, `PINETS_EXPERIMENTAL` and `PINETS_INCONCLUSIVE` are not turned into a failure of the source;
+20. that a deterministic synthetic dataset has a reproducible `dataset_descriptor` and a stable `dataset_sha256`;
+21. that an imported OHLCV snapshot fixture can be consumed with explicit provenance and stable hash without requiring a network provider;
+22. that a durable baseline has its dataset descriptor, its hashes and its verifiable acceptance evidence or justification;
+23. that a small explicit matrix of configurations produces a deterministic manifest and keeps the identity of each elementary run;
+24. that no hook of the foundation launches PineTS or a matrix of datasets, parameters or stability probes;
+25. that no PineTS execution writes under `validation/`;
+26. that the automatable PineTS tests are durably persisted under `tools/tests/` or a justified equivalent factorization and are executed by the test framework already chosen;
+27. that the operational documentation distinguishes the terms of PineTS, those of any external data source and those of TradingView according to the actual use.
 
-Le bootstrap ne doit jamais être obligé de produire une capability `GATING`. Si une ou plusieurs capabilities sont classées `GATING`, chacune de celles utilisées comme gate doit posséder une calibration indépendante `CURRENT` conforme au contrat. L'absence de gate locale initiale est un résultat honnête et valide lorsque les preuves ne suffisent pas.
+The bootstrap must never be obliged to produce a `GATING` capability. If one or more capabilities are classified `GATING`, each of those used as a gate must have an independent `CURRENT` calibration compliant with the contract. The absence of an initial local gate is an honest and valid result when the evidence is insufficient.
 
-### 61.11 Frontières physiques et contrats machine
+### 61.11 Physical boundaries and machine contracts
 
-Vérifier explicitement :
+Explicitly verify:
 
-- workspace dont le chemin contient des espaces ;
-- détection et arrêt sur repository parent englobant ;
-- fonctionnement identique en l’absence de tout projet sibling et absence de scan ou mutation d’un sibling arbitrairement nommé ;
-- refus des traversals et symlinks sortants ;
-- unicité case-insensitive des IDs/slugs ;
-- schéma `SCRIPT.json` v1 et matrice type/distribution ;
-- séparation des axes `product_structure_status`, `source_registration_status` et validation ;
-- `.claude/worktrees/` ignoré ;
-- pre-write gate Chrome avec un cas ambigu qui produit `NO WRITE` ;
-- aucune entrée ou artefact temporaire de test laissé sous `scripts/`.
+- workspace whose path contains spaces;
+- detection of, and stop on, an enclosing parent repository;
+- identical operation in the absence of any sibling project and absence of scan or mutation of an arbitrarily named sibling;
+- refusal of outgoing traversals and symlinks;
+- case-insensitive uniqueness of the IDs/slugs;
+- `SCRIPT.json` schema 3 and consistency rules of the axes (§45.4); legacy schemas 1 and 2 read and flagged;
+- separation of the `product_structure_status`, `source_registration_status` and validation axes;
+- `.claude/worktrees/` ignored;
+- Chrome pre-write gate with an ambiguous case that produces `NO WRITE`;
+- no temporary test entry or artefact left under `scripts/`.
 
 ---
 
 ## 62. BOOTSTRAP REPORT
 
-Créer :
+Create:
 
 ```text
 docs/architecture/BOOTSTRAP_REPORT.md
 ```
 
-### 62.1 Contenu
+### 62.1 Content
 
-Inclure :
+Include:
 
-- date ;
-- OS ;
-- version Claude Code ;
-- version Git ;
-- runtime local retenu ;
-- état Node.js ;
-- version PineTS exactement retenue ;
-- provenance registry/tarball, intégrité et métadonnées du paquet PineTS installé ;
-- `license_basis` réellement utilisé et éventuelle référence non secrète applicable ;
-- `executor_fingerprint` courant ;
-- identité du schéma de normalisation ;
-- état de calibration PineTS ;
-- déclaration explicite lorsque zéro capability est `GATING`, sans présenter ce résultat comme un échec du bootstrap ;
-- capabilities initialement `GATING`, `EXPERIMENTAL` ou `UNSUPPORTED`, granularité retenue et fraîcheur de leur calibration ;
-- types de datasets locaux supportés, contrat de provenance et éventuelle source externe réellement configurée ;
-- support ou limites des matrices locales explicites ;
-- licence PineTS actuelle vérifiée et périmètre d’usage retenu ;
-- conditions d’usage applicables à toute source de données externe réellement configurée et à toute interaction TradingView concernée ;
-- hash master ;
-- hash de la bootstrap spec ;
-- mappings des deux fichiers d'entrée vers leurs chemins canoniques avec hashes avant/après ;
-- documentation officielle vérifiée ;
-- primitives Claude Code disponibles ;
-- capacités non disponibles ;
-- état Chrome ;
-- état Git ;
-- remotes ;
-- architecture créée ;
-- justification spécifique de chaque fichier ;
-- fichiers volontairement non créés ;
-- permissions ;
-- hooks ;
-- résultats des tests ;
-- résultat doctor ;
-- résultat orphan detection ;
-- mode TradingView ;
-- état et self-validation du menu contextuel PWS ;
-- limitations ;
-- points nécessitant encore le titulaire.
+- date;
+- OS;
+- Claude Code version;
+- Git version;
+- chosen local runtime;
+- Node.js state;
+- exact PineTS version chosen;
+- registry/tarball provenance, integrity and metadata of the installed PineTS package;
+- `license_basis` actually used and any applicable non-secret reference;
+- current `executor_fingerprint`;
+- identity of the normalization schema;
+- PineTS calibration state;
+- explicit declaration when zero capabilities are `GATING`, without presenting this result as a failure of the bootstrap;
+- capabilities initially `GATING`, `EXPERIMENTAL` or `UNSUPPORTED`, chosen granularity and freshness of their calibration;
+- supported local dataset types, provenance contract and any external source actually configured;
+- support or limits of the explicit local matrices;
+- current PineTS licence verified and chosen scope of use;
+- terms of use applicable to any external data source actually configured and to any TradingView interaction concerned;
+- master hash;
+- hash of the bootstrap spec;
+- mappings of the two input files to their canonical paths with before/after hashes;
+- official documentation verified;
+- available Claude Code primitives;
+- unavailable capabilities;
+- Chrome state;
+- Git state;
+- remotes;
+- architecture created;
+- specific justification of each file;
+- files deliberately not created;
+- permissions;
+- hooks;
+- test results;
+- doctor result;
+- orphan detection result;
+- TradingView mode;
+- state and self-validation of the PWS contextual menu;
+- limitations;
+- points still requiring the holder.
 
-### 62.2 Qualité
+### 62.2 Quality
 
-Le rapport doit permettre de vérifier que Claude a réellement conçu l’environnement.
+The report must make it possible to verify that Claude actually designed the environment.
 
-Il ne doit pas simplement lister :
+It must not simply list:
 
 ```text
 Created CLAUDE.md
@@ -4511,179 +4530,179 @@ Created skills
 Created agents
 ```
 
-Chaque choix significatif doit avoir une justification.
+Each significant choice must have a justification.
 
 ---
 
-## 63. COMMIT INITIAL
+## 63. INITIAL COMMIT
 
-À la fin du bootstrap :
+At the end of the bootstrap:
 
-- afficher au minimum `git status --short` ;
-- afficher le diff des fichiers déjà suivis lorsqu'il existe ;
-- inventorier les fichiers non suivis sans les stage uniquement pour fabriquer un diff ;
-- afficher les totaux utiles ;
-- afficher les remotes ;
-- indiquer explicitement si le repository est unborn ou identifier le commit courant ;
-- afficher un résumé du diff et des fichiers créés ;
-- proposer un commit initial ;
-- ne pas le créer sans approbation explicite du titulaire.
+- display at least `git status --short`;
+- display the diff of the already tracked files when it exists;
+- inventory the untracked files without staging them solely to fabricate a diff;
+- display the useful totals;
+- display the remotes;
+- explicitly state whether the repository is unborn or identify the current commit;
+- display a summary of the diff and of the files created;
+- propose an initial commit;
+- not create it without the holder's explicit approval.
 
-Aucun push.
+No push.
 
 ---
 
-## 64. CRITÈRES DE TERMINAISON DU BOOTSTRAP
+## 64. BOOTSTRAP COMPLETION CRITERIA
 
-Le bootstrap n’est terminé que si toutes les affirmations suivantes sont vraies.
+The bootstrap is complete only if all the following statements are true.
 
-### 64.1 Autorités
+### 64.1 Authorities
 
-- le master est canonique et intact ;
-- la bootstrap spec est conservée ;
-- INDEX correspond au master ;
-- TRACEABILITY correspond au master.
+- the master is canonical and intact;
+- the bootstrap spec is kept;
+- INDEX matches the master;
+- TRACEABILITY matches the master.
 
-### 64.2 Contexte
+### 64.2 Context
 
-- root `CLAUDE.md` est concis ;
-- aucune copie du master n’y est importée ;
-- aucune configuration ou procédure ne requiert l’existence, le nom, le chemin ou l’état d’un autre projet externe ;
-- rules sont path-scoped ;
-- skills ne sont pas gonflées de contenu de référence inutile ;
-- agents ont des responsabilités distinctes.
+- root `CLAUDE.md` is concise;
+- no copy of the master is imported into it;
+- no configuration or procedure requires the existence, the name, the path or the state of another external project;
+- rules are path-scoped;
+- skills are not bloated with unnecessary reference content;
+- agents have distinct responsibilities.
 
 ### 64.3 Tooling
 
-- tooling fonctionne ;
-- tests passent ;
-- doctor fonctionne ;
-- orphan detection fonctionne ;
-- stale validation fonctionne ;
-- menu contextuel PWS détecté, routé et self-validé ;
-- thin adapter PineTS fonctionnel ou limitation explicitement déclarée ;
-- version PineTS non flottante ;
-- `executor_fingerprint` déterministe ;
-- calibration cohérente avec `pinets_version`, `executor_fingerprint` et `normalization_schema` courants ;
-- aucune capability utilisée comme effectivement gating sans `capability_status = GATING` et `calibration_status = CURRENT` ;
-- zéro capability `GATING` est accepté lorsque les preuves initiales ne suffisent pas ;
-- aucune famille large de capabilities promue ou condamnée par principe lorsque des sous-capabilities doivent être distinguées ;
-- datasets locaux hashés et provenance reproductible ;
-- matrices explicites bornées et traçables lorsqu’elles sont supportées, sans optimiseur générique ni hook automatique ;
-- lorsqu'une gate PineTS locale existe légitimement, elle peut bloquer localement sans jamais écrire ni satisfaire un statut TradingView ;
-- séparation physique et sémantique entre `tests/behavioral/` et `validation/`.
+- tooling works;
+- tests pass;
+- doctor works;
+- orphan detection works;
+- stale validation works;
+- PWS contextual menu detected, routed and self-validated;
+- PineTS thin adapter functional or limitation explicitly declared;
+- non-floating PineTS version;
+- deterministic `executor_fingerprint`;
+- calibration consistent with the current `pinets_version`, `executor_fingerprint` and `normalization_schema`;
+- no capability used as effectively gating without `capability_status = GATING` and `calibration_status = CURRENT`;
+- zero `GATING` capabilities is accepted when the initial evidence is insufficient;
+- no broad family of capabilities promoted or condemned on principle when sub-capabilities must be distinguished;
+- local datasets hashed and reproducible provenance;
+- explicit matrices bounded and traceable when they are supported, without a generic optimizer or automatic hook;
+- when a local PineTS gate legitimately exists, it may block locally without ever writing or satisfying a TradingView status;
+- physical and semantic separation between `tests/behavioral/` and `validation/`.
 
 ### 64.4 Git
 
-- repo local opérationnel ;
-- aucun remote créé par le bootstrap ;
-- `worktree.baseRef` local adapté ;
-- `.claude/worktrees/` ignoré et limitation pré-premier-commit documentée ;
-- aucun push possible implicitement selon la politique retenue.
+- local repo operational;
+- no remote created by the bootstrap;
+- appropriate local `worktree.baseRef`;
+- `.claude/worktrees/` ignored and pre-first-commit limitation documented;
+- no push possible implicitly according to the chosen policy.
 
 ### 64.5 TradingView
 
-- mode initial `manual` ;
-- switch user-only opérationnel ;
-- Chrome experimental clairement séparé ;
-- fallback documenté ;
-- publication hors scope.
+- initial mode `manual`;
+- user-only switch operational;
+- Chrome experimental clearly separated;
+- fallback documented;
+- publication out of scope.
 
-### 64.6 Redondance
+### 64.6 Redundancy
 
-- aucun artefact décoratif ;
-- aucun placeholder produit ;
-- aucune registry centrale ;
-- aucune duplication massive du standard ;
-- responsabilités non concurrentes.
+- no decorative artefact;
+- no product placeholder;
+- no central registry;
+- no massive duplication of the standard;
+- non-competing responsibilities.
 
-### 64.7 Honnêteté
+### 64.7 Honesty
 
-- aucune validation TradingView inventée ;
-- aucun résultat PineTS présenté comme validation TradingView ;
-- aucune capacité Claude Code inventée ;
-- aucune décision le titulaire inventée ;
-- aucune recherche prétendument effectuée sans source réelle.
-
----
-
-## 65. CRITÈRES D’ONBOARDING COMPLET D’UN SCRIPT EXISTANT
-
-Un script existant est prêt à être développé dans le workspace lorsque :
-
-- le source a été entièrement lu ;
-- le product root est stable ;
-- `SCRIPT.json` est valide ;
-- le profil de licence et ses axes sont résolus (schéma 2) ;
-- `PRODUCT.md` est spécifique ;
-- `ARCHITECTURE.md` est spécifique ;
-- le `CLAUDE.md` local est spécifique et concis ;
-- validation state existe ;
-- les questions réellement indéterminables ont été posées au titulaire ;
-- aucune décision n’a été inventée ;
-- aucun fichier générique n’a été créé ;
-- le source n’a pas été modifié pendant l’onboarding ;
-- doctor classe le produit `REGISTERED`.
+- no invented TradingView validation;
+- no PineTS result presented as TradingView validation;
+- no invented Claude Code capability;
+- no invented decision of the holder;
+- no research allegedly performed without a real source.
 
 ---
 
-## 66. CRITÈRES DE CRÉATION CORRECTE D’UN NOUVEAU SCRIPT
+## 65. CRITERIA FOR COMPLETE ONBOARDING OF AN EXISTING SCRIPT
 
-Un nouveau produit a correctement traversé `pine-new` lorsque :
+An existing script is ready to be developed in the workspace when:
 
-- l’objectif est clair ;
-- l’audience est claire ;
-- le `script_kind` est clair ;
-- le profil de licence et ses axes sont clairs ;
-- les cohérences de §45.4 sont respectées, notamment `library → FREE à source public` ;
-- la recherche Pine actuelle a été faite ;
-- le benchmark open-source / Editors’ Picks pertinent a été fait ;
-- la différenciation est définie ;
-- la cible de dépassement qualitatif est définie ;
-- les décisions produit nécessaires ont été prises ;
-- l’architecture est conçue avant le code ;
-- le contexte spécifique existe ;
-- le source a été créé selon le master ;
-- le code n’est pas une adaptation déguisée d’une référence ;
-- les checks locaux passent ;
-- les tests comportementaux PineTS applicables ont été exécutés lorsque la couche possède des capabilities suffisantes ;
-- les `capabilities_used` et leur fraîcheur de calibration bornent correctement toute conclusion gating ;
-- tout résultat PineTS réellement gating a été qualifié et peut bloquer le cycle local uniquement dans les limites exactes de son contrat ;
-- tout statut PineTS non gating ou limitation applicable est déclaré honnêtement plutôt que transformé en échec artificiel ;
-- aucun claim local PineTS n’est élargi en claim de parité TradingView sans preuve TradingView correspondante ;
-- la revue indépendante est faite ;
-- la validation TradingView est faite avant déclaration finale.
+- the source has been read in full;
+- the product root is stable;
+- `SCRIPT.json` is valid;
+- the licence profile and its axes are resolved (schema 3);
+- `PRODUCT.md` is specific;
+- `ARCHITECTURE.md` is specific;
+- the local `CLAUDE.md` is specific and concise;
+- validation state exists;
+- the genuinely undeterminable questions have been put to the holder;
+- no decision has been invented;
+- no generic file has been created;
+- the source has not been modified during onboarding;
+- doctor classifies the product as `REGISTERED`.
 
 ---
 
-## 67. EXEMPLE DE FLUX — SCRIPT EXISTANT AJOUTÉ PAR RICK
+## 66. CRITERIA FOR CORRECT CREATION OF A NEW SCRIPT
+
+A new product has correctly gone through `pine-new` when:
+
+- the objective is clear;
+- the audience is clear;
+- the `script_kind` is clear;
+- the licence profile and its axes are clear;
+- the consistency rules of §45.4 are respected, in particular `library → FREE with public source`;
+- the current Pine research has been done;
+- the relevant open-source / Editors’ Picks benchmark has been done;
+- the differentiation is defined;
+- the qualitative surpassing target is defined;
+- the necessary product decisions have been made;
+- the architecture is designed before the code;
+- the specific context exists;
+- the source has been created according to the master;
+- the code is not a disguised adaptation of a reference;
+- the local checks pass;
+- the applicable PineTS behavioural tests have been executed when the layer has sufficient capabilities;
+- the `capabilities_used` and their calibration freshness correctly bound any gating conclusion;
+- any actually gating PineTS result has been qualified and may block the local cycle only within the exact limits of its contract;
+- any non-gating PineTS status or applicable limitation is declared honestly rather than turned into an artificial failure;
+- no local PineTS claim is broadened into a TradingView parity claim without corresponding TradingView evidence;
+- the independent review is done;
+- the TradingView validation is done before the final declaration.
+
+---
+
+## 67. FLOW EXAMPLE — EXISTING SCRIPT ADDED BY THE HOLDER
 
 ```text
-le titulaire
+the holder
 │
-├── crée scripts/zigzag-orderblock/
+├── creates scripts/zigzag-orderblock/
 │
-└── dépose ZigZag OrderBlock Retracement.pine
+└── drops ZigZag OrderBlock Retracement.pine
         │
         ▼
-nouvelle session Claude Code
+new Claude Code session
         │
         ▼
 SessionStart
         │
         ├── scan scripts/**
-        └── UNREGISTERED détecté
+        └── UNREGISTERED detected
                 │
                 ▼
 pine-onboard
                 │
-                ├── lecture intégrale
-                ├── cartographie
-                ├── analyse master applicable
-                ├── résolution distribution
-                ├── PRODUCT.md spécifique
-                ├── ARCHITECTURE.md spécifique
-                ├── CLAUDE.md local spécifique
+                ├── full read
+                ├── mapping
+                ├── applicable master analysis
+                ├── distribution resolution
+                ├── specific PRODUCT.md
+                ├── specific ARCHITECTURE.md
+                ├── specific local CLAUDE.md
                 ├── SCRIPT.json
                 └── validation = unverified
                         │
@@ -4696,206 +4715,206 @@ REGISTERED
 
 ---
 
-## 68. EXEMPLE DE FLUX — NOUVEAU PRODUIT
+## 68. FLOW EXAMPLE — NEW PRODUCT
 
 ```text
-nouvelle session menu-first ou `/pws`
+new menu-first session or `/pws`
         │
         ▼
-menu contextuel PWS
+PWS contextual menu
         │
-        ├── Nouveau / importer
-        ├── Nouveau script
+        ├── New / import
+        ├── New script
         ├── type
         ├── distribution
         └── confirmation
         │
         ▼
-Le titulaire décrit / précise l’objectif
+The holder describes / clarifies the objective
         │
         ▼
 pine-new
         │
-        ├── objectif / audience / distribution
-        ├── recherche Pine actuelle
-        ├── benchmark open-source
+        ├── objective / audience / distribution
+        ├── current Pine research
+        ├── open-source benchmark
         ├── Editors’ Picks
-        ├── forces/faiblesses des références
-        ├── différenciation le titulaire
-        ├── conception produit
+        ├── strengths/weaknesses of the references
+        ├── the holder's differentiation
+        ├── product design
         ├── architecture
-        ├── décisions le titulaire nécessaires
+        ├── necessary decisions of the holder
         │
         ▼
-création du product root
+creation of the product root
         │
-        ├── contexte spécifique
+        ├── specific context
         ├── research run
-        └── source Pine
+        └── Pine source
                 │
                 ▼
-pine-develop (relecture §9.2, auto-revue, contrôle du diff ;
-        │      revue indépendante seulement sur demande du titulaire)
+pine-develop (re-reading §9.2, self-review, diff check;
+        │      independent review only at the holder's request)
         ▼
 local guard
         │
         ▼
 pine-local-test
         │
-        ├── execution status séparé des observations
-        ├── gating seulement si capabilities_used effectivement gating
-        ├── unsupported / experimental / inconclusive → non bloquant
-        └── unexpected gating change → analyse / correction / re-run
+        ├── execution status separate from the observations
+        ├── gating only if capabilities_used effectively gating
+        ├── unsupported / experimental / inconclusive → non-blocking
+        └── unexpected gating change → analysis / fix / re-run
         │
         ▼
 tv-validate
       /     \
  manual   chrome-experimental
             │
-            └── fallback manual si nécessaire
+            └── fallback manual if necessary
         │
         ▼
-validation liée au SHA exact
+validation tied to the exact SHA
 ```
 
 ---
 
-## 69. EXEMPLE DE FLUX — MODIFICATION D’UN SCRIPT
+## 69. FLOW EXAMPLE — MODIFICATION OF A SCRIPT
 
 ```text
-Le titulaire donne l’objectif
+The holder gives the objective
         │
         ▼
-contexte produit chargé
+product context loaded
         │
         ▼
 pine-develop
         │
-        ├── classification et niveau (travail courant)
-        ├── lecture ciblée à partir de la cartographie
+        ├── classification and level (routine work)
+        ├── targeted reading starting from the map
         ├── impact
-        ├── recherche actuelle
-        ├── benchmark si pertinent
+        ├── current research
+        ├── benchmark if relevant
         ├── plan
-        ├── édition
-        ├── relecture (§9.2) et contrôle du diff
-        └── synchro artefacts
+        ├── editing
+        ├── re-reading (§9.2) and diff check
+        └── artefact sync
         │
         ▼
 guard
         │
         ▼
-pine-local-test selon applicabilité
+pine-local-test depending on applicability
         │
         ▼
-qualification des résultats
+qualification of the results
         │
         ▼
-tv-validate si requis
+tv-validate if required
         │
         ▼
-hash final prouvé
+final hash proven
 ```
 
 ---
 
-## 70. EXEMPLE DE FLUX — RELEASE
+## 70. FLOW EXAMPLE — RELEASE
 
 ```text
-source final
+final source
     │
     ▼
 pine-release
     │
     ├── SemVer impact
-    ├── artefacts applicables
-    ├── règles TradingView actuelles
+    ├── applicable artefacts
+    ├── current TradingView rules
     ├── release reviewer
-    └── checks pré-release
+    └── pre-release checks
             │
-            ├── tests comportementaux locaux applicables
-            │       └── régressions gating qualifiées
+            ├── applicable local behavioural tests
+            │       └── qualified gating regressions
             │
             ▼
-validation TradingView du hash final
+TradingView validation of the final hash
             │
             ▼
 READY FOR HUMAN PUBLICATION
 ```
 
-Le dernier état n’est pas :
+The last state is not:
 
 ```text
 PUBLISHED
 ```
 
-tant que le titulaire n’a pas effectivement finalisé ou explicitement autorisé la publication.
+as long as the holder has not actually finalized or explicitly authorized the publication.
 
 ---
 
-## 71. RÈGLES DE QUALITÉ POUR LE CONTENU GÉNÉRÉ PAR LE BOOTSTRAP
+## 71. QUALITY RULES FOR THE CONTENT GENERATED BY THE BOOTSTRAP
 
-Chaque fichier créé doit être relu avec ces questions :
+Each file created must be re-read with these questions:
 
-1. Ce contenu pourrait-il être copié tel quel dans n’importe quel repo ?
-   - Si oui, il est probablement trop générique.
-2. Quelle partie du standard maître ou de l’environnement réel justifie ce contenu ?
-3. Ce fichier contient-il quelque chose déjà présent ailleurs ?
-4. Claude a-t-il écrit une rubrique uniquement parce qu’un modèle de document en comportait une ?
-5. Le contenu est-il actionnable ?
-6. Un futur Claude peut-il savoir quand le fichier est stale ?
-7. Un futur Claude peut-il savoir qui a autorité sur ce contenu ?
-8. Une inférence est-elle présentée comme un fait ?
-9. Une capacité de Claude Code est-elle supposée sans vérification ?
-10. Une règle pourrait-elle être path-scoped au lieu d’être always-on ?
+1. Could this content be copied as is into any repo?
+   - If so, it is probably too generic.
+2. Which part of the master standard or of the real environment justifies this content?
+3. Does this file contain something already present elsewhere?
+4. Did Claude write a section only because a document template contained one?
+5. Is the content actionable?
+6. Can a future Claude know when the file is stale?
+7. Can a future Claude know who has authority over this content?
+8. Is an inference presented as a fact?
+9. Is a Claude Code capability assumed without verification?
+10. Could a rule be path-scoped instead of being always-on?
 
 ---
 
-## 72. AUCUN CLAIM DE « SOPHISTICATION » SANS UTILITÉ
+## 72. NO "SOPHISTICATION" CLAIM WITHOUT USEFULNESS
 
-La sophistication recherchée est celle de la séparation correcte des responsabilités.
+The sophistication sought is that of the correct separation of responsibilities.
 
-Elle ne se mesure pas au nombre de fichiers.
+It is not measured by the number of files.
 
-Architecture préférée :
+Preferred architecture:
 
 ```text
-petit noyau toujours chargé
+small core always loaded
 +
-contexte conditionnel
+conditional context
 +
-procédures à la demande
+on-demand procedures
 +
-agents frais spécialisés
+fresh specialized agents
 +
-checks mécaniques
+mechanical checks
 +
-preuves réelles
+real evidence
 ```
 
-Architecture rejetée :
+Rejected architecture:
 
 ```text
-énorme CLAUDE.md
+huge CLAUDE.md
 +
-50 fichiers de règles redondants
+50 redundant rule files
 +
-10 agents qui se recouvrent
+10 overlapping agents
 +
-base de données
+database
 +
-orchestrateur custom
+custom orchestrator
 +
-hooks sémantiques partout
+semantic hooks everywhere
 ```
 
 ---
 
-## 73. SOURCES OFFICIELLES À REVÉRIFIER PENDANT LE BOOTSTRAP
+## 73. OFFICIAL SOURCES TO RE-VERIFY DURING THE BOOTSTRAP
 
-Ces URLs servent de points de départ.
+These URLs serve as starting points.
 
-Toujours vérifier leur contenu actuel.
+Always verify their current content.
 
 ### Claude Code
 
@@ -4930,40 +4949,40 @@ https://github.com/LuxAlgo/PineTS
 https://www.npmjs.com/package/pinets
 ```
 
-Vérifier avant installation ou mise à niveau la version actuelle, la documentation, la licence, les limitations et les changements de compatibilité.
+Before installation or upgrade, verify the current version, the documentation, the licence, the limitations and the compatibility changes.
 
 ---
 
-## 74. CONSIGNE DE DÉPART À CLAUDE CODE
+## 74. STARTING INSTRUCTION TO CLAUDE CODE
 
-Lorsque le titulaire fournit cette spécification avec le standard maître, commencer ainsi :
+When the holder provides this specification with the master standard, start as follows:
 
-> Lis intégralement cette spécification et le standard maître avant toute création de structure.  
-> Vérifie d’abord la documentation Claude Code et TradingView actuelle pour les primitives dont le bootstrap dépend.  
-> Vérifie également l’upstream PineTS actuel avant installation : registry npm, artefact exact installable, version, intégrité, licence réellement applicable, limitations et compatibilité pertinente.  
-> Inspecte l’environnement réel.  
-> Traite le dossier courant comme la racine autonome de Pine Workspace ; ne suppose l’existence d’aucun projet sibling et ne scanne ni ne modifie le contenu d’éventuels projets siblings.  
-> Construis la matrice exigences → contexte → primitive → contrôle.  
-> Propose mentalement l’architecture, critique-la dans un contexte indépendant, puis seulement écris les fichiers.  
-> Chaque fichier doit avoir une responsabilité spécifique et un contenu fondé sur le standard ou l’environnement réel.  
-> N’utilise aucun template générique pour simuler de la complétude.  
-> N’ajoute aucune couche dont l’utilité n’est pas démontrée.  
-> Après construction, exécute tous les self-tests, le doctor, les contrôles de fraîcheur, la détection des `.pine` orphelins et une passe de non-redondance.  
-> Ne crée aucun remote, aucun push, aucune publication TradingView et aucun commit sans autorisation explicite du titulaire.  
-> Termine par `BOOTSTRAP_REPORT.md` et un résumé précis de ce qui est prêt, expérimental, volontairement absent ou encore à confirmer.
+> Read this specification and the master standard in full before creating any structure.  
+> First verify the current Claude Code and TradingView documentation for the primitives the bootstrap depends on.  
+> Also verify the current PineTS upstream before installation: npm registry, exact installable artefact, version, integrity, actually applicable licence, limitations and relevant compatibility.  
+> Inspect the real environment.  
+> Treat the current folder as the autonomous root of Pine Workspace; do not assume the existence of any sibling project and neither scan nor modify the content of any sibling projects.  
+> Build the matrix requirements → context → primitive → check.  
+> Mentally propose the architecture, critique it in an independent context, and only then write the files.  
+> Each file must have a specific responsibility and content grounded in the standard or the real environment.  
+> Do not use any generic template to simulate completeness.  
+> Do not add any layer whose usefulness is not demonstrated.  
+> After construction, run all the self-tests, the doctor, the freshness checks, the detection of orphan `.pine` files and a non-redundancy pass.  
+> Create no remote, no push, no TradingView publication and no commit without the holder's explicit authorization.  
+> Finish with `BOOTSTRAP_REPORT.md` and a precise summary of what is ready, experimental, deliberately absent or still to be confirmed.
 
 ---
 
-# FIN DE LA SPÉCIFICATION
+# END OF THE SPECIFICATION
 
-Le workspace final doit rendre le bon comportement naturel pour Claude Code sans charger toute la constitution dans chaque contexte et sans créer une seconde plateforme autour de Claude Code.
+The final workspace must make the right behaviour natural for Claude Code without loading the whole constitution into every context and without creating a second platform around Claude Code.
 
-La couche PineTS respecte ce principe uniquement tant qu’elle reste un laboratoire local minimal, capability-gated, exactement piné et calibré indépendamment. Elle peut faire respecter un contrat comportemental local précisément borné, mais reste sans autorité normative sur Pine Script et sans autorité sur le comportement propre à TradingView ou sur le statut `TV_VALIDATED`.
+The PineTS layer respects this principle only as long as it remains a minimal local laboratory, capability-gated, exactly pinned and independently calibrated. It can enforce a precisely bounded local behavioural contract, but remains without normative authority over Pine Script and without authority over the behaviour specific to TradingView or over the `TV_VALIDATED` status.
 
-L’objectif est :
+The objective is:
 
 ```text
-RICK OBJECTIVE
+HOLDER OBJECTIVE
 +
 CURRENT TRADINGVIEW TECHNICAL TRUTH
 +
@@ -4986,12 +5005,12 @@ REAL TRADINGVIEW VALIDATION
 A SMARTER, MORE AUTONOMOUS, TRACEABLE PINE DEVELOPMENT WORKSPACE
 ```
 
-Le système doit rester capable de grandir avec le nombre de scripts sans dégrader :
+The system must remain able to grow with the number of scripts without degrading:
 
-- la précision ;
-- le contexte ;
-- la maintenabilité ;
-- la traçabilité ;
-- l’originalité ;
-- la qualité des validations ;
-- la capacité du titulaire à garder le contrôle des décisions produit.
+- precision;
+- context;
+- maintainability;
+- traceability;
+- originality;
+- the quality of the validations;
+- the holder's ability to keep control of the product decisions.

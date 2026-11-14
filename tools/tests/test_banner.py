@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Banners (2026-11-07 / 08). Two distinct usages: the FIXED "Pine-WS" banner
-of the /pws menu (same text whether `menu --json` is captured or written to
+"""Banners (2026-11-07 / 08; menu text "PWS" since 2026-11-14). Two distinct
+usages: the FIXED "PWS" banner of the /pws menu (same text whether `menu --json` is captured or written to
 a terminal of any width), and the adaptive PINE-WORKSPACE banner of the
 `banner` subcommand (three printable-ASCII constants, a choice driven by
 the real width of each variant plus an explicit margin, plain text for an
@@ -88,18 +88,28 @@ def check_block(testcase, text, label):
 class TestMenuBanner(unittest.TestCase):
     """The fixed banner of /pws."""
 
-    def test_fixed_pws_banner_depicts_pine_ws_in_one_printable_block(self):
+    def test_fixed_pws_banner_depicts_pws_in_one_printable_block(self):
         check_block(self, banner.MENU, "menu")
-        self.assertEqual(banner.MENU_NAME, "Pine-WS")
+        self.assertEqual(banner.MENU_NAME, "PWS")
         lines = banner.MENU.split("\n")
         self.assertEqual(len(lines), 5)
-        self.assertEqual(banner.width_of(banner.MENU), 41)
-        self.assertEqual(max(len(l) for l in lines), 41)
+        self.assertEqual(banner.width_of(banner.MENU), 23)
+        self.assertEqual(max(len(l) for l in lines), 23)
+        # the exact FIGlet "Standard" art of "PWS" (holder's decision of 2026-11-14)
+        self.assertEqual(lines, [
+            " ______        ______",
+            "|  _ \\ \\      / / ___|",
+            "| |_) \\ \\ /\\ / /\\___ \\",
+            "|  __/ \\ V  V /  ___) |",
+            "|_|     \\_/\\_/  |____/",
+        ])
+        # the product keeps its official name: only the banner text changed
+        self.assertEqual(banner.NAME, "PINE-WORKSPACE")
 
     def test_menu_banner_is_structured_fixed_data(self):
         b = banner.menu_banner("en")
-        self.assertEqual(b, {"name": "Pine-WS", "usage": "menu", "fixed": True, "text": banner.MENU,
-                             "width": 41, "height": 5, "language": "en",
+        self.assertEqual(b, {"name": "PWS", "usage": "menu", "fixed": True, "text": banner.MENU,
+                             "width": 23, "height": 5, "language": "en",
                              "question": banner.MENU + "\n\nWhat would you like to do?"})
         self.assertEqual(banner.menu_banner("en"), b)                # no state, no width involved
         self.assertEqual(banner.menu_banner(), b)                    # default language: English
@@ -271,9 +281,9 @@ class TestCli(unittest.TestCase):
         self.assertTrue(r.stdout.startswith("{"), r.stdout[:40])    # never prefixed
         data = json.loads(r.stdout)
         b = data.pop("banner")
-        self.assertEqual(b, banner.menu_banner("fr"))               # the fixed Pine-WS art, even captured
+        self.assertEqual(b, banner.menu_banner("fr"))               # the fixed PWS art, even captured
         self.assertEqual((b["name"], b["fixed"], b["usage"], b["width"], b["height"], b["language"]),
-                         ("Pine-WS", True, "menu", 41, 5, "fr"))
+                         ("PWS", True, "menu", 23, 5, "fr"))
         self.assertEqual(b["text"], banner.MENU)
         # the ready-to-send main-menu question: exact lines, blank line, French question
         self.assertEqual(b["question"], banner.MENU + "\n\nQue souhaitez-vous faire ?")
@@ -325,6 +335,7 @@ class TestCli(unittest.TestCase):
         self.assertFalse(art_lines & set(hook.stdout.split("\n")))
         self.assertNotIn("PINE-WORKSPACE", hook.stdout)
         self.assertNotIn("Pine-WS", hook.stdout)
+        self.assertNotIn(banner.MENU, hook.stdout)                  # its first line "PWS" is plain text, not the art
 
     def test_banner_command_captured_prints_the_plain_text(self):
         r = self.cli("banner")

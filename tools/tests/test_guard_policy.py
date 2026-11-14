@@ -500,6 +500,7 @@ class TestImportedLicenceGuard20261113(unittest.TestCase):
                                        header=MPL_THIRD + VERSION_LINES)
         findings = guard.guard_product(pdir, self.identity)
         self.assertNotIn("BLOCKING", [f["status"] for f in findings], findings)
+        self.assertTrue(config.set_value(self.root, "language", "fr")["ok"])   # French wording read below
         session.hook_session_start(self.root, {"session_id": "c19", "source": "startup"})
         source = pdir / "My Indicator.pine"
         source.write_text(source.read_text(encoding="utf-8").replace(MPL_THIRD.splitlines()[0] + "\n", ""),

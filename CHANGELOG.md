@@ -11,6 +11,84 @@ doctor). A published version is never replaced silently: a corrected delivery ge
 Each entry lists what changed and the limits that remain, so that the guided update path can show
 them before anything is applied.
 
+## [2.1.1] — PWS menu banner, English reference documentation, language rule (prepared 2026-11-14)
+
+### What this version is
+
+A compatible patch of the 2.1.0 core. It changes the text of the `/pws` menu banner, makes English
+the reference language of the documentation under `docs/` and `standards/`, and states the
+language rule of the assistant. No data migration: products, configuration, evidence and the
+installed PineTS engine are untouched by the update.
+
+### Changed
+
+- `/pws` menu banner: the fixed ASCII-art banner of the main menu now reads "PWS" (FIGlet font
+  "Standard", 23 columns, 5 lines, printable ASCII, no trailing space) instead of "Pine-WS". Same
+  mechanism as before: `menu --json` carries it in `banner.question`, which the menu passes verbatim
+  as the text of the main-menu question, at the opening of `/pws` and on every return to the main
+  menu only — never in front of a submenu, a result or an intermediate question, never as free
+  text, never resized. The product name (Pine Workspace), the repository, the commands and the
+  identifiers are unchanged. The `banner` subcommand keeps its adaptive PINE-WORKSPACE variants
+  for a terminal.
+- English reference documentation: the specification (`docs/architecture/BOOTSTRAP_SPEC.md`), the
+  architecture, file contracts, operations and migration guides (`docs/architecture/`), the Pine
+  Script v6 master standard (`standards/PINE_SCRIPT_V6_STANDARD.md`) with its index and
+  traceability, and the licence profiles guide (`docs/licensing/PROFILES.md`, formerly bilingual,
+  now one complete English version) are written in English. Faithful translation: requirements,
+  prohibitions, exceptions, conditions, limits, section numbers, rule identifiers and decision
+  references are unchanged; commands, configuration keys, paths and identifiers are untouched. The
+  generated standard index (`standards/INDEX.md`) uses English headings.
+- Documentation accuracy: obsolete active descriptions corrected — schema 3 stated as the current
+  `SCRIPT.json` schema, legacy schemas 1 and 2 being read and flagged (specification §32.2, §44.3,
+  §61.11 and §65, architecture document, doctor skill); the neutral edition completed in two places
+  of the specification (the holder instead of a personal name); the record of ratified amendments in
+  the header of the master standard completed with those of 2026-11-13.
+- Language rule: menus, explanations, questions, confirmations and reports follow the configured
+  language (`language` in `pws.config.json`: `en` or `fr`), whatever the language of the files read;
+  no language is inferred from the holder, the operating system or a document; an explicit request
+  for a translation or for content in another language does not change the configuration; after an
+  explicit change, the next exchanges use the new value. The reference documentation is English in
+  both cases and is explained in the configured language. Ratified exceptions are unchanged:
+  generated legal texts in English, third-party documents in their original language and content,
+  commands, identifiers, code and external diagnostics quoted literally. The rule is stated in
+  `CLAUDE.md` and in master §4.1; the session-start summary now states the configured language
+  explicitly; the skills render their screen labels in the configured language, the agents never
+  infer the language of their report from the language of their mission, and the installer
+  describes the setting as the language of the conversation and of the menus. New installations
+  still propose English by default, with French as a choice.
+- Stop hook in the configured language: the blocking reason, the non-blocking information, the
+  categories and the warning on licence notices, attributions and legal references are worded in
+  English or French according to `language` (English when the configuration is absent); the
+  information handed to the next session summary is worded in the language in force when it is shown,
+  even after a change of language; records of earlier versions are shown as recorded. The blocking
+  conditions, the checks and the hook protocol are unchanged.
+- Specification §40.5 aligned on the menu the tooling really generates ("Quality / publication",
+  "Maintenance / configuration", TradingView mode under Configuration, update and licence paths); the
+  original bootstrap tree is kept as a marked historical note. The menus themselves are unchanged.
+- README: the English getting-started guide published on `main` after 2.1.0 is part of this
+  release, with the documentation-language statement updated.
+
+### Limits
+
+- The Claude Code instruction files (`CLAUDE.md`, skills, rules and agents) and a few internal notes
+  remain in French, and the Template Permission stays bilingual; the assistant is instructed to
+  answer in the configured language whatever the language of a file. Guard finding details quoted in
+  the Stop hook messages (for example `no '// Version: X.Y.Z' line in header`) stay in English in both
+  languages, like the other technical diagnostics.
+- The instructions and the tooling were checked; how the assistant actually phrases its answers is a
+  model behaviour that no test of this release establishes.
+- How the Claude Code dialog renders the leading spaces of the banner is established only by
+  observation in a real session.
+- The limits listed for 2.1.0 still apply (offline identity check of GitHub destinations, PineTS as a
+  local laboratory and never a TradingView validation, SHA-256 integrity without signature, Windows
+  deferred and Linux not verified).
+
+### Licence
+
+Unchanged: Apache License 2.0 for the core (`LICENSE`) and GNU AGPL v3 only for the PineTS thin
+adapter (`tools/pine_exec/LICENSE`); third-party notices in `THIRD_PARTY_NOTICES.md`; the Template
+Permission for the licence templates (`docs/licensing/TEMPLATE_PERMISSION.md`).
+
 ## [2.1.0] — First public release (prepared 2026-11-08, hardened 2026-11-13)
 
 ### What this version is

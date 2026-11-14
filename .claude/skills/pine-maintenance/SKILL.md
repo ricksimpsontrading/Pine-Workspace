@@ -7,7 +7,7 @@ description: Archives et nettoyage — entretien déterministe des temporaires r
 
 Langue : répondre dans la langue configurée (`language` de `session-status --json`).
 
-## Écrans (textes visibles, Retour partout)
+## Écrans (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
 
 ```text
 Écran 1 : Voir le plan d'entretien · Exécuter l'entretien · Suite… · Retour

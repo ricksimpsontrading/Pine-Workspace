@@ -207,6 +207,10 @@ _CATALOGUE = {
     "license.confirm.terms_ref": {"en": "Terms document attached to the product",
                                   "fr": "Document de conditions rattaché au produit"},
     # ---- session summary ---------------------------------------------------
+    # The configured language, stated explicitly at session start (never left
+    # to be inferred from the language of this summary or of any file).
+    "summary.language": {"en": "Configured language: en — menus, explanations, questions, confirmations and reports in English",
+                         "fr": "Langue configurée : fr — menus, explications, questions, confirmations et comptes rendus en français"},
     "summary.git.local": {"en": "Git: local / branch {branch} / {state}{unborn}",
                           "fr": "Git : local / branche {branch} / {state}{unborn}"},
     "summary.git.none": {"en": "Git: not a repository (degraded mode: no local history)",
@@ -264,6 +268,45 @@ _CATALOGUE = {
     "doctor.result": {"en": "Diagnostic result: {worst}", "fr": "Résultat du diagnostic : {worst}"},
     "doctor.legend": {"en": "BLOCKING = actionable defect; WARNING = attention; INFO = declared limitation; OK = verified",
                       "fr": "BLOCKING = défaut actionnable ; WARNING = point d'attention ; INFO = limitation déclarée ; OK = vérifié"},
+    # ---- Stop hook (2026-11-14: rendered in the language in force when shown) ----
+    "stop.reason.introduced": {"en": "Repairable mechanical violations introduced during the session (PWS guard):",
+                               "fr": "Violations mécaniques réparables introduites pendant la session (guard PWS) :"},
+    "stop.reason.legal": {"en": "Never remove or modify a licence notice, an attribution or a third-party legal "
+                                "reference to satisfy the guard: if a finding concerns such a mention, present it to "
+                                "the holder and wait for their decision.",
+                          "fr": "Ne jamais retirer ni modifier une notice de licence, une attribution ou une référence "
+                                "légale tierce pour satisfaire le guard : si un constat porte sur une telle mention, le "
+                                "présenter au titulaire et attendre sa décision."},
+    "stop.reason.info": {"en": "Reported without blocking (not introduced during the session):",
+                         "fr": "Signalé sans blocage (non introduit pendant la session) :"},
+    "stop.item.unregistered_modified": {"en": "{rel}: modified during the session but UNREGISTERED — run pine-onboard",
+                                        "fr": "{rel}: modifié pendant la session mais UNREGISTERED — exécuter pine-onboard"},
+    "stop.item.unregistered": {"en": "{rel}: UNREGISTERED — run pine-onboard — {category}",
+                               "fr": "{rel}: UNREGISTERED — exécuter pine-onboard — {category}"},
+    "stop.item.indeterminate_clean": {"en": "{rel}: provenance not established — no blocking finding",
+                                      "fr": "{rel}: provenance non établie — aucun finding bloquant"},
+    "stop.item.introduced": {"en": "{rel}: [{check}] {text}", "fr": "{rel}: [{check}] {text}"},
+    "stop.item.new_file": {"en": "{rel}: [{check}] {text} (new file)", "fr": "{rel}: [{check}] {text} (nouveau fichier)"},
+    "stop.item.note": {"en": "{rel}: [{check}] {text} — {label}", "fr": "{rel}: [{check}] {text} — {label}"},
+    "stop.category.moved-unchanged": {"en": "moved without modification, already unregistered",
+                                      "fr": "déplacé sans modification, déjà non enregistré"},
+    "stop.category.imported-unchanged": {"en": "declared import, content unchanged, onboarding to complete",
+                                         "fr": "import déclaré, contenu inchangé, onboarding à terminer"},
+    "stop.category.indeterminate": {"en": "indeterminate attribution (provenance of the file not established)",
+                                    "fr": "attribution indéterminée (provenance du fichier non établie)"},
+    "stop.label.indeterminate": {"en": "indeterminate attribution (provenance of the file not established: check its provenance)",
+                                 "fr": "attribution indéterminée (provenance du fichier non établie : vérifier sa provenance)"},
+    "stop.label.visible": {"en": "made visible by the context (check not evaluable {moment})",
+                           "fr": "rendu visible par le contexte (check non évaluable {moment})"},
+    "stop.label.visible.changed": {"en": "; content modified during the session: an introduction is not excluded",
+                                   "fr": " ; contenu modifié pendant la session : une introduction n'est pas exclue"},
+    "stop.label.preexisting": {"en": "pre-existing", "fr": "préexistant"},
+    "stop.label.preexisting_at": {"en": "pre-existing {moment}", "fr": "préexistant {moment}"},
+    "stop.label.resumed": {"en": "present at the resumption (session lineage not established: an earlier introduction is not excluded)",
+                           "fr": "présent à la reprise (lignée de session non établie : une introduction antérieure n'est pas exclue)"},
+    "stop.moment.start": {"en": "at session start", "fr": "au démarrage"},
+    "stop.moment.import": {"en": "at import", "fr": "à l'import"},
+    "stop.recorded": {"en": "[as recorded] ", "fr": "[tel qu'enregistré] "},
     # ---- maintenance -------------------------------------------------------
     "cleanup.removed": {"en": "removed {n} recreatable temporary item(s) ({bytes} bytes)",
                         "fr": "{n} élément(s) temporaire(s) recréable(s) supprimé(s) ({bytes} octets)"},

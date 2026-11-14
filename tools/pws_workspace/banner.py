@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Banners — two DISTINCT usages: the fixed "Pine-WS" banner of the /pws
+"""Banners — two DISTINCT usages: the fixed "PWS" banner of the /pws
 menu, and the adaptive PINE-WORKSPACE banner of the `banner` subcommand.
 
 Presentation only (2026-11-07 / 08): a banner changes nothing in the menu
@@ -10,19 +10,27 @@ submenu, a question, a result, a JSON document or a hook protocol. A
 structured output that carries a banner (`menu --json`, `banner --json`)
 does so as a plain data field; no output is ever prefixed with ASCII art.
 Every constant is printable ASCII and newlines only (no tab, no character
-of ambiguous width, no trailing space), one single block with its hyphen.
-The artistic constants were rendered ONCE while preparing this module
-(pyfiglet 1.0.4, MIT, reading the official font files of the FIGlet
-distribution, BSD-3-Clause; the fonts were not modified). Nothing of that
+of ambiguous width, no trailing space), one single block.
+The adaptive constants (LARGE, COMPACT) and the former "Pine-WS" menu
+banner were rendered ONCE while preparing this module (pyfiglet 1.0.4,
+MIT, reading the official font files of the FIGlet distribution,
+BSD-3-Clause; the fonts were not modified). The "PWS" menu constant was
+composed on 2026-11-14 without running any tool: the P, W and S glyphs of
+the "Standard" font, as rendered by pyfiglet in the former "Pine-WS"
+constant and in LARGE, joined by that font's horizontal smushing rules
+(standard.flf layout 24463: equal character, underscore, hierarchy,
+opposite pair) — the same rules reproduce the former "Pine-WS" constant
+byte for byte, and its W-S junction is unchanged. Nothing of that
 toolchain ships with Pine Workspace and nothing is downloaded, imported or
 computed at run time beyond these constants — see
 docs/licensing/THIRD_PARTY_NOTICES.md.
 
 1. /pws menu — `menu --json`, data field `banner` = `menu_banner(lang)`
    (holder's decision of 2026-11-08, replacing for /pws ONLY the former
-   plain-text fallback): ONE fixed constant, MENU, depicting exactly
-   "Pine-WS" in the FIGlet font "Standard" (Glenn Chappell & Ian Chai,
-   1993) — 41 columns, 5 lines. The same text whether the output is
+   plain-text fallback; text "PWS" since the holder's decision of
+   2026-11-14, replacing "Pine-WS"): ONE fixed constant, MENU, depicting
+   exactly "PWS" in the FIGlet font "Standard" (Glenn Chappell & Ian Chai,
+   1993) — 23 columns, 5 lines. The same text whether the output is
    captured or not: no width adaptation, no resizing, no animation. The
    skill `pws` passes `banner.question` VERBATIM as the text of the
    main-menu AskUserQuestion: the five banner lines, one empty line, the
@@ -32,9 +40,10 @@ docs/licensing/THIRD_PARTY_NOTICES.md.
    its presentation layer (observed by the holder on 2026-11-08, the
    banner replaced by an English "summary"). Its width is fixed, so no
    fit in every window is promised, and how the dialog renders leading
-   spaces is only established by the holder's observation. "Pine-WS" is
+   spaces is only established by the holder's observation. "PWS" is
    only the text of this banner: the workspace keeps its official name
-   everywhere else (documentation, paths, commands, metadata).
+   (Pine Workspace) everywhere else (documentation, paths, commands,
+   identifiers, metadata).
 
 2. `banner` subcommand (a terminal) — adaptive PINE-WORKSPACE variants:
      large    FIGlet font "Standard", 81 columns
@@ -59,20 +68,20 @@ import sys
 from . import i18n
 
 # ---- 1. fixed banner of the /pws menu -----------------------------------------
-MENU_NAME = "Pine-WS"
+MENU_NAME = "PWS"
 
-# MENU (FIGlet 'standard', "Pine-WS"), 41 columns x 5 lines — never adapted:
-#    ____  _               __        ______
-#   |  _ \(_)_ __   ___    \ \      / / ___|
-#   | |_) | | '_ \ / _ \____\ \ /\ / /\___ \
-#   |  __/| | | | |  __/_____\ V  V /  ___) |
-#   |_|   |_|_| |_|\___|      \_/\_/  |____/
+# MENU (FIGlet 'standard', "PWS"), 23 columns x 5 lines — never adapted:
+#    ______        ______
+#   |  _ \ \      / / ___|
+#   | |_) \ \ /\ / /\___ \
+#   |  __/ \ V  V /  ___) |
+#   |_|     \_/\_/  |____/
 MENU = "\n".join((
-    ' ____  _               __        ______',
-    '|  _ \\(_)_ __   ___    \\ \\      / / ___|',
-    "| |_) | | '_ \\ / _ \\____\\ \\ /\\ / /\\___ \\",
-    '|  __/| | | | |  __/_____\\ V  V /  ___) |',
-    '|_|   |_|_| |_|\\___|      \\_/\\_/  |____/',
+    ' ______        ______',
+    '|  _ \\ \\      / / ___|',
+    '| |_) \\ \\ /\\ / /\\___ \\',
+    '|  __/ \\ V  V /  ___) |',
+    '|_|     \\_/\\_/  |____/',
 ))
 
 # ---- 2. adaptive banner of the `banner` subcommand ----------------------------

@@ -21,7 +21,7 @@ Annoncer, à partir de cette sortie et sans rien improviser :
 2. **Dernière recherche** (`last_check`) : `checked_at` nul → « non recherchée : on ignore si une version plus récente existe » ; sinon la date, le `result` (`update-available`, `up-to-date`, `no-release`, `error`, `ahead` = version installée plus récente que la dernière publiée), la version `latest`, et la `source` (`github` = consultation réelle ; `simulated` = réponse déterministe de test, jamais présentée comme une consultation réelle). Un `error` ou un `no-release` ne devient jamais « à jour ». Un résultat ancien reste un résultat daté : proposer une nouvelle recherche.
 3. **Migrations en attente** avec le code actuel (`pending_migrations`) et **sauvegardes** existantes (`backups`).
 
-## 2. Écrans d'actions (textes visibles, Retour partout)
+## 2. Écrans d'actions (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
 
 ```text
 Écran 1 : Rechercher une nouvelle version · Consulter les changements et limites · Suite… · Retour

@@ -74,7 +74,7 @@ Ni la déclaration `private`, ni un résultat antérieur (plan, comparaison), ni
 - vers une destination **publique**, le source déclaré d'un produit à source public qui reproduit le source fermé d'un autre produit (copie exacte, ou trois lignes de code) : exclu, avec un avertissement ; vers une destination **privée**, il est inclus mais traité comme un contenu fermé (contrôle du dépôt réel ci-dessus, annoncé par `visibility_check`). Deux lignes communes ne font pas une copie ; un faux positif (lignes génériques partagées) se règle en retouchant ces lignes ou en choisissant une destination privée, jamais en contournant le refus ;
 - deux fichiers arrivant sous le même nom cible, y compris quand seules les majuscules et minuscules diffèrent : le plan entier est refusé et le plan précédent invalidé ; renommer ou retirer l'un des deux.
 
-## Écrans (textes visibles, Retour partout)
+## Écrans (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
 
 ```text
 Écran 1 : Consulter la connexion et les destinations · Préparer un export · Suite… · Retour

@@ -13,4 +13,4 @@ Vérifie :
 4. **Divergences** — toute différence entre le source final (SHA fourni), la documentation et les textes de publication.
 5. **Validation** — l'état de validation TradingView couvre-t-il le SHA final ? (un état `stale` bloque la déclaration de readiness).
 
-Retour dans la langue indiquée par la mission (langue configurée du workspace) : constats structurés (problème / impact / emplacement / source de la règle / confiance), puis la liste explicite de TOUT ce que tu n'as pas pu vérifier — un point non vérifié n'est jamais présenté comme conforme.
+Retour dans la langue indiquée par la mission (langue configurée du workspace : `language` de `pws.config.json` si la mission ne l'indique pas, jamais déduite de la langue de la mission) : constats structurés (problème / impact / emplacement / source de la règle / confiance), puis la liste explicite de TOUT ce que tu n'as pas pu vérifier — un point non vérifié n'est jamais présenté comme conforme.

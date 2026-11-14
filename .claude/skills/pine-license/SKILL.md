@@ -35,7 +35,7 @@ Documents servis selon les axes de licence (défauts des profils ; aucune EULA i
 | propriétaire / `eula` (COMMERCIAL) | en-tête propriétaire + EULA configurable (`release/EULA.md`) | neuf groupes (ci-dessous) |
 | licence existante d'un script importé (`license.origin` = `imported`, quel que soit le profil d'usage) | aucun document PWS : licence existante conservée (texte, notices et attributions d'origine dans le source) | aucun |
 
-## 2. Écrans d'actions (textes visibles, Retour partout)
+## 2. Écrans d'actions (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
 
 ```text
 Écran 1 : Consulter le détail · Compléter les informations · Suite… · Retour

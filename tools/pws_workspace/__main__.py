@@ -3,7 +3,7 @@
 
 Output is JSON for every subcommand except doctor's human table and the
 `banner` text (--json for their machine form; the /pws menu reads `menu
---json`, which carries the FIXED "Pine-WS" banner of the menu as a data
+--json`, which carries the FIXED "PWS" banner of the menu as a data
 field, and `session-status --json`; the adaptive PINE-WORKSPACE variants
 belong to the `banner` subcommand only). No JSON output, hook output or
 tool-facing data is ever prefixed with a banner. Mutating subcommands
@@ -44,7 +44,7 @@ def _main(argv=None):
     sub.add_parser("session-status", help="structured mechanical state (menu/diagnostics)") \
         .add_argument("--json", action="store_true")
     sub.add_parser("menu", help="deterministic /pws menu tree (localized; `banner` field: "
-                                "the fixed Pine-WS banner of the menu, as data)") \
+                                "the fixed PWS banner of the menu, as data)") \
         .add_argument("--json", action="store_true")
     sub.add_parser("banner", help="adaptive PINE-WORKSPACE banner fitted to the terminal attached "
                                   "to stdout (plain text; --json: structured form) — distinct "
@@ -210,7 +210,7 @@ def _main(argv=None):
         _p(session.session_status(root), as_json)
     elif args.cmd == "menu":
         tree = menu.build_menu(session.session_status(root))
-        # the FIXED "Pine-WS" banner of /pws, as a data field: the same text whether
+        # the FIXED "PWS" banner of /pws, as a data field: the same text whether
         # this output is captured (Claude Code) or not — never width-adapted;
         # `banner.question` is the ready-to-send text of the main-menu question
         tree["banner"] = banner.menu_banner(tree["language"])

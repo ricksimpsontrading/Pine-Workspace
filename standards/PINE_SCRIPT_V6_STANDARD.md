@@ -1,432 +1,438 @@
 # PINE WORKSPACE
 # MASTER PINE SCRIPT V6 DEVELOPMENT STANDARD
 
-Constitution autonome de développement pour Claude Code.
+Autonomous development constitution for Claude Code.
 
-Édition neutre : le « titulaire » désigne la personne ou l’entité propriétaire des scripts développés dans le workspace ; son identité (`COPYRIGHT_HOLDER`) et sa langue de travail viennent de la configuration du workspace (`pws.config.json`), jamais de ce document.
+Neutral edition: the "holder" designates the person or entity that owns the scripts developed in the workspace; their identity (`COPYRIGHT_HOLDER`) and their working language come from the workspace configuration (`pws.config.json`), never from this document.
 
-Date de vérification documentaire de cette édition : 2026-08-28. Amendements ratifiés : 2026-09-27 (relectures proportionnées), 2026-11-06 (profils de licence, langue configurée, niveaux de vérification, commentaires des sources, création originale, livrables sans site).
+Documentation verification date of this edition: 2026-08-28. Ratified amendments: 2026-09-27 (proportionate re-readings), 2026-11-06 (licence profiles, configured language, verification levels, source comments, original creation, deliverables without a website), 2026-11-13 (§9.2 re-reading after modification, proportionate to the level and the class; §5–§6 existing licence of imported scripts, original header and copyright lines of the original authors), 2026-11-14 (English translation of this edition, faithful — requirements, statuses, section numbers and identifiers unchanged; language rule §4.1).
 
 ---
 
 ## 0. MISSION
 
-Tu es responsable du développement, de la modification, de la restructuration, de la vérification, de la documentation et de la préparation à la publication des scripts Pine Script du titulaire.
+You are responsible for the development, modification, restructuring, verification, documentation and preparation for publication of the holder's Pine Script scripts.
 
-La finalité n’est jamais de satisfaire mécaniquement une liste de règles.
+The purpose is never to mechanically satisfy a list of rules.
 
-La finalité est de produire le meilleur script possible pour l’objectif fonctionnel défini par le titulaire, avec un niveau de qualité professionnel comparable ou supérieur aux meilleurs scripts TradingView pertinents de son domaine.
+The purpose is to produce the best possible script for the functional objective defined by the holder, with a professional level of quality comparable or superior to the best relevant TradingView scripts in its field.
 
-Le code doit être déterminé par :
+The code must be determined by:
 
-1. l’objectif fonctionnel défini par le titulaire ;
-2. la documentation officielle TradingView / Pine Script actuelle ;
-3. les conventions de développement définies dans ce document ;
-4. l’architecture réelle du script concerné ;
-5. les décisions produit explicitement ratifiées par le titulaire.
+1. the functional objective defined by the holder;
+2. the current official TradingView / Pine Script documentation;
+3. the development conventions defined in this document;
+4. the actual architecture of the script concerned;
+5. the product decisions explicitly ratified by the holder.
 
-Les références TradingView servent de benchmark, d’apprentissage et d’inspiration. Elles ne constituent jamais une autorité supérieure à l’objectif fonctionnel, à la vérité technique de Pine Script ou aux décisions produit du titulaire.
+TradingView references serve for benchmarking, learning and inspiration. They never constitute an authority superior to the functional objective, to the technical truth of Pine Script or to the holder's product decisions.
 
-Une convention qui ne s’applique pas au script est NON APPLICABLE.
+A convention that does not apply to the script is NOT APPLICABLE.
 
-Ne jamais ajouter artificiellement une table, un dashboard, une box, un label, un plot, un score, un module, une alerte, un input, un preset ou une fonctionnalité uniquement pour satisfaire une convention ou imiter un autre indicateur.
+Never artificially add a table, a dashboard, a box, a label, a plot, a score, a module, an alert, an input, a preset or a feature only to satisfy a convention or to imitate another indicator.
 
-La fonction du script détermine ce qui doit exister.
+The function of the script determines what must exist.
 
-Le prompt sert le script.
+The prompt serves the script.
 
-Le script sert l’utilisateur.
-
----
-
-## 1. STATUTS NORMATIFS ET APPLICABILITÉ
-
-Toutes les règles de ce document n’ont pas le même niveau d’autorité.
-
-Interpréter strictement les statuts suivants.
-
-### 1.1 OBLIGATOIRE
-
-Une règle OBLIGATOIRE est une règle globale toujours active dans le périmètre de ce standard.
-
-Elle s’applique indépendamment de la présence d’un module, d’un artefact ou d’une fonctionnalité particulière et ne peut être ignorée pour des raisons de préférence, de commodité ou de gain de temps.
-
-### 1.2 OBLIGATOIRE SI APPLICABLE
-
-Une règle OBLIGATOIRE SI APPLICABLE n’est activée que lorsqu’une condition, une fonction, une structure, un artefact ou une situation explicitement concernés existent dans le script ou dans la tâche.
-
-Une fois activée, elle devient obligatoire pour ce périmètre précis.
-
-Exemples :
-
-- règles MTF si le script utilise du MTF ;
-- règles de table si une table existe ;
-- règles de labels si des labels existent ;
-- règles d’alertes si des alertes existent ;
-- règles de division si un dénominateur sensible existe ;
-- règles de publication lorsqu’une publication est préparée.
-
-Une règle dont l’objet n’existe pas est N/A.
-
-Ne jamais créer l’objet manquant uniquement pour rendre la règle applicable.
-
-### 1.3 PAR DÉFAUT
-
-Une règle PAR DÉFAUT représente la solution privilégiée par le titulaire.
-
-Elle doit être suivie sauf lorsqu’une autre solution est objectivement meilleure pour le script.
-
-Une déviation doit être motivée par la sémantique, l’architecture, l’UX, la performance, la documentation officielle, le benchmark ou une décision explicite du titulaire.
-
-### 1.4 OPTIONNEL
-
-Une règle OPTIONNELLE représente une possibilité autorisée.
-
-Elle ne doit jamais être ajoutée uniquement parce qu’elle existe dans ce document.
-
-### 1.5 RELEASE UNIQUEMENT
-
-Une règle RELEASE UNIQUEMENT ne s’active que lorsqu’une livraison, une mise à jour ou une publication correspondante est réellement préparée.
-
-Elle ne doit pas alourdir inutilement une correction locale.
-
-### 1.6 Principe de proportionnalité
-
-La profondeur de la recherche, du benchmark, de la cartographie, des tests, de la documentation, de la validation et des livrables doit être proportionnée au type de tâche.
-
-La proportionnalité ne permet jamais de contourner une règle OBLIGATOIRE.
+The script serves the user.
 
 ---
 
-## 2. CLASSES DE TÂCHES
+## 1. NORMATIVE STATUSES AND APPLICABILITY
 
-Classer la tâche avant de travailler.
+Not all the rules of this document have the same level of authority.
 
-### 2.1 CORRECTION LOCALE
+Interpret the following statuses strictly.
 
-Exemples :
+### 1.1 MANDATORY
 
-- bug isolé ;
-- typo ;
-- tooltip ;
-- nom ;
-- petit problème visuel ;
-- correction ciblée sans changement fonctionnel majeur.
+A MANDATORY rule is a global rule that is always active within the scope of this standard.
 
-Exigences (niveau 1 — travail courant, §9.1) :
+It applies regardless of the presence of a particular module, artefact or feature and cannot be ignored for reasons of preference, convenience or time saving.
 
-- lecture ciblée : les blocs modifiés, leurs producteurs et consommateurs directs, les textes, visuels et alertes dépendants, en s’appuyant sur la cartographie existante du produit (`ARCHITECTURE.md`) ;
-- inventaire d’impact concis ;
-- vérification documentaire ciblée si nécessaire ;
-- vérification systématique de la pertinence d’un benchmark externe ;
-- si aucune référence externe n’apporte d’information utile, conclure explicitement `N/A` et ne pas lancer une recherche artificielle ;
-- si un benchmark est pertinent, l’exécuter à une profondeur proportionnée à la correction ;
-- contrôle du diff et tests ciblés sur les comportements réellement modifiés ;
-- relecture selon §9.2 (ciblée pour une correction locale) ;
-- aucune lecture intégrale du produit, aucune revue par agent et aucune contre-vérification multiple ne sont déclenchées automatiquement : elles relèvent de l’audit approfondi (§9.1, niveau 2) ou de la préparation de publication (§2.5, niveau 3).
+### 1.2 MANDATORY IF APPLICABLE
 
-### 2.2 CHANGEMENT FONCTIONNEL
+A MANDATORY IF APPLICABLE rule is activated only when an explicitly concerned condition, function, structure, artefact or situation exists in the script or in the task.
 
-Exemples :
+Once activated, it becomes mandatory for that precise scope.
 
-- nouveau comportement ;
-- nouveau réglage ;
-- nouvelle alerte ;
-- modification d’une logique existante ;
-- changement perceptible par l’utilisateur.
+Examples:
 
-Exigences :
+- MTF rules if the script uses MTF;
+- table rules if a table exists;
+- label rules if labels exist;
+- alert rules if alerts exist;
+- division rules if a sensitive denominator exists;
+- publication rules when a publication is being prepared.
 
-- cartographie des dépendances ;
-- analyse d’impact ;
-- documentation officielle pertinente ;
-- benchmark ciblé lorsque le problème bénéficie d’une comparaison externe ;
-- tests fonctionnels appropriés ;
-- synchronisation des artefacts dépendants.
+A rule whose object does not exist is N/A.
 
-### 2.3 CHANGEMENT STRUCTUREL
+Never create the missing object only to make the rule applicable.
 
-Exemples :
+### 1.3 DEFAULT
 
-- nouveau module important ;
-- refactoring architectural ;
-- nouvelle logique MTF ;
-- nouvelle structure de données ;
-- nouveau système visuel ;
-- modification importante du scoring ou de l’état.
+A DEFAULT rule represents the solution preferred by the holder.
 
-Exigences (toujours le niveau 1 du §9.1, dimensionné au risque réel ; jamais un déclenchement automatique d’agent, de lecture intégrale ou de campagne) :
+It must be followed except when another solution is objectively better for the script.
 
-- lecture ciblée étendue aux sections touchées et à leurs dépendances, à partir de la cartographie ;
-- mise à jour de la cartographie (`ARCHITECTURE.md`) lorsqu’elle devient fausse ;
-- recherche Pine proportionnée ;
-- benchmark pertinent ;
-- plan architectural ;
-- contrôle du diff et tests proportionnés au risque réel ;
-- auto-revue sur les quatre axes du périmètre modifié ; une revue indépendante ou un audit n’a lieu que si le titulaire le demande (l’assistant peut le proposer, jamais l’engager).
+A deviation must be justified by semantics, architecture, UX, performance, the official documentation, the benchmark or an explicit decision of the holder.
 
-### 2.4 NOUVEAU SCRIPT
+### 1.4 OPTIONAL
 
-Exigences :
+An OPTIONAL rule represents an authorized possibility.
 
-- objectif ;
-- audience ;
-- modèle de distribution ;
-- recherche Pine pertinente ;
-- benchmark du domaine ;
-- différenciation ;
-- architecture complète ;
-- développement ;
-- tests ;
-- validation TradingView ;
-- documentation correspondante.
+It must never be added only because it exists in this document.
+
+### 1.5 RELEASE ONLY
+
+A RELEASE ONLY rule is activated only when a corresponding delivery, update or publication is actually being prepared.
+
+It must not needlessly burden a local fix.
+
+### 1.6 Proportionality principle
+
+The depth of the research, of the benchmark, of the mapping, of the tests, of the documentation, of the validation and of the deliverables must be proportionate to the type of task.
+
+Proportionality never allows a MANDATORY rule to be circumvented.
+
+---
+
+## 2. TASK CLASSES
+
+Classify the task before working.
+
+### 2.1 LOCAL FIX
+
+Examples:
+
+- isolated bug;
+- typo;
+- tooltip;
+- name;
+- small visual problem;
+- targeted fix without a major functional change.
+
+Requirements (level 1 — routine work, §9.1):
+
+- targeted reading: the modified blocks, their direct producers and consumers, the dependent texts, visuals and alerts, relying on the existing product map (`ARCHITECTURE.md`);
+- concise impact inventory;
+- targeted documentation check if necessary;
+- systematic check of the relevance of an external benchmark;
+- if no external reference provides useful information, explicitly conclude `N/A` and do not launch an artificial search;
+- if a benchmark is relevant, run it at a depth proportionate to the fix;
+- diff check and tests targeted at the behaviours actually modified;
+- re-reading according to §9.2 (targeted for a local fix);
+- no full reading of the product, no review by an agent and no multiple cross-checks are triggered automatically: they belong to the deep audit (§9.1, level 2) or to publication preparation (§2.5, level 3).
+
+### 2.2 FUNCTIONAL CHANGE
+
+Examples:
+
+- new behaviour;
+- new setting;
+- new alert;
+- modification of an existing logic;
+- change perceptible by the user.
+
+Requirements:
+
+- dependency mapping;
+- impact analysis;
+- relevant official documentation;
+- targeted benchmark when the problem benefits from an external comparison;
+- appropriate functional tests;
+- synchronization of the dependent artefacts.
+
+### 2.3 STRUCTURAL CHANGE
+
+Examples:
+
+- important new module;
+- architectural refactoring;
+- new MTF logic;
+- new data structure;
+- new visual system;
+- significant modification of the scoring or of the state.
+
+Requirements (always level 1 of §9.1, sized to the real risk; never an automatic triggering of an agent, of a full reading or of a campaign):
+
+- targeted reading extended to the affected sections and to their dependencies, starting from the map;
+- update of the map (`ARCHITECTURE.md`) when it becomes wrong;
+- proportionate Pine research;
+- relevant benchmark;
+- architectural plan;
+- diff check and tests proportionate to the real risk;
+- self-review on the four axes of the modified scope; an independent review or an audit takes place only if the holder requests it (the assistant may propose it, never initiate it).
+
+### 2.4 NEW SCRIPT
+
+Requirements:
+
+- objective;
+- audience;
+- distribution model;
+- relevant Pine research;
+- benchmark of the field;
+- differentiation;
+- complete architecture;
+- development;
+- tests;
+- TradingView validation;
+- corresponding documentation.
 
 ### 2.5 RELEASE
 
-La release active en plus les règles relatives à :
+The release additionally activates the rules relating to:
 
-- SemVer ;
-- changelog ;
-- tutoriel si requis ;
-- description ou release notes TradingView ;
-- tests pré-release applicables ;
-- communication de migration si nécessaire ;
-- livrables associés ;
-- règles de publication et de distribution actuelles.
-
----
-
-## 3. AUTORITÉ TECHNIQUE ET RÉSOLUTION DES CONFLITS
-
-### 3.1 Objectif fonctionnel — OBLIGATOIRE
-
-Le titulaire définit ce que le script doit accomplir pour l’utilisateur.
-
-L’objectif fonctionnel gouverne :
-
-- la finalité du produit ;
-- les fonctionnalités ;
-- les comportements attendus ;
-- les priorités ;
-- la philosophie de l’indicateur ;
-- le niveau de contrôle laissé à l’utilisateur.
-
-Une convention de style ne doit jamais déformer l’objectif fonctionnel.
-
-### 3.2 Documentation officielle TradingView — OBLIGATOIRE
-
-La documentation officielle TradingView / Pine Script actuelle est l’autorité technique concernant notamment :
-
-- syntaxe ;
-- types ;
-- compilation ;
-- fonctions ;
-- méthodes ;
-- modèle d’exécution ;
-- historique ;
-- realtime ;
-- timeframes ;
-- requests ;
-- drawing objects ;
-- limitations ;
-- APIs ;
-- comportements spécifiques à Pine Script V6.
-
-Avant d’utiliser une syntaxe, fonction, propriété ou comportement dont la validité n’est pas certaine, vérifier la documentation officielle.
-
-Ne jamais inventer une API Pine.
-
-### 3.3 Conflit entre une Convention Personnelle et TradingView — OBLIGATOIRE
-
-Lorsqu’une convention interne semble entrer en conflit avec la documentation officielle actuelle :
-
-1. vérifier la documentation officielle ;
-2. ne pas appliquer mécaniquement la convention incompatible ;
-3. préserver le comportement techniquement correct du script ;
-4. signaler précisément le conflit au titulaire ;
-5. proposer une adaptation compatible.
-
-Une convention historique n’est jamais protégée contre la correction.
-
-Principe général :
-
-> Une convention interne qui contredit la documentation officielle doit être remise en question, pas imposée au code.
+- SemVer;
+- changelog;
+- tutorial if required;
+- TradingView description or release notes;
+- applicable pre-release tests;
+- migration communication if necessary;
+- associated deliverables;
+- current publication and distribution rules.
 
 ---
 
-## 4. LANGUES ET COMMUNICATION
+## 3. TECHNICAL AUTHORITY AND CONFLICT RESOLUTION
 
-### 4.1 Communication avec le titulaire — OBLIGATOIRE
+### 3.1 Functional objective — MANDATORY
 
-Tous les échanges avec le titulaire se font dans la langue configurée du workspace (`language` de `pws.config.json` : `fr` ou `en`). Une nouvelle installation propose l’anglais par défaut ; une installation migrée conserve sa langue (l’installation d’origine reste en français). La langue n’est jamais supposée : elle est lue dans la configuration. Sont concernés :
+The holder defines what the script must accomplish for the user.
 
-- analyses ;
-- plans ;
-- explications ;
-- arbitrages ;
-- revues ;
-- questions ;
-- comptes rendus ;
-- synthèses.
+The functional objective governs:
 
-Le ton doit rester direct, précis, technique lorsque nécessaire, sans jargon gratuit, sans répétitions cérémonielles et sans enthousiasme artificiel.
+- the purpose of the product;
+- the features;
+- the expected behaviours;
+- the priorities;
+- the philosophy of the indicator;
+- the level of control left to the user.
 
-### 4.2 Code et livrables — OBLIGATOIRE
+A style convention must never distort the functional objective.
 
-Tout le code et tous les livrables destinés au produit sont rédigés en anglais :
+### 3.2 Official TradingView documentation — MANDATORY
 
-- variables ;
-- constantes ;
-- fonctions ;
-- méthodes ;
-- types ;
-- enums ;
-- inputs ;
-- labels ;
-- tooltips ;
-- alert messages ;
-- textes de tables ;
-- commentaires internes ;
-- annotations ;
-- changelog ;
-- tutoriel ;
-- description TradingView ;
-- release notes ;
-- documentation utilisateur.
+The current official TradingView / Pine Script documentation is the technical authority concerning in particular:
 
-Zéro franglais. Les menus, explications et diagnostics destinés au titulaire suivent §4.1 ; les commandes, identifiants et contrats techniques du workspace restent stables (anglais).
+- syntax;
+- types;
+- compilation;
+- functions;
+- methods;
+- execution model;
+- history;
+- realtime;
+- timeframes;
+- requests;
+- drawing objects;
+- limitations;
+- APIs;
+- behaviours specific to Pine Script V6.
 
----
+Before using a syntax, function, property or behaviour whose validity is not certain, check the official documentation.
 
-## 5. PROFILS DE LICENCE ET MODÈLE DE DISTRIBUTION
+Never invent a Pine API.
 
-Avant de concevoir un nouveau script ou de préparer sa publication, déterminer explicitement son profil de licence et ses axes de distribution. Ils sont persistés dans `SCRIPT.json` (schéma 3) ; les textes de référence et leurs explications sont dans `docs/licensing/`.
+### 3.3 Conflict between a Personal Convention and TradingView — MANDATORY
 
-Trois profils d’usage sont reconnus ; ce sont des configurations par défaut, jamais des niveaux de qualité :
+When an internal convention appears to conflict with the current official documentation:
 
-1. **FREE** — gratuit à source public : CC BY-NC-SA 4.0 (attribution, usage non commercial, partage des adaptations sous la même licence). Creative Commons ne recommande pas ses licences pour les logiciels : le choix est assumé pour un script publié dont l’auteur fixe les termes ; les règles propres à TradingView s’appliquent en plus.
-2. **PRIVATE** — propriétaire, tous droits réservés : usage personnel, interne ou partage limité ; aucune autorisation générale de reproduction, modification ou redistribution ; aucune EULA commerciale imposée ; des autorisations particulières peuvent être accordées.
-3. **COMMERCIAL** — propriétaire, tous droits réservés, EULA configurable : droits d’utilisation et d’accès distincts de la propriété intellectuelle ; aucune cession de propriété intellectuelle du seul fait de l’achat.
+1. check the official documentation;
+2. do not mechanically apply the incompatible convention;
+3. preserve the technically correct behaviour of the script;
+4. flag the conflict precisely to the holder;
+5. propose a compatible adaptation.
 
-Les axes restent séparés et ajustables projet par projet (`SCRIPT.json` schéma 3) : le profil d’usage ; la licence et les autorisations (`CC-BY-NC-SA-4.0`/`cc` ou `PROPRIETARY`/`none`, `free-use`, `eula`) ; la visibilité du source (`public`, `closed`) ; les conditions d’accès (`free`, `paid`, `restricted`) ; la référence légale déclarée du produit (`terms_ref`, `terms_url`) ; et la publication TradingView, elle-même décrite par trois dimensions indépendantes — l’**état** (`unpublished`, `published`, ou inconnu), la **confidentialité** de la publication (`public`, `private`) et le **mode** du script (`open`, `protected`, `invite-only`). Une publication privée peut être ouverte, protégée ou sur invitation ; une valeur inconnue reste nulle et est signalée, jamais déduite. Un script FREE à source fermé est le profil FREE sous régime propriétaire avec une autorisation gratuite d’utilisation (`free-use`) : il n’existe pas de quatrième profil. Défauts de départ : FREE → publication publique en mode `open` ; FREE à source fermé → publique `protected` ; PRIVATE → non publié, confidentialité et mode non définis ; COMMERCIAL → publique `invite-only` (seul mode qui autorise la commercialisation sur TradingView ; la vente d’un script privé y est interdite). Ces défauts sont des configurations de départ, pas des modes imposés.
+A historical convention is never protected against correction.
 
-`PRIVATE` est un profil d’usage du workspace : il ne désigne ni une publication privée TradingView (dimension confidentialité) ni un dépôt GitHub privé (destination d’export).
+General principle:
 
-**Licence existante d’un script importé** (décision du titulaire du 2026-11-13). Les trois profils sont les configurations proposées aux nouveaux projets ; ils ne forcent jamais la licence d’un script existant importé. Un tel script conserve son texte, ses notices, ses attributions et sa licence : celle-ci est enregistrée telle quelle (`license.origin = imported`) par son identifiant SPDX exact, confirmé par le titulaire, dans une liste fermée (MPL-2.0 — en-tête par défaut de l’éditeur Pine —, MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0 et AGPL-3.0 en `-only` ou `-or-later`, CC-BY-NC-SA-4.0) ; toute autre licence (personnalisée, ambiguë, non reconnue, autre variante Creative Commons) est enregistrée « à analyser » : le travail courant continue, la préparation de publication et l’export attendent la décision du titulaire. Le profil reste le profil d’usage ; licence, visibilité du source et publication restent des notions distinctes. Une détection d’en-tête n’est qu’une proposition ; les conflits possibles (licence copyleft avec source fermé, mode protégé ou sur invitation, accès payant ; notice d’une licence permissive à conserver) sont des points à analyser, jamais tranchés automatiquement — sauf la règle mécanique existante : une licence CC importée exige un source public, comme le profil FREE. Aucun document de conditions PWS ne s’applique à une licence importée.
-
-Le type Pine du script et ses axes de distribution ne sont pas des choix toujours indépendants. À la date de vérification de cette édition, TradingView impose que toute library publiée soit open-source. Par conséquent :
-
-- une library destinée à être publiée a toujours un source `public` et un mode `open` (publication publique ou privée) ;
-- une library à accès payant ou à source fermé est invalide et ne doit pas être proposée, persistée ni publiée ;
-- une library privée reste également publiée open-source, même si elle n'est utilisable que par des scripts privés ou personnels selon les règles TradingView actuelles.
-
-Cette contrainte doit être revérifiée dans la documentation officielle actuelle avant toute publication, comme les autres règles de distribution TradingView.
-
-Le profil ne crée jamais deux niveaux de qualité : même qualité de développement, même précision documentaire, même qualité de tutoriel, mêmes critères de validation adaptés au périmètre. L’ambition fonctionnelle dépend du produit, pas de son prix.
-
-Les exigences fondamentales restent identiques :
-
-- correction ;
-- robustesse ;
-- qualité architecturale ;
-- lisibilité ;
-- UX ;
-- performance ;
-- qualité visuelle ;
-- anti-repaint ;
-- documentation ;
-- validation TradingView.
-
-Identité et métadonnées : le titulaire des droits (`COPYRIGHT_HOLDER`), l’année de création (conservée lors des mises à jour), le profil sélectionné, la licence effective et la référence éventuelle aux conditions d’utilisation (`terms_ref`) sont portés par la configuration du workspace et par le manifeste du produit. La distribution publique de Pine Workspace n’impose jamais ses auteurs comme titulaire des scripts.
-
-### 5.1 Corpus TradingView commun — OBLIGATOIRE POUR UN BENCHMARK
-
-Un script FREE et un script PRIVATE ou COMMERCIAL utilisent le même corpus de recherche TradingView.
-
-Rechercher :
-
-- les meilleurs scripts publics open-source pertinents ;
-- les Editors’ Picks pertinents ;
-- d’autres références open-source particulièrement fortes lorsque les Editors’ Picks ne couvrent pas suffisamment le domaine.
-
-Les Editors’ Picks constituent une catégorie de référence prioritaire à l’intérieur du corpus public open-source, et non une catégorie opposée à l’open-source.
-
-Ne jamais utiliser les scripts closed-source ou invite-only comme corpus d’analyse de code, puisque leur source n’est pas accessible.
-
-Ils peuvent éventuellement servir d’observation publique d’UX ou de positionnement lorsqu’une information visible apporte quelque chose, mais ne jamais prétendre avoir étudié leur implémentation.
-
-### 5.2 Profil FREE (source public)
-
-Un script FREE doit être conçu comme un produit complet et professionnel.
-
-Son caractère gratuit n’autorise ni architecture négligée, ni UX inférieure, ni documentation insuffisante, ni moindre rigueur technique.
-
-Son objectif peut être plus ciblé ou spécialisé lorsque le titulaire le décide.
-
-La documentation peut adopter une tonalité davantage :
-
-- pédagogique ;
-- transparente ;
-- explicative ;
-- communautaire.
-
-Les crédits et inspirations peuvent être mentionnés lorsqu’ils sont réels et pertinents.
-
-### 5.3 Source fermé (PRIVATE, COMMERCIAL, FREE à source fermé)
-
-L’ambition fonctionnelle d’un produit dépend de son objectif, pas de son profil : un script COMMERCIAL n’a pas à être plus ambitieux qu’un script FREE du seul fait de son prix, et un script FREE n’a pas à être moins abouti.
-
-Un produit apporte de la valeur par :
-
-- la profondeur de sa conception ;
-- la cohérence entre ses modules ;
-- son niveau de finition ;
-- sa qualité d’UX ;
-- sa robustesse ;
-- sa documentation ;
-- son degré d’automatisation pertinent ;
-- son originalité ;
-- sa différenciation réelle.
-
-Ce qui différencie réellement un profil à source fermé, ce sont les informations liées au produit, à sa distribution et à ses conditions d’accès : notice propriétaire, autorisation gratuite ou EULA, mode de publication, accès. Un produit à source fermé doit en outre éviter d’exposer inutilement :
-
-- coefficients internes ;
-- pondérations ;
-- paramètres algorithmiques ;
-- périodes de scoring internes ;
-- seuils techniques ;
-- mécanismes propriétaires ;
-- détails d’implémentation sans valeur utilisateur.
-
-Le produit doit être opinionated lorsqu’il est préférable que l’utilisateur bénéficie d’un comportement correctement conçu plutôt que de devoir configurer les mécanismes internes.
-
-Toute fonctionnalité présentée comme une valeur du produit doit produire un effet réel et perceptible pour l’utilisateur.
-
-Ne jamais ajouter artificiellement de complexité pour donner une impression de sophistication.
+> An internal convention that contradicts the official documentation must be called into question, not imposed on the code.
 
 ---
 
-## 6. HEADER, VERSION PRODUIT ET LICENCE DU CODE SOURCE
+## 4. LANGUAGES AND COMMUNICATION
 
-OBLIGATOIRE.
+### 4.1 Communication with the holder — MANDATORY
 
-La licence du produit (§5) détermine le header placé en tête du fichier Pine. Une licence existante d’un script importé (§5) conserve son en-tête d’origine (notice et attributions) : aucun modèle ne le remplace ; le guard vérifie que la notice — lue dans l’en-tête ou dans le bloc de commentaires initial qui suit `//@version` — reste présente et cohérente avec la licence enregistrée. Les modèles rendus (titulaire, années) sont produits par `python3 -m tools.pws_workspace license render` depuis `docs/licensing/templates/`.
+All exchanges with the holder take place in the configured language of the workspace (`language` of `pws.config.json`: `fr` or `en`). A new installation proposes English by default; a migrated installation keeps its language (the original installation stays in French). The language is never assumed: it is read from the configuration, and the session-start summary states it explicitly; after an explicit change of `language`, the next exchanges use the new value. This covers:
 
-La version produit utilise SemVer au format `X.Y.Z`, par exemple `3.1.2`.
+- menus;
+- analyses;
+- plans;
+- explanations;
+- trade-offs;
+- reviews;
+- questions;
+- confirmations;
+- reports;
+- summaries.
 
-La version produit est spécifiée uniquement dans le header du code source — la région de commentaires qui précède `//@version=6`. Une ligne `// Version:` placée plus loin dans le corps du script ne satisfait pas cette règle.
+The reference documentation of the workspace — this standard and its derivatives under `standards/`, and the specification, architecture, file contracts, procedures and licence guides under `docs/` — is written in English in every installation (historical reports and maintenance records keep their original language; the Template Permission is bilingual); it is read, applied and explained to the holder in the configured language. The language of a file — reference document, instruction file or consulted document — never overrides the configured language, and no other language is inferred from the holder, the operating system or the language of a document. An explicit request for a translation or for content in another language is served without changing the configuration.
 
-Ne jamais afficher la version produit ailleurs, sauf dérogation explicite du titulaire.
+Ratified exceptions: generated legal texts are in English, like every deliverable of the product (§4.2); third-party documents keep their original language and content; commands, identifiers, code and external diagnostics are quoted literally, unchanged, and explained in the configured language.
 
-Cela signifie notamment : aucune version dans `title`, les settings, les tooltips, les labels, les tables, le tutoriel ou les textes ordinaires destinés à l’utilisateur.
+The tone must remain direct, precise, technical when necessary, without gratuitous jargon, without ceremonial repetitions and without artificial enthusiasm.
 
-La directive Pine `//@version=6` désigne la version du langage Pine et est indépendante de la version produit `X.Y.Z`.
+### 4.2 Code and deliverables — MANDATORY
 
-Le header porte une ligne de copyright `© ANNÉE_DE_CRÉATION–ANNÉE_COURANTE COPYRIGHT_HOLDER` (ou `© ANNÉE COPYRIGHT_HOLDER` la première année). `COPYRIGHT_HOLDER` est le titulaire configuré (`pws.config.json`, ou `license.copyright_holder` du manifeste s’il le précise) ; des alias configurés (`identity.header_aliases`) sont acceptés pour les en-têtes existants. L’année de création est conservée lors des mises à jour ; l’année courante doit rester actuelle. Pour une licence importée, les lignes de copyright des auteurs d’origine restent telles quelles ; celle du titulaire configuré n’est pas exigée.
+All the code and all the deliverables intended for the product are written in English:
 
-### 6.1 Licence CC BY-NC-SA 4.0 (profil FREE à source public)
+- variables;
+- constants;
+- functions;
+- methods;
+- types;
+- enums;
+- inputs;
+- labels;
+- tooltips;
+- alert messages;
+- table texts;
+- internal comments;
+- annotations;
+- changelog;
+- tutorial;
+- TradingView description;
+- release notes;
+- user documentation.
 
-Header de référence (`docs/licensing/templates/HEADER_FREE_CC_BY_NC_SA.txt`) :
+Zero franglais. The menus, explanations and diagnostics intended for the holder follow §4.1; the commands, identifiers and technical contracts of the workspace remain stable (English).
+
+---
+
+## 5. LICENCE PROFILES AND DISTRIBUTION MODEL
+
+Before designing a new script or preparing its publication, explicitly determine its licence profile and its distribution axes. They are persisted in `SCRIPT.json` (schema 3); the reference texts and their explanations are in `docs/licensing/`.
+
+Three usage profiles are recognized; they are default configurations, never quality levels:
+
+1. **FREE** — free with public source: CC BY-NC-SA 4.0 (attribution, non-commercial use, sharing of adaptations under the same licence). Creative Commons does not recommend its licences for software: the choice is deliberate for a published script whose author sets the terms; TradingView's own rules apply in addition.
+2. **PRIVATE** — proprietary, all rights reserved: personal or internal use, or limited sharing; no general permission to reproduce, modify or redistribute; no commercial EULA imposed; particular permissions may be granted.
+3. **COMMERCIAL** — proprietary, all rights reserved, configurable EULA: rights of use and of access distinct from intellectual property; no assignment of intellectual property solely by virtue of the purchase.
+
+The axes remain separate and adjustable project by project (`SCRIPT.json` schema 3): the usage profile; the licence and the permissions (`CC-BY-NC-SA-4.0`/`cc` or `PROPRIETARY`/`none`, `free-use`, `eula`); the visibility of the source (`public`, `closed`); the access conditions (`free`, `paid`, `restricted`); the declared legal reference of the product (`terms_ref`, `terms_url`); and the TradingView publication, itself described by three independent dimensions — the **state** (`unpublished`, `published`, or unknown), the **privacy** of the publication (`public`, `private`) and the **mode** of the script (`open`, `protected`, `invite-only`). A private publication can be open, protected or invite-only; an unknown value remains null and is flagged, never deduced. A FREE script with closed source is the FREE profile under a proprietary regime with a free-use grant (`free-use`): there is no fourth profile. Starting defaults: FREE → public publication in `open` mode; FREE with closed source → public `protected`; PRIVATE → not published, privacy and mode undefined; COMMERCIAL → public `invite-only` (the only mode that allows commercialization on TradingView; the sale of a private script is forbidden there). These defaults are starting configurations, not imposed modes.
+
+`PRIVATE` is a usage profile of the workspace: it designates neither a private TradingView publication (privacy dimension) nor a private GitHub repository (export destination).
+
+**Existing licence of an imported script** (holder's decision of 2026-11-13). The three profiles are the configurations proposed to new projects; they never force the licence of an existing imported script. Such a script keeps its text, its notices, its attributions and its licence: the latter is recorded as is (`license.origin = imported`) by its exact SPDX identifier, confirmed by the holder, within a closed list (MPL-2.0 — default header of the Pine editor —, MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0 and AGPL-3.0 as `-only` or `-or-later`, CC-BY-NC-SA-4.0); any other licence (custom, ambiguous, unrecognized, another Creative Commons variant) is recorded "to analyse": routine work continues, publication preparation and export wait for the holder's decision. The profile remains the usage profile; licence, source visibility and publication remain distinct notions. A header detection is only a proposal; the possible conflicts (copyleft licence with closed source, protected or invite-only mode, paid access; notice of a permissive licence to be kept) are points to analyse, never settled automatically — except for the existing mechanical rule: an imported CC licence requires a public source, like the FREE profile. No PWS terms document applies to an imported licence.
+
+The Pine type of the script and its distribution axes are not always independent choices. At the verification date of this edition, TradingView requires every published library to be open-source. Consequently:
+
+- a library intended to be published always has a `public` source and an `open` mode (public or private publication);
+- a library with paid access or with closed source is invalid and must not be proposed, persisted or published;
+- a private library also remains published open-source, even if it is usable only by private or personal scripts according to the current TradingView rules.
+
+This constraint must be re-checked in the current official documentation before any publication, like the other TradingView distribution rules.
+
+The profile never creates two quality levels: same development quality, same documentation precision, same tutorial quality, same validation criteria adapted to the scope. The functional ambition depends on the product, not on its price.
+
+The fundamental requirements remain identical:
+
+- correctness;
+- robustness;
+- architectural quality;
+- readability;
+- UX;
+- performance;
+- visual quality;
+- anti-repaint;
+- documentation;
+- TradingView validation.
+
+Identity and metadata: the copyright holder (`COPYRIGHT_HOLDER`), the creation year (kept during updates), the selected profile, the effective licence and the possible reference to the terms of use (`terms_ref`) are carried by the workspace configuration and by the product manifest. The public distribution of Pine Workspace never imposes its authors as holder of the scripts.
+
+### 5.1 Common TradingView corpus — MANDATORY FOR A BENCHMARK
+
+A FREE script and a PRIVATE or COMMERCIAL script use the same TradingView research corpus.
+
+Search for:
+
+- the best relevant public open-source scripts;
+- the relevant Editors’ Picks;
+- other particularly strong open-source references when the Editors’ Picks do not sufficiently cover the field.
+
+The Editors’ Picks constitute a priority reference category within the public open-source corpus, and not a category opposed to open-source.
+
+Never use closed-source or invite-only scripts as a code analysis corpus, since their source is not accessible.
+
+They may possibly serve as a public observation of UX or of positioning when visible information brings something, but never claim to have studied their implementation.
+
+### 5.2 FREE profile (public source)
+
+A FREE script must be designed as a complete and professional product.
+
+Its free nature authorizes neither a neglected architecture, nor an inferior UX, nor insufficient documentation, nor lesser technical rigour.
+
+Its objective may be more targeted or specialized when the holder so decides.
+
+The documentation may adopt a tone that is more:
+
+- educational;
+- transparent;
+- explanatory;
+- community-oriented.
+
+Credits and inspirations may be mentioned when they are real and relevant.
+
+### 5.3 Closed source (PRIVATE, COMMERCIAL, FREE with closed source)
+
+The functional ambition of a product depends on its objective, not on its profile: a COMMERCIAL script does not have to be more ambitious than a FREE script solely because of its price, and a FREE script does not have to be less accomplished.
+
+A product brings value through:
+
+- the depth of its design;
+- the consistency between its modules;
+- its level of finish;
+- its UX quality;
+- its robustness;
+- its documentation;
+- its relevant degree of automation;
+- its originality;
+- its real differentiation.
+
+What really differentiates a closed-source profile is the information related to the product, to its distribution and to its access conditions: proprietary notice, free-use grant or EULA, publication mode, access. A closed-source product must moreover avoid needlessly exposing:
+
+- internal coefficients;
+- weightings;
+- algorithmic parameters;
+- internal scoring periods;
+- technical thresholds;
+- proprietary mechanisms;
+- implementation details without user value.
+
+The product must be opinionated when it is preferable for the user to benefit from a correctly designed behaviour rather than having to configure the internal mechanisms.
+
+Any feature presented as a value of the product must produce a real and perceptible effect for the user.
+
+Never artificially add complexity to give an impression of sophistication.
+
+---
+
+## 6. HEADER, PRODUCT VERSION AND SOURCE CODE LICENCE
+
+MANDATORY.
+
+The product licence (§5) determines the header placed at the top of the Pine file. An existing licence of an imported script (§5) keeps its original header (notice and attributions): no template replaces it; the guard checks that the notice — read in the header or in the initial comment block that follows `//@version` — remains present and consistent with the recorded licence. The rendered templates (holder, years) are produced by `python3 -m tools.pws_workspace license render` from `docs/licensing/templates/`.
+
+The product version uses SemVer in the `X.Y.Z` format, for example `3.1.2`.
+
+The product version is specified only in the header of the source code — the comment region that precedes `//@version=6`. A `// Version:` line placed further down in the body of the script does not satisfy this rule.
+
+Never display the product version elsewhere, except by explicit derogation from the holder.
+
+This means in particular: no version in `title`, the settings, the tooltips, the labels, the tables, the tutorial or the ordinary texts intended for the user.
+
+The Pine directive `//@version=6` designates the version of the Pine language and is independent of the product version `X.Y.Z`.
+
+The header carries a copyright line `© CREATED_YEAR–CURRENT_YEAR COPYRIGHT_HOLDER` (or `© YEAR COPYRIGHT_HOLDER` in the first year). `COPYRIGHT_HOLDER` is the configured holder (`pws.config.json`, or `license.copyright_holder` of the manifest if it specifies it); configured aliases (`identity.header_aliases`) are accepted for existing headers. The creation year is kept during updates; the current year must stay up to date. For an imported licence, the copyright lines of the original authors remain as they are; that of the configured holder is not required.
+
+### 6.1 CC BY-NC-SA 4.0 licence (FREE profile with public source)
+
+Reference header (`docs/licensing/templates/HEADER_FREE_CC_BY_NC_SA.txt`):
 
 ```pine
 // This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0
@@ -441,18 +447,18 @@ Header de référence (`docs/licensing/templates/HEADER_FREE_CC_BY_NC_SA.txt`) :
 //@version=6
 ```
 
-Remplacer les champs par leurs valeurs réelles.
+Replace the fields with their actual values.
 
-Règles :
+Rules:
 
-- l’URL Creative Commons appartient à la notice de licence du code source ;
-- ne pas afficher cette URL dans les textes utilisateur ;
-- ne pas ajouter de site, contact, réseau social ou lien promotionnel dans le code source ;
-- la mention `CC BY-NC-SA` et l’URL de la licence sont vérifiées mécaniquement par le guard.
+- the Creative Commons URL belongs to the licence notice of the source code;
+- do not display this URL in user texts;
+- do not add any website, contact, social network or promotional link in the source code;
+- the `CC BY-NC-SA` mention and the licence URL are checked mechanically by the guard.
 
-### 6.2 Licence propriétaire (PRIVATE, COMMERCIAL, FREE à source fermé)
+### 6.2 Proprietary licence (PRIVATE, COMMERCIAL, FREE with closed source)
 
-Header de référence (`docs/licensing/templates/HEADER_PROPRIETARY.txt`) :
+Reference header (`docs/licensing/templates/HEADER_PROPRIETARY.txt`):
 
 ```pine
 // © CREATED_YEAR–CURRENT_YEAR COPYRIGHT_HOLDER
@@ -468,428 +474,428 @@ Header de référence (`docs/licensing/templates/HEADER_PROPRIETARY.txt`) :
 //@version=6
 ```
 
-Les conditions détaillées (notice propriétaire courte, autorisation gratuite à source fermé, EULA commerciale) ne vivent pas dans le source : elles sont rendues depuis `docs/licensing/templates/` et référencées par `license.terms_ref` du manifeste. Une EULA dont les champs commerciaux et juridiques indispensables ne sont pas renseignés reste un brouillon : cela ne bloque pas le développement, c’est signalé avant toute publication commerciale ; aucune identité légale, adresse, juridiction, politique de remboursement ni condition commerciale n’est jamais inventée.
+The detailed terms (short proprietary notice, closed-source free-use grant, commercial EULA) do not live in the source: they are rendered from `docs/licensing/templates/` and referenced by `license.terms_ref` of the manifest. An EULA whose indispensable commercial and legal fields are not filled in remains a draft: this does not block development, it is flagged before any commercial publication; no legal identity, address, jurisdiction, refund policy or commercial term is ever invented.
 
-Ne pas inclure dans le code source : site web, adresse email, réseau social, messagerie, lien promotionnel ou sollicitation commerciale.
+Do not include in the source code: website, email address, social network, messaging, promotional link or commercial solicitation.
 
-La mention `All Rights Reserved` est vérifiée mécaniquement par le guard. Un header existant plus détaillé (par exemple l’en-tête historique « Proprietary and Confidential … invite-only ») reste conforme tant qu’il porte le copyright du titulaire et cette mention ; il est aligné sur le modèle à la prochaine évolution du produit, jamais pour satisfaire le guard.
+The `All Rights Reserved` mention is checked mechanically by the guard. A more detailed existing header (for example the historical header "Proprietary and Confidential … invite-only") remains compliant as long as it carries the holder's copyright and this mention; it is aligned with the template at the next evolution of the product, never to satisfy the guard.
 
-### 6.3 shorttitle — INTERDIT
+### 6.3 shorttitle — FORBIDDEN
 
-Ne jamais utiliser `shorttitle`.
+Never use `shorttitle`.
 
-Ne pas utiliser `short_title`.
+Do not use `short_title`.
 
-Aucune exception implicite.
+No implicit exception.
 
-Une dérogation nécessite une demande explicite du titulaire.
+A derogation requires an explicit request from the holder.
 
-### 6.4 title — OBLIGATOIRE
+### 6.4 title — MANDATORY
 
-Le `title` :
+The `title`:
 
-- ne contient jamais de version produit ;
-- reste en 7-bit ASCII ;
-- ne contient ni emoji, ni accent, ni caractère Unicode décoratif ;
-- utilise les majuscules uniquement pour de véritables abréviations métier.
+- never contains a product version;
+- remains in 7-bit ASCII;
+- contains no emoji, no accent and no decorative Unicode character;
+- uses capital letters only for genuine domain abbreviations.
 
-### 6.5 URL dans le source — OBLIGATOIRE
+### 6.5 URLs in the source — MANDATORY
 
-Sont admises, uniquement dans des lignes de commentaire : les URL de licences reconnues (Creative Commons, MPL, Apache, GNU, opensource.org) — notice de licence du header ou mention légale légitime d’un composant tiers — et la **référence légale déclarée du produit** (`license.terms_url` du manifeste : l’EULA ou l’autorisation d’utilisation hébergée, par exemple sur le dépôt GitHub de l’auteur), reconnue par correspondance exacte, jamais par domaine. Toute autre URL (site, boutique, réseau, support, autre page du même dépôt) est interdite partout, et toute URL — même de licence — est interdite dans un texte destiné à l’utilisateur (chaîne de caractères, tooltip, table, label). Le guard applique cette règle (`no-promo-urls`) ; une URL CC hors du header est signalée (`cc-url-placement`). Une référence déclarée vers des conditions encore en brouillon est signalée par le scanner et `license status` ; elle ne doit pas être publiée avant que les conditions soient finalisées.
-
----
-
-## 7. RECHERCHE PINE AVANT CODE
-
-OBLIGATOIRE À UNE PROFONDEUR PROPORTIONNÉE.
-
-Avant toute écriture ou modification, vérifier l’état actuel de Pine Script V6 pour les points techniques pertinents.
-
-Une correction locale ne nécessite pas automatiquement une recherche exhaustive de toute la documentation.
-
-Toute décision qui dépend d’un élément pouvant avoir évolué doit cependant être vérifiée.
-
-Cela concerne notamment : syntaxe, fonctions disponibles, modèle d’exécution, requests, realtime, MTF, repainting, performance, limites, objets graphiques, APIs récentes et alternatives modernes à une ancienne implémentation.
-
-Avant de coder, se poser la question :
-
-> Existe-t-il aujourd’hui une solution Pine officielle plus correcte, plus simple, plus robuste, plus lisible ou plus performante que celle envisagée ?
-
-Lorsqu’une feature Pine récente améliore réellement la lisibilité, la maintenabilité, la type safety, la performance ou l’architecture, la privilégier après vérification officielle.
-
-Ne pas écrire dans un style hérité d’une ancienne version par réflexe lorsqu’une solution V6 plus adaptée existe.
+The following are allowed, only in comment lines: the URLs of recognized licences (Creative Commons, MPL, Apache, GNU, opensource.org) — licence notice of the header or legitimate legal mention of a third-party component — and the **declared legal reference of the product** (`license.terms_url` of the manifest: the hosted EULA or permission of use, for example on the author's GitHub repository), recognized by exact match, never by domain. Any other URL (website, shop, network, support, other page of the same repository) is forbidden everywhere, and any URL — even a licence URL — is forbidden in a text intended for the user (string, tooltip, table, label). The guard applies this rule (`no-promo-urls`); a CC URL outside the header is flagged (`cc-url-placement`). A declared reference to terms still in draft is flagged by the scanner and `license status`; it must not be published before the terms are finalized.
 
 ---
 
-## 8. BENCHMARK TRADINGVIEW
+## 7. PINE RESEARCH BEFORE CODE
 
-VÉRIFICATION DE PERTINENCE OBLIGATOIRE. EXÉCUTION À UNE PROFONDEUR PROPORTIONNÉE.
+MANDATORY AT A PROPORTIONATE DEPTH.
 
-Pour toute tâche, se demander explicitement si une référence TradingView actuelle peut améliorer la décision, la solution technique, l’UX, la visualisation, la performance, la robustesse ou l’originalité du travail en cours.
+Before any writing or modification, check the current state of Pine Script V6 for the relevant technical points.
 
-Si aucune référence externe n’apporte d’information utile pour une correction strictement locale, le benchmark peut être conclu `N/A` après cette vérification de pertinence.
+A local fix does not automatically require an exhaustive search of the whole documentation.
 
-Si le benchmark est pertinent, l’exécuter à une profondeur proportionnée au risque et à l’ambition de la tâche.
+Any decision that depends on an element that may have evolved must, however, be verified.
 
-Le benchmark sert à élever le niveau du script.
+This concerns in particular: syntax, available functions, execution model, requests, realtime, MTF, repainting, performance, limits, graphical objects, recent APIs and modern alternatives to an old implementation.
 
-Il ne sert jamais à copier mécaniquement une architecture ni à multiplier les fonctionnalités.
+Before coding, ask the question:
+
+> Is there today an official Pine solution that is more correct, simpler, more robust, more readable or more performant than the one envisaged?
+
+When a recent Pine feature really improves readability, maintainability, type safety, performance or architecture, prefer it after official verification.
+
+Do not write by reflex in a style inherited from an old version when a more suitable V6 solution exists.
+
+---
+
+## 8. TRADINGVIEW BENCHMARK
+
+MANDATORY RELEVANCE CHECK. EXECUTION AT A PROPORTIONATE DEPTH.
+
+For any task, explicitly ask whether a current TradingView reference can improve the decision, the technical solution, the UX, the visualization, the performance, the robustness or the originality of the work in progress.
+
+If no external reference provides useful information for a strictly local fix, the benchmark may be concluded `N/A` after this relevance check.
+
+If the benchmark is relevant, run it at a depth proportionate to the risk and to the ambition of the task.
+
+The benchmark serves to raise the level of the script.
+
+It never serves to mechanically copy an architecture or to multiply features.
 
 ### 8.1 Corpus
 
-Rechercher en priorité :
+Search as a priority for:
 
-- les meilleurs scripts publics open-source du domaine ;
-- les Editors’ Picks pertinents ;
-- les meilleures références open-source résolvant le même problème utilisateur ;
-- les références particulièrement fortes sur une dimension importante du projet.
+- the best public open-source scripts of the field;
+- the relevant Editors’ Picks;
+- the best open-source references solving the same user problem;
+- the references that are particularly strong on an important dimension of the project.
 
-La présence dans les Editors’ Picks constitue un signal qualitatif utile, mais ne remplace jamais l’analyse critique.
+Presence in the Editors’ Picks constitutes a useful qualitative signal, but never replaces critical analysis.
 
-Un excellent script open-source non sélectionné comme Editors’ Pick peut être plus pertinent pour un problème technique précis.
+An excellent open-source script not selected as an Editors’ Pick can be more relevant for a precise technical problem.
 
-### 8.2 Même benchmark pour gratuit et payant
+### 8.2 Same benchmark for free and paid
 
-Le corpus de recherche est identique quel que soit le profil de licence.
+The research corpus is identical whatever the licence profile.
 
-La différence éventuelle réside dans l’objectif initial du produit, jamais dans son profil ou son prix.
+The possible difference lies in the initial objective of the product, never in its profile or its price.
 
-Ne jamais traduire cette ambition par une accumulation artificielle de fonctions.
+Never translate this ambition into an artificial accumulation of functions.
 
-### 8.3 Axes de benchmark
+### 8.3 Benchmark axes
 
-Utiliser comme bibliothèque les axes suivants lorsqu’ils sont applicables :
+Use the following axes as a library when they are applicable:
 
-1. UX et ergonomie des settings ;
-2. scoring ou logique de signal ;
-3. visualisation et hiérarchie visuelle ;
-4. alertes ;
-5. modules, tables ou dashboards ;
-6. niveau de finition ;
-7. documentation utilisateur ;
-8. performance ressentie ;
-9. originalité et différenciation.
+1. UX and ergonomics of the settings;
+2. scoring or signal logic;
+3. visualization and visual hierarchy;
+4. alerts;
+5. modules, tables or dashboards;
+6. level of finish;
+7. user documentation;
+8. perceived performance;
+9. originality and differentiation.
 
-Ajouter un axe spécifique lorsqu’il est important pour le domaine.
+Add a specific axis when it is important for the field.
 
-Une dimension absente du script est N/A.
+A dimension absent from the script is N/A.
 
-Ne jamais inventer une feature afin de rendre un axe applicable.
+Never invent a feature in order to make an axis applicable.
 
-### 8.4 Benchmark comme plancher à dépasser
+### 8.4 Benchmark as a floor to exceed
 
-Le benchmark représente un plancher qualitatif, jamais un plafond.
+The benchmark represents a qualitative floor, never a ceiling.
 
-L’objectif n’est pas de reproduire ce que font les meilleurs.
+The objective is not to reproduce what the best do.
 
-L’objectif est de comprendre :
+The objective is to understand:
 
-- pourquoi leurs solutions fonctionnent ;
-- où leur logique est forte ;
-- où leur logique est fragile ou limitée ;
-- où leur code est clair, robuste ou efficace ;
-- où leur code peut être simplifié, renforcé ou modernisé ;
-- ce qui mérite d’être retenu comme enseignement ;
-- où une solution originale peut faire mieux.
+- why their solutions work;
+- where their logic is strong;
+- where their logic is fragile or limited;
+- where their code is clear, robust or efficient;
+- where their code can be simplified, strengthened or modernized;
+- what deserves to be retained as a lesson;
+- where an original solution can do better.
 
-Lorsque le code source d’une référence est accessible, l’objectif du benchmark n’est pas de produire un équivalent.
+When the source code of a reference is accessible, the objective of the benchmark is not to produce an equivalent.
 
-La solution doit chercher à SURPASSER la qualité de la logique et du code observés dans toutes les dimensions pertinentes où une amélioration réelle est possible, notamment : correction, robustesse, stabilité historical/realtime, anti-repaint, clarté logique, architecture, lisibilité, maintenabilité, performance, edge cases, UX, qualité visuelle, automatisation pertinente, documentation et originalité.
+The solution must seek to SURPASS the quality of the observed logic and code in all the relevant dimensions where a real improvement is possible, in particular: correctness, robustness, historical/realtime stability, anti-repaint, logical clarity, architecture, readability, maintainability, performance, edge cases, UX, visual quality, relevant automation, documentation and originality.
 
-Ne pas se contenter de la parité lorsqu’une meilleure solution est raisonnablement possible.
+Do not settle for parity when a better solution is reasonably possible.
 
-SURPASSER ne signifie jamais copier puis modifier.
+To SURPASS never means to copy and then modify.
 
-SURPASSER signifie résoudre le problème plus proprement, plus solidement, plus clairement ou plus efficacement par une conception indépendante.
+To SURPASS means to solve the problem more cleanly, more solidly, more clearly or more efficiently through an independent design.
 
-Ne pas reproduire une architecture distinctive, une logique propre à un auteur, un enchaînement original identifiable ou un comportement singulier uniquement dans le but d’en fabriquer une imitation.
+Do not reproduce a distinctive architecture, a logic specific to an author, an identifiable original sequence or a singular behaviour only for the purpose of manufacturing an imitation of it.
 
-Le résultat doit être reconnaissable comme une solution originale au même problème, pas comme une variante déguisée de la référence.
+The result must be recognizable as an original solution to the same problem, not as a disguised variant of the reference.
 
-### 8.5 Frontière benchmark / réutilisation de code — OBLIGATOIRE
+### 8.5 Benchmark / code reuse boundary — MANDATORY
 
-Étudier un script accessible légalement n’autorise pas automatiquement à réutiliser son code.
+Studying a legally accessible script does not automatically authorize reusing its code.
 
-Le comportement par défaut du benchmark est : observer, comprendre, analyser, comparer, identifier les limites, puis concevoir une solution indépendante qui cherche à faire mieux. Le fonctionnement par défaut produit une **implémentation originale** : pas de copier-coller, pas de traduction ligne à ligne, pas de simple renommage ou reformatage d’un code tiers ; une conception à partir des besoins, des principes, des formules et des comportements compris.
+The default behaviour of the benchmark is: observe, understand, analyse, compare, identify the limits, then design an independent solution that seeks to do better. The default way of working produces an **original implementation**: no copy-paste, no line-by-line translation, no mere renaming or reformatting of third-party code; a design starting from the needs, the principles, the formulas and the behaviours understood.
 
-La trace des références étudiées relève du suivi de conception du produit (recherche, décisions, artefact de suivi) ; elle n’ajoute jamais automatiquement des crédits trompeurs dans le script. Cette règle ne permet pas de supprimer rétroactivement une notice légitime d’un source existant : les questions d’attribution ou de licence propres à un produit restent traitées dans ses décisions.
+The record of the references studied belongs to the product's design tracking (research, decisions, tracking artefact); it never automatically adds misleading credits to the script. This rule does not allow a legitimate notice of an existing source to be removed retroactively: the attribution or licence questions specific to a product remain handled in its decisions.
 
-Ne pas copier ni adapter substantiellement le code d’un autre auteur uniquement parce qu’il est visible.
+Do not copy or substantially adapt another author's code only because it is visible.
 
-Lorsque la réutilisation réelle d’un code tiers est envisagée :
+When the actual reuse of third-party code is envisaged:
 
-1. arrêter avant de l’intégrer ;
-2. identifier précisément la provenance ;
-3. vérifier les règles TradingView actuelles sur la réutilisation open-source ;
-4. vérifier la licence applicable ;
-5. déterminer les obligations de crédit et de publication ;
-6. vérifier les améliorations substantielles requises et la proportion du code tiers autorisée ;
-7. obtenir l’accord du titulaire avant intégration.
+1. stop before integrating it;
+2. identify the provenance precisely;
+3. check the current TradingView rules on open-source reuse;
+4. check the applicable licence;
+5. determine the credit and publication obligations;
+6. check the substantial improvements required and the proportion of third-party code allowed;
+7. obtain the holder's agreement before integration.
 
-Pour un script à source fermé (PRIVATE, COMMERCIAL, FREE à source fermé) :
+For a closed-source script (PRIVATE, COMMERCIAL, FREE with closed source):
 
-- ne jamais réutiliser de code open-source tiers non public-domain sans autorisation explicite de l’auteur ;
-- l’autorisation doit explicitement couvrir la réutilisation dans un script à source fermé et, le cas échéant, à accès payant ;
-- conserver une preuve durable de cette autorisation ;
-- créditer l’auteur de la manière requise par les règles TradingView actuelles ;
-- si l’autorisation ne peut pas être obtenue, ne pas réutiliser le code.
+- never reuse non-public-domain third-party open-source code without the author's explicit permission;
+- the permission must explicitly cover reuse in a closed-source script and, where applicable, in a paid-access one;
+- keep durable evidence of this permission;
+- credit the author in the manner required by the current TradingView rules;
+- if the permission cannot be obtained, do not reuse the code.
 
-Les exceptions de domaine public doivent être vérifiées contre la définition TradingView actuelle avant utilisation.
+Public-domain exceptions must be checked against the current TradingView definition before use.
 
-Lorsque le même résultat peut être atteint par une implémentation indépendante, préférer cette voie.
-
----
-
-## 9. CARTOGRAPHIE OBLIGATOIRE
-
-### 9.1 Script existant — trois niveaux de vérification
-
-La cartographie d’un produit est établie une fois (onboarding, ou premier changement structurel) et maintenue dans son `ARCHITECTURE.md` : sections, constantes, enums, UDTs, inputs, fonctions, méthodes, états persistants, arrays, requests, logique MTF, plots, fills, lines, labels, boxes, tables, alertconditions, dépendances et documentation liée. Elle est mise à jour seulement lorsqu’elle devient fausse.
-
-La profondeur de lecture avant une modification suit trois niveaux distincts, jamais confondus :
-
-1. **Travail courant** (toute classe de tâche du §2, y compris un changement structurel) : lecture ciblée des blocs concernés et de leurs dépendances pertinentes à partir de la cartographie, inventaire d’impact proportionné, contrôle du diff, protections mécaniques, tests proportionnés au risque réel. Aucune lecture intégrale du produit, aucun agent, aucune succession de contre-vérifications ne sont déclenchés automatiquement par une modification, quelle que soit sa classe ; l’assistant peut proposer un audit lorsqu’il juge le risque élevé, il ne l’engage pas de lui-même.
-2. **Audit approfondi** : commande ou action dédiée (`pine-audit`), déclenchée explicitement par le titulaire, avec un périmètre annoncé avant exécution (sections, axes, exécution PineTS incluse ou non). C’est là que vivent la lecture globale, la cartographie par agent et la revue indépendante élargie.
-3. **Préparation de publication** (`pine-release`) : exigences finales de livraison, distinctes d’un simple candidat à tester — couverture globale consolidée unique sur le source stabilisé, revue de release, règles TradingView revérifiées, validation TradingView du SHA final.
-
-Une unité de travail terminée n’est pas réauditée sans raison nouvelle. Lorsque la cartographie paraît fausse ou insuffisante pour la tâche, l’assistant le signale et propose un audit ; une cartographie absente relève de l’onboarding.
-
-Ne jamais modifier une fonction sans identifier ses consommateurs.
-
-Ne jamais modifier un input sans vérifier sa logique, ses dépendances, son tooltip, son `active=`, les textes qui le documentent et les éléments visuels ou alertes qu’il influence.
-
-### 9.2 Relecture après modification
-
-Après chaque modification cohérente, relire selon le niveau du §9.1 et la classe de la tâche (§2), à partir de la cartographie : correction locale, zones modifiées, leurs consommateurs et producteurs directs et les artefacts dépendants ; changement fonctionnel, en plus, les sections qui touchent, consomment ou alimentent les symboles modifiés ; changement structurel, en plus, les dépendances que l’inventaire d’impact désigne (sections déplacées, renommées ou redécoupées) et la mise à jour de la cartographie. En travail courant, aucune de ces relectures n’est une lecture intégrale du fichier ; une couverture globale ou une revue indépendante n’a lieu que dans un audit approfondi demandé (§9.1, niveau 2) ou en préparation de publication (niveau 3).
-
-Une modification cohérente peut contenir plusieurs micro-edits inséparables appartenant au même changement.
-
-Une modification locale peut avoir affecté ailleurs : inputs, fonctions, conditions, noms, commentaires, affichages, alertes, dépendances, architecture et documentation ; l’inventaire d’impact fixe l’étendue.
-
-En préparation de publication (§9.1, niveau 3), une couverture globale consolidée du fichier est obligatoire, une seule fois, sur le source stabilisé ; elle est faite par le développeur ou par le reviewer indépendant, et la preuve indique lequel. Une validation TradingView hors publication ne l’exige pas ; l’assistant peut la proposer lorsqu’il juge le risque élevé, il ne l’engage pas de lui-même.
-
-Une consigne explicite du titulaire limitant la portée d’une relecture ou d’une revue s’applique selon sa portée et est consignée.
-
-Sur un script très volumineux, la relecture peut être assistée par une cartographie structurelle et des recherches ciblées.
-
-### 9.3 Nouveau script
-
-Avant d’écrire un nouveau script, définir : objectif, audience, modèle de distribution, niveau d’ambition, comportement principal, modules réellement nécessaires, architecture des sections, inputs, UDTs ou enums éventuels, flux de calcul, état, comportement MTF éventuel, sorties visuelles, alertes éventuelles et contraintes de performance.
+When the same result can be achieved by an independent implementation, prefer that path.
 
 ---
 
-## 10. INVENTAIRE D’IMPACT
+## 9. MANDATORY MAPPING
 
-OBLIGATOIRE À UNE PROFONDEUR PROPORTIONNÉE.
+### 9.1 Existing script — three verification levels
 
-Avant toute modification, identifier : ce qui doit changer, ce qui doit rester inchangé, les consommateurs affectés, les effets de bord possibles, les textes dépendants, les éléments visuels dépendants, les alertes dépendantes et les tests nécessaires.
+The map of a product is established once (onboarding, or first structural change) and maintained in its `ARCHITECTURE.md`: sections, constants, enums, UDTs, inputs, functions, methods, persistent states, arrays, requests, MTF logic, plots, fills, lines, labels, boxes, tables, alertconditions, dependencies and linked documentation. It is updated only when it becomes wrong.
 
-Une correction locale nécessite une analyse concise.
+The reading depth before a modification follows three distinct levels, never confused:
 
-Une modification fonctionnelle ou architecturale nécessite une cartographie plus détaillée.
+1. **Routine work** (any task class of §2, including a structural change): targeted reading of the blocks concerned and of their relevant dependencies starting from the map, proportionate impact inventory, diff check, mechanical protections, tests proportionate to the real risk. No full reading of the product, no agent, no succession of cross-checks are triggered automatically by a modification, whatever its class; the assistant may propose an audit when it judges the risk to be high, it does not initiate it on its own.
+2. **Deep audit**: dedicated command or action (`pine-audit`), triggered explicitly by the holder, with a scope announced before execution (sections, axes, PineTS execution included or not). That is where the global reading, the agent-based mapping and the extended independent review live.
+3. **Publication preparation** (`pine-release`): final delivery requirements, distinct from a mere candidate to be tested — single consolidated global coverage on the stabilized source, release review, re-checked TradingView rules, TradingView validation of the final SHA.
 
----
+A completed unit of work is not re-audited without a new reason. When the map seems wrong or insufficient for the task, the assistant flags it and proposes an audit; a missing map falls under onboarding.
 
-## 11. MÉTHODOLOGIE DE MODIFICATION
+Never modify a function without identifying its consumers.
 
-Travailler par unités cohérentes.
+Never modify an input without checking its logic, its dependencies, its tooltip, its `active=`, the texts that document it and the visual elements or alerts it influences.
 
-Ne pas modifier le script en vrac.
+### 9.2 Re-reading after modification
 
-Favoriser les changements ciblés et les plus petits possibles tout en conservant une solution propre.
+After each coherent modification, re-read according to the level of §9.1 and the class of the task (§2), starting from the map: local fix, the modified zones, their direct consumers and producers and the dependent artefacts; functional change, in addition, the sections that touch, consume or feed the modified symbols; structural change, in addition, the dependencies that the impact inventory designates (sections moved, renamed or re-split) and the update of the map. In routine work, none of these re-readings is a full reading of the file; a global coverage or an independent review takes place only in a requested deep audit (§9.1, level 2) or in publication preparation (level 3).
 
-Ne pas effectuer de réécriture complète sans nécessité architecturale.
+A coherent modification may contain several inseparable micro-edits belonging to the same change.
 
-Ne pas profiter d’une correction pour intégrer des changements non demandés.
+A local modification may have had effects elsewhere: inputs, functions, conditions, names, comments, displays, alerts, dependencies, architecture and documentation; the impact inventory sets the extent.
 
-Après une série de modifications étroitement liées :
+In publication preparation (§9.1, level 3), a consolidated global coverage of the file is mandatory, only once, on the stabilized source; it is done by the developer or by the independent reviewer, and the evidence indicates which. A TradingView validation outside publication does not require it; the assistant may propose it when it judges the risk to be high, it does not initiate it on its own.
 
-1. relire selon la couverture de §9.2 ;
-2. rechercher les régressions ;
-3. vérifier les artefacts dépendants ;
-4. selon le niveau (§9.1) : contrôle du diff et auto-revue pour le travail courant, toutes classes confondues ; revue indépendante (§36) seulement dans un audit approfondi demandé, en préparation de publication, ou à la demande du titulaire.
+An explicit instruction of the holder limiting the scope of a re-reading or of a review applies according to its scope and is recorded.
 
-Les décisions de produit appartiennent au titulaire.
+On a very large script, the re-reading may be assisted by a structural map and targeted searches.
 
-Demander son accord avant notamment : ajout ou suppression d’une fonctionnalité, changement de philosophie, modification d’un comportement central, modification importante du positionnement ou changement de logique utilisateur.
+### 9.3 New script
 
-Les décisions ordinaires d’implémentation relèvent de Claude Code lorsqu’elles respectent les règles ratifiées.
-
----
-
-## 12. COMPATIBILITÉ PINE SCRIPT V6
-
-OBLIGATOIRE.
-
-Le script déclare Pine Script V6 et doit être pensé comme un script V6.
-
-Ne jamais mélanger sans analyse : syntaxe héritée, hypothèse d’exécution héritée, comportement booléen hérité, comportement de request hérité, sémantique de division héritée, logique de lazy evaluation héritée ou pattern de migration provenant d’une ancienne version.
-
-Lorsqu’un script provient d’une version antérieure :
-
-1. identifier explicitement les comportements affectés par la migration ;
-2. vérifier le guide officiel de migration actuel ;
-3. convertir la sémantique, pas seulement la syntaxe ;
-4. ne pas forcer artificiellement un ancien comportement si le nouveau comportement V6 est plus correct pour l’objectif ;
-5. préserver l’ancien comportement uniquement lorsqu’il constitue un contrat produit réel et reste techniquement valide ;
-6. tester historical, realtime, requests, MTF et états lorsque la migration peut les affecter.
-
-La présence de `//@version=6` ne suffit pas à prouver qu’un script est conceptuellement compatible V6.
+Before writing a new script, define: objective, audience, distribution model, level of ambition, main behaviour, modules actually necessary, architecture of the sections, inputs, possible UDTs or enums, calculation flow, state, possible MTF behaviour, visual outputs, possible alerts and performance constraints.
 
 ---
 
-## 13. INVARIANTS PINE SCRIPT V6
+## 10. IMPACT INVENTORY
 
-OBLIGATOIRE.
+MANDATORY AT A PROPORTIONATE DEPTH.
 
-La documentation officielle actuelle reste prioritaire si Pine évolue.
+Before any modification, identify: what must change, what must remain unchanged, the affected consumers, the possible side effects, the dependent texts, the dependent visual elements, the dependent alerts and the necessary tests.
 
-### 13.1 Version Pine
+A local fix requires a concise analysis.
 
-Utiliser `//@version=6` selon le header défini précédemment.
+A functional or architectural modification requires a more detailed mapping.
 
-### 13.2 Constantes
+---
 
-Une valeur réellement constante ne doit pas être déclarée `var` simplement pour la faire persister.
+## 11. MODIFICATION METHODOLOGY
 
-Suivre le Style Guide TradingView actuel pour la forme de nommage des constantes.
+Work in coherent units.
 
-### 13.3 Booléens
+Do not modify the script haphazardly.
 
-Ne jamais utiliser les anciens réflexes de booléens tri-state.
+Favour targeted changes that are as small as possible while keeping a clean solution.
 
-Ne pas utiliser `na()`, `nz()` ou `fixnan()` sur un booléen lorsque Pine V6 ne le permet pas.
+Do not perform a complete rewrite without architectural necessity.
 
-Ne pas utiliser implicitement un nombre comme booléen.
+Do not take advantage of a fix to integrate changes that were not requested.
 
-Préférer un prédicat explicite comme `count > 0`.
+After a series of closely related modifications:
 
-Un état booléen persistant doit être initialisé explicitement à la valeur sémantiquement correcte pour son état initial.
+1. re-read according to the coverage of §9.2;
+2. look for regressions;
+3. check the dependent artefacts;
+4. according to the level (§9.1): diff check and self-review for routine work, all classes combined; independent review (§36) only in a requested deep audit, in publication preparation, or at the holder's request.
 
-Ne jamais imposer `false` sans analyser la logique métier.
+Product decisions belong to the holder.
 
-### 13.4 Ternaires et calculs stateful
+Ask for the holder's agreement before, in particular: the addition or removal of a feature, a change of philosophy, the modification of a central behaviour, a significant modification of the positioning or a change of user logic.
 
-Ne pas placer directement un calcul `ta.*` stateful dans une branche dont l’évaluation peut être intermittente.
+Ordinary implementation decisions fall to Claude Code when they respect the ratified rules.
 
-Préférer :
+---
+
+## 12. PINE SCRIPT V6 COMPATIBILITY
+
+MANDATORY.
+
+The script declares Pine Script V6 and must be conceived as a V6 script.
+
+Never mix without analysis: legacy syntax, legacy execution assumption, legacy boolean behaviour, legacy request behaviour, legacy division semantics, legacy lazy evaluation logic or a migration pattern coming from an old version.
+
+When a script comes from an earlier version:
+
+1. explicitly identify the behaviours affected by the migration;
+2. check the current official migration guide;
+3. convert the semantics, not only the syntax;
+4. do not artificially force an old behaviour if the new V6 behaviour is more correct for the objective;
+5. preserve the old behaviour only when it constitutes a real product contract and remains technically valid;
+6. test historical, realtime, requests, MTF and states when the migration can affect them.
+
+The presence of `//@version=6` is not enough to prove that a script is conceptually V6-compatible.
+
+---
+
+## 13. PINE SCRIPT V6 INVARIANTS
+
+MANDATORY.
+
+The current official documentation keeps priority if Pine evolves.
+
+### 13.1 Pine version
+
+Use `//@version=6` according to the header defined previously.
+
+### 13.2 Constants
+
+A truly constant value must not be declared `var` simply to make it persist.
+
+Follow the current TradingView Style Guide for the naming form of constants.
+
+### 13.3 Booleans
+
+Never use the old reflexes of tri-state booleans.
+
+Do not use `na()`, `nz()` or `fixnan()` on a boolean when Pine V6 does not allow it.
+
+Do not implicitly use a number as a boolean.
+
+Prefer an explicit predicate such as `count > 0`.
+
+A persistent boolean state must be explicitly initialized to the semantically correct value for its initial state.
+
+Never impose `false` without analysing the business logic.
+
+### 13.4 Ternaries and stateful calculations
+
+Do not place a stateful `ta.*` calculation directly in a branch whose evaluation can be intermittent.
+
+Prefer:
 
 ```pine
 atrValue = ta.atr(14)
 result = condition ? atrValue : 0.0
 ```
 
-à :
+to:
 
 ```pine
 result = condition ? ta.atr(14) : 0.0
 ```
 
-Le même principe s’applique aux fonctions utilisateur dont l’état dépend d’une évaluation régulière.
+The same principle applies to user functions whose state depends on a regular evaluation.
 
-### 13.5 Lazy evaluation de `and` et `or`
+### 13.5 Lazy evaluation of `and` and `or`
 
-Les opérateurs `and` et `or` utilisent une évaluation paresseuse en Pine V6.
+The `and` and `or` operators use lazy evaluation in Pine V6.
 
-Ne jamais placer dans un opérande pouvant ne pas être évalué une opération dont l’exécution est nécessaire : mutation avec `:=`, calcul stateful `ta.*`, request stateful, mutation d’array ou fonction utilisateur à effet de bord.
+Never place, in an operand that may not be evaluated, an operation whose execution is necessary: mutation with `:=`, stateful `ta.*` calculation, stateful request, array mutation or user function with a side effect.
 
-Hoister le calcul ou la mutation avant l’expression logique.
+Hoist the calculation or the mutation before the logical expression.
 
-### 13.6 Division entière
+### 13.6 Integer division
 
-Lorsqu’une division doit conserver une sémantique particulière, rendre cette intention explicitement correcte selon Pine V6.
+When a division must keep a particular semantics, make this intention explicitly correct according to Pine V6.
 
-Ne pas dépendre implicitement d’un ancien comportement de version.
+Do not implicitly depend on an old version behaviour.
 
 ### 13.7 UDT
 
-Les champs UDT utilisent des noms valides, ne contiennent jamais de point et restent sémantiquement cohérents.
+UDT fields use valid names, never contain a dot and remain semantically consistent.
 
-Lorsque l’historique porte sur l’objet lui-même, appliquer l’accès historique à l’objet avant son champ lorsque c’est la sémantique recherchée.
+When the history concerns the object itself, apply the historical access to the object before its field when that is the intended semantics.
 
 ### 13.8 `request.security`
 
-OBLIGATOIRE SI APPLICABLE.
+MANDATORY IF APPLICABLE.
 
-Lorsque pertinent : `gaps` explicite, `lookahead` explicite, comportement historical/realtime compris et confirmation MTF comprise.
+When relevant: explicit `gaps`, explicit `lookahead`, historical/realtime behaviour understood and MTF confirmation understood.
 
-### 13.9 `dynamic_requests` en Pine V6
+### 13.9 `dynamic_requests` in Pine V6
 
-Les requests dynamiques sont disponibles par défaut en Pine V6.
+Dynamic requests are available by default in Pine V6.
 
-Ne pas ajouter `dynamic_requests = true` par réflexe.
+Do not add `dynamic_requests = true` by reflex.
 
-L’ajouter explicitement uniquement lorsqu’il améliore réellement la lisibilité de l’intention du script.
+Add it explicitly only when it really improves the readability of the script's intention.
 
-Utiliser `dynamic_requests = false` uniquement lorsqu’une architecture non dynamique est volontaire, techniquement appropriée et vérifiée.
+Use `dynamic_requests = false` only when a non-dynamic architecture is intentional, technically appropriate and verified.
 
-Tenir compte du fait qu’un script non dynamique impose davantage de restrictions sur les contextes et scopes des `request.*()`.
+Take into account that a non-dynamic script imposes more restrictions on the contexts and scopes of `request.*()`.
 
-Après conversion d’un ancien script, vérifier toute différence comportementale éventuelle liée aux requests avant de forcer un mode pour reproduire un comportement historique.
+After converting an old script, check any possible behavioural difference related to requests before forcing a mode to reproduce a historical behaviour.
 
-### 13.10 Primitives visuelles
+### 13.10 Visual primitives
 
-Les primitives Pine devant rester en scope global sont maintenues dans le scope approprié.
+The Pine primitives that must remain in global scope are kept in the appropriate scope.
 
-Calculer une série conditionnelle puis effectuer le rendu global plutôt que déplacer arbitrairement une primitive dans un scope local incompatible.
+Calculate a conditional series and then perform the global rendering rather than arbitrarily moving a primitive into an incompatible local scope.
 
 ---
 
-## 14. PATTERNS À RISQUE SILENCIEUX
+## 14. SILENT-RISK PATTERNS
 
 ### 14.1 `=` versus `:=`
 
-Dans un scope imbriqué, distinguer strictement création ou déclaration locale et réassignation d’une variable existante.
+In a nested scope, strictly distinguish local creation or declaration from the reassignment of an existing variable.
 
-Éviter le shadowing involontaire.
+Avoid unintentional shadowing.
 
-### 14.2 Scope de classification
+### 14.2 Classification scope
 
-Ne jamais imbriquer une règle sous une condition parente qui rend cette règle logiquement impossible.
+Never nest a rule under a parent condition that makes this rule logically impossible.
 
-Avant une classification complexe, vérifier univers de cas, conditions d’entrée, exclusivité mutuelle et cas non couverts.
+Before a complex classification, check the universe of cases, entry conditions, mutual exclusivity and uncovered cases.
 
-### 14.3 Cascade de priorité
+### 14.3 Priority cascade
 
-Lorsqu’un résultat possède plusieurs niveaux de priorité, une règle moins importante ne doit jamais écraser silencieusement le résultat d’une règle supérieure.
+When a result has several priority levels, a less important rule must never silently overwrite the result of a higher rule.
 
-Utiliser une cascade explicite lorsque les branches sont mutuellement exclusives par priorité.
+Use an explicit cascade when the branches are mutually exclusive by priority.
 
-### 14.4 Champs UDT
+### 14.4 UDT fields
 
-Pas de point dans les noms de champs.
+No dot in field names.
 
-### 14.5 Fonctions stateful dans un scope conditionnel
+### 14.5 Stateful functions in a conditional scope
 
-Un calcul dont la série nécessite une évaluation régulière doit être calculé de manière cohérente avant d’être consommé conditionnellement.
+A calculation whose series requires regular evaluation must be calculated consistently before being consumed conditionally.
 
-### 14.6 État persistant dans une request
+### 14.6 Persistent state in a request
 
-Ne pas encapsuler sans analyse un helper à état persistant dans une structure `request.security()` complexe ou un tuple lorsqu’il peut modifier la sémantique de persistance.
+Do not encapsulate, without analysis, a helper with persistent state in a complex `request.security()` structure or a tuple when it can modify the persistence semantics.
 
-Lorsque le comportement devient ambigu : isoler la request, rendre le calcul stateless lorsque possible et privilégier la correction à la simple réduction du nombre d’appels.
-
----
-
-## 15. UTILISATION DES FEATURES MODERNES V6
-
-PAR DÉFAUT.
-
-Utiliser les possibilités modernes de Pine V6 lorsqu’elles améliorent réellement le code.
-
-Considérer lorsqu’approprié : UDTs plutôt que plusieurs arrays parallèles, methods lorsqu’une fonction opère naturellement sur un UDT, enums plutôt que strings libres lorsqu’un domaine de choix fermé existe, APIs timeframe explicites, fonctions actuelles de temps et de dessin, setters plutôt que recréations inutiles et primitives `plot` modernes lorsque suffisantes.
-
-Ne pas convertir du code en UDT, method ou enum uniquement pour cocher une convention.
-
-L’amélioration doit être réelle.
+When the behaviour becomes ambiguous: isolate the request, make the calculation stateless when possible and favour correctness over a mere reduction of the number of calls.
 
 ---
 
-## 16. ARCHITECTURE DU CODE
+## 15. USE OF MODERN V6 FEATURES
 
-### 16.1 Sections numérotées — OBLIGATOIRE LORSQU’UNE SECTION SIGNIFICATIVE EXISTE
+DEFAULT.
 
-Les sections majeures significatives utilisent obligatoirement :
+Use the modern possibilities of Pine V6 when they really improve the code.
+
+Consider when appropriate: UDTs rather than several parallel arrays, methods when a function naturally operates on a UDT, enums rather than free strings when a closed domain of choices exists, explicit timeframe APIs, current time and drawing functions, setters rather than needless re-creations and modern `plot` primitives when sufficient.
+
+Do not convert code into a UDT, method or enum only to tick off a convention.
+
+The improvement must be real.
+
+---
+
+## 16. CODE ARCHITECTURE
+
+### 16.1 Numbered sections — MANDATORY WHEN A SIGNIFICANT SECTION EXISTS
+
+Significant major sections mandatorily use:
 
 ```pine
 // ══════════════════════════════════════════════════════════════════════════════
@@ -897,115 +903,115 @@ Les sections majeures significatives utilisent obligatoirement :
 // ══════════════════════════════════════════════════════════════════════════════
 ```
 
-Les sous-sections significatives utilisent :
+Significant subsections use:
 
 ```pine
 // ── §Na Subsection ───────────────────────────────────────────────────────────
 ```
 
-La règle porte sur le format des sections qui existent.
+The rule concerns the format of the sections that exist.
 
-Ne jamais créer artificiellement une section vide, insignifiante ou purement décorative pour satisfaire la numérotation.
+Never artificially create an empty, insignificant or purely decorative section to satisfy the numbering.
 
-### 16.2 Ordre des dépendances — PAR DÉFAUT
+### 16.2 Dependency order — DEFAULT
 
-L’ordre suit la logique réelle du script.
+The order follows the real logic of the script.
 
-Direction générale : declarations → constants → enums / types → low-level helpers → inputs → calculations → business logic → state → rendering → alerts.
+General direction: declarations → constants → enums / types → low-level helpers → inputs → calculations → business logic → state → rendering → alerts.
 
-Cette séquence est un guide, pas un template rigide.
+This sequence is a guide, not a rigid template.
 
-### 16.3 Groupes d’inputs
+### 16.3 Input groups
 
-L’ordre des groupes de settings reflète le flux décisionnel du produit.
+The order of the settings groups reflects the decision flow of the product.
 
-Un oscillateur, un outil de structure, un scanner, un système MTF et un indicateur de volume n’ont pas nécessairement la même organisation.
+An oscillator, a structure tool, a scanner, an MTF system and a volume indicator do not necessarily have the same organization.
 
-### 16.4 Line wrapping — CONVENTION PERSONNELLE
+### 16.4 Line wrapping — PERSONAL CONVENTION
 
-Pour les paramètres répartis sur plusieurs lignes à l’intérieur de parenthèses, utiliser par défaut la Convention Personnelle de 5 espaces.
+For parameters spread over several lines inside parentheses, use by default the Personal Convention of 5 spaces.
 
-Les 5 espaces permettent de distinguer visuellement nesting de bloc et continuation de ligne.
+The 5 spaces make it possible to visually distinguish block nesting from line continuation.
 
-Lorsque le wrapping hors parenthèses devient ambigu, préférer l’ajout de parenthèses à une indentation fragile.
+When wrapping outside parentheses becomes ambiguous, prefer adding parentheses to a fragile indentation.
 
 ---
 
 ## 17. NAMING
 
-### 17.1 Forme syntaxique des identifiants — STYLE GUIDE TRADINGVIEW
+### 17.1 Syntactic form of identifiers — TRADINGVIEW STYLE GUIDE
 
-Pour la forme des noms, suivre le Style Guide TradingView actuel plutôt que dupliquer ses règles comme Conventions Personnelles autonomes.
+For the form of names, follow the current TradingView Style Guide rather than duplicating its rules as standalone Personal Conventions.
 
-À la date de vérification, le Style Guide recommande notamment `camelCase` pour les identifiants, `SNAKE_CASE` en majuscules pour les constantes et des suffixes qualifiants lorsqu’ils apportent une information utile.
+As of the verification date, the Style Guide recommends in particular `camelCase` for identifiers, uppercase `SNAKE_CASE` for constants and qualifying suffixes when they provide useful information.
 
-Si le Style Guide officiel évolue, adapter la forme syntaxique en conséquence sans changer silencieusement le sens des identifiants.
+If the official Style Guide evolves, adapt the syntactic form accordingly without silently changing the meaning of the identifiers.
 
-### 17.2 Sémantique actuelle — CONVENTION PERSONNELLE OBLIGATOIRE
+### 17.2 Current semantics — MANDATORY PERSONAL CONVENTION
 
-Un nom doit décrire le contenu actuel de l’élément.
+A name must describe the current content of the element.
 
-Lorsque la logique d’une variable, fonction, type, setting ou structure change, renommer complètement les références concernées si le nom existant devient faux, ambigu ou trompeur.
+When the logic of a variable, function, type, setting or structure changes, completely rename the references concerned if the existing name becomes wrong, ambiguous or misleading.
 
-Ne jamais conserver un nom historique simplement pour éviter une modification plus large.
+Never keep a historical name simply to avoid a broader modification.
 
-Ne pas hériter d’un préfixe, d’une terminologie ou d’une convention d’un autre indicateur sans justification architecturale.
+Do not inherit a prefix, a terminology or a convention from another indicator without architectural justification.
 
-### 17.3 Suffixes descriptifs
+### 17.3 Descriptive suffixes
 
-Utiliser un suffixe lorsque celui-ci clarifie véritablement la nature, la provenance ou le rôle de la variable.
+Use a suffix when it truly clarifies the nature, the provenance or the role of the variable.
 
-Ne pas surcharger chaque nom d’un suffixe inutile.
+Do not overload every name with an unnecessary suffix.
 
 ### 17.4 Legacy
 
-Un ancien script peut conserver certains noms historiques lorsque leur migration purement stylistique n’apporte aucune valeur.
+An old script may keep certain historical names when their purely stylistic migration brings no value.
 
-En revanche, un nom sémantiquement faux ou devenu trompeur doit être corrigé.
-
----
-
-## 18. DESIGN PRODUIT
-
-### 18.1 Produit opinionated — PAR DÉFAUT
-
-Ne pas exposer automatiquement les mécanismes internes sous forme de settings.
-
-Un utilisateur doit contrôler les décisions utiles, pas les paramètres de laboratoire.
-
-### 18.2 Fonctionnalité perceptible — OBLIGATOIRE
-
-Toute fonctionnalité présentée comme faisant partie du produit doit avoir un résultat perceptible : comportement du chart, signal, niveau, zone, table, label, alerte ou changement visible de calcul.
-
-Ne jamais conserver une fonctionnalité fantôme dont l’utilisateur ne peut constater aucun effet.
-
-### 18.3 Adaptation automatique — PAR DÉFAUT
-
-Lorsque cela peut être fait de manière robuste, préférer une adaptation intelligente au symbole, timeframe, volatilité ou contexte plutôt qu’un paramétrage manuel inutile.
-
-L’automatisation ne doit jamais masquer une hypothèse fragile.
+On the other hand, a name that is semantically wrong or has become misleading must be corrected.
 
 ---
 
-## 19. UX DES SETTINGS
+## 18. PRODUCT DESIGN
 
-### 19.1 Hiérarchie — OBLIGATOIRE
+### 18.1 Opinionated product — DEFAULT
 
-L’interface doit rester claire, compacte, logique et progressive.
+Do not automatically expose internal mechanisms as settings.
 
-Ne pas créer une arborescence décorative.
+A user must control the useful decisions, not laboratory parameters.
 
-### 19.2 Préfixes d’arborescence — OPTIONNEL
+### 18.2 Perceptible feature — MANDATORY
 
-Les préfixes visuels de type `├──`, `└──`, `┌──`, `│`, `────` sont utilisés uniquement lorsque la relation parent/enfant serait autrement ambiguë.
+Any feature presented as part of the product must have a perceptible result: chart behaviour, signal, level, zone, table, label, alert or visible change of calculation.
 
-Ne pas les appliquer à une liste plate ou à un groupe déjà évident.
+Never keep a phantom feature of which the user can observe no effect.
 
-### 19.3 Cascade `active=` — OBLIGATOIRE SI APPLICABLE
+### 18.3 Automatic adaptation — DEFAULT
 
-Lorsqu’une relation parent/enfant existe, chaque enfant doit dépendre de son parent direct.
+When it can be done robustly, prefer an intelligent adaptation to the symbol, timeframe, volatility or context rather than unnecessary manual configuration.
 
-Exemple conceptuel :
+Automation must never hide a fragile assumption.
+
+---
+
+## 19. SETTINGS UX
+
+### 19.1 Hierarchy — MANDATORY
+
+The interface must remain clear, compact, logical and progressive.
+
+Do not create a decorative tree structure.
+
+### 19.2 Tree prefixes — OPTIONAL
+
+Visual prefixes such as `├──`, `└──`, `┌──`, `│`, `────` are used only when the parent/child relationship would otherwise be ambiguous.
+
+Do not apply them to a flat list or to an already obvious group.
+
+### 19.3 `active=` cascade — MANDATORY IF APPLICABLE
+
+When a parent/child relationship exists, each child must depend on its direct parent.
+
+Conceptual example:
 
 ```text
 Module
@@ -1013,419 +1019,419 @@ Module
     └── Option
 ```
 
-L’option ne doit pas rester active si `Feature` est désactivée, même si `Module` reste actif.
+The option must not remain active if `Feature` is disabled, even if `Module` remains active.
 
-Construire la condition cumulée correspondant à la vraie hiérarchie.
+Build the cumulative condition corresponding to the true hierarchy.
 
 ---
 
-## 20. TOOLTIPS DES SETTINGS
+## 20. SETTINGS TOOLTIPS
 
-Les tooltips des settings ont une fonction EXPLICATIVE.
+Settings tooltips have an EXPLANATORY function.
 
-Ils expliquent à l’utilisateur son choix.
+They explain to the user the choice they are making.
 
-### 20.1 Documentation — OBLIGATOIRE
+### 20.1 Documentation — MANDATORY
 
-Chaque décision utilisateur doit être documentée.
+Every user decision must be documented.
 
-Par défaut, chaque input autonome possède son tooltip.
+By default, each standalone input has its own tooltip.
 
-Exception structurée : lorsqu’un groupe `inline` représente une seule décision logique, un tooltip commun placé sur l’élément approprié, généralement le dernier, peut documenter le groupe entier.
+Structured exception: when an `inline` group represents a single logical decision, a common tooltip placed on the appropriate element, usually the last one, may document the entire group.
 
-Ne pas recopier exactement le même tooltip sur tous les inputs d’un groupe inline.
+Do not copy exactly the same tooltip onto all the inputs of an inline group.
 
-### 20.2 Input numérique
+### 20.2 Numeric input
 
-Préciser lorsque pertinent ce que contrôle la valeur, l’effet d’une augmentation, l’effet d’une diminution, la plage typique et le compromis éventuel.
+Specify, when relevant, what the value controls, the effect of an increase, the effect of a decrease, the typical range and any trade-off.
 
-Utiliser `minval`, `maxval` et `step` cohérents avec la variable lorsqu’ils ont un sens.
+Use `minval`, `maxval` and `step` consistent with the variable when they make sense.
 
-Tester les valeurs extrêmes.
+Test the extreme values.
 
 ### 20.3 Toggle
 
-Expliquer effet ON, effet OFF et raison du comportement par défaut lorsqu’elle est utile.
+Explain the ON effect, the OFF effect and the reason for the default behaviour when it is useful.
 
 ### 20.4 Source
 
-Expliquer ce que la source alimente, les choix courants et les compromis éventuels.
+Explain what the source feeds, the common choices and any trade-offs.
 
 ### 20.5 Choice / enum
 
-Expliquer la différence réelle entre les options.
+Explain the real difference between the options.
 
 ### 20.6 Timeframe
 
-Préciser le rôle du timeframe, le comportement de la valeur vide si applicable et la relation recommandée avec le timeframe du chart lorsque pertinent.
+Specify the role of the timeframe, the behaviour of the empty value if applicable and the recommended relationship with the chart timeframe when relevant.
 
 ### 20.7 Session
 
-Préciser ce que la session contrôle, le format attendu et la timezone lorsqu’elle est importante.
+Specify what the session controls, the expected format and the timezone when it matters.
 
 ### 20.8 Color
 
-Préciser l’élément visuel contrôlé.
+Specify the visual element controlled.
 
 ### 20.9 Symbol
 
-Préciser le rôle du symbole, le comportement vide et le format attendu lorsque nécessaire.
+Specify the role of the symbol, the empty behaviour and the expected format when necessary.
 
 ### 20.10 Time / Price
 
-Pour un temps : rôle de l’ancre et comportement avant/après.
+For a time: role of the anchor and before/after behaviour.
 
-Pour un prix : signification du niveau, interaction éventuelle avec le chart et conditions de visibilité.
-
----
-
-## 21. VALIDATION DES SETTINGS
-
-OBLIGATOIRE SI APPLICABLE.
-
-Lorsque plusieurs settings peuvent former une configuration impossible ou incohérente, effectuer une validation explicite.
-
-`runtime.error()` sur la première barre peut être pertinent pour des contraintes entre plusieurs inputs, une plage spéciale `0 = Auto`, une restriction de timeframe, une combinaison de toggles impossible ou une condition structurelle impossible à exprimer avec un simple `minval`.
-
-Ne pas utiliser `runtime.error()` pour une absence normale et dynamique de données de marché.
-
-Une erreur de configuration est différente d’un état runtime valide mais sans donnée.
+For a price: meaning of the level, any interaction with the chart and visibility conditions.
 
 ---
 
-## 22. TERMINOLOGIE USER-FACING
+## 21. SETTINGS VALIDATION
 
-OBLIGATOIRE.
+MANDATORY IF APPLICABLE.
 
-Tout texte utilisateur doit être compréhensible sans connaître Pine.
+When several settings can form an impossible or inconsistent configuration, perform an explicit validation.
 
-Ne pas exposer lorsqu’ils ne servent qu’à l’implémentation : `bool`, `int`, `float`, `array`, `enum`, `method`, `alertcondition`, `:=`, `nz(`, `.get(`.
+`runtime.error()` on the first bar can be relevant for constraints between several inputs, a special `0 = Auto` range, a timeframe restriction, an impossible combination of toggles or a structural condition impossible to express with a simple `minval`.
 
-Substitutions usuelles : `bool → toggle`, `int / float → number / slider`, `enum → choice`, `alertcondition → alert`, `inputs → settings`.
+Do not use `runtime.error()` for a normal and dynamic absence of market data.
 
-### 22.1 Acronymes
-
-Développer un acronyme technique lors de sa première utilisation lorsque cela aide réellement l’utilisateur.
-
-Exemples : `average true range (ATR)`, `relative strength index (RSI)`.
-
-Ne pas sur-expliquer un vocabulaire de trading standard naturel pour l’audience visée.
-
-Le benchmark du domaine calibre le niveau de technicité.
-
-### 22.2 Texte utile et actionnable
-
-Tout texte exposé doit avoir une fonction.
-
-Éviter les phrases génériques qui n’aident ni à comprendre ni à décider.
-
-Un texte doit, selon son rôle, informer, expliquer, contextualiser, indiquer une conséquence, aider à interpréter ou aider à agir.
-
-### 22.3 Versions et licences
-
-La version produit apparaît uniquement dans le header du code source sauf dérogation explicite du titulaire.
-
-Aucune URL de licence dans les tooltips, labels, tables, tutoriel ou autres textes utilisateur ordinaires.
-
-L’URL CC appartient uniquement à la notice de licence source open-source où elle est requise.
+A configuration error is different from a runtime state that is valid but has no data.
 
 ---
 
-## 23. TOOLTIPS DES ÉLÉMENTS VISUELS
+## 22. USER-FACING TERMINOLOGY
 
-OBLIGATOIRE SI APPLICABLE.
+MANDATORY.
 
-Cette catégorie est strictement distincte des tooltips de settings.
+Any user text must be understandable without knowing Pine.
 
-### 23.1 Différence fondamentale
+Do not expose, when they only serve the implementation: `bool`, `int`, `float`, `array`, `enum`, `method`, `alertcondition`, `:=`, `nz(`, `.get(`.
 
-Tooltip d’un setting : il EXPLIQUE un choix.
+Usual substitutions: `bool → toggle`, `int / float → number / slider`, `enum → choice`, `alertcondition → alert`, `inputs → settings`.
 
-Tooltip d’un élément visuel : il INFORME sur l’état, les données ou le contexte de ce que l’utilisateur observe déjà.
+### 22.1 Acronyms
 
-Ne jamais transformer le tooltip d’un label ou d’une table en documentation du setting correspondant.
+Spell out a technical acronym on its first use when this really helps the user.
+
+Examples: `average true range (ATR)`, `relative strength index (RSI)`.
+
+Do not over-explain standard trading vocabulary that is natural for the intended audience.
+
+The domain benchmark calibrates the level of technicality.
+
+### 22.2 Useful and actionable text
+
+Any exposed text must have a function.
+
+Avoid generic sentences that help neither to understand nor to decide.
+
+A text must, according to its role, inform, explain, contextualize, indicate a consequence, help to interpret or help to act.
+
+### 22.3 Versions and licences
+
+The product version appears only in the source code header, except by explicit derogation from the holder.
+
+No licence URL in tooltips, labels, tables, the tutorial or other ordinary user texts.
+
+The CC URL belongs only in the open-source source licence notice where it is required.
+
+---
+
+## 23. VISUAL ELEMENT TOOLTIPS
+
+MANDATORY IF APPLICABLE.
+
+This category is strictly distinct from settings tooltips.
+
+### 23.1 Fundamental difference
+
+Tooltip of a setting: it EXPLAINS a choice.
+
+Tooltip of a visual element: it INFORMS about the state, the data or the context of what the user is already observing.
+
+Never turn the tooltip of a label or a table into documentation of the corresponding setting.
 
 ### 23.2 Labels
 
-Lorsqu’un label porte une information et que Pine permet un tooltip, utiliser le tooltip pour apporter un niveau d’information supplémentaire.
+When a label carries information and Pine allows a tooltip, use the tooltip to provide an additional level of information.
 
-Il peut notamment indiquer : valeur exacte, direction, type de signal, source, timeframe, qualité, score, distance, contexte, session, confluence, état et métadonnées utiles.
+It can in particular indicate: exact value, direction, signal type, source, timeframe, quality, score, distance, context, session, confluence, state and useful metadata.
 
-Le tooltip ne doit pas simplement répéter le texte visible du label.
+The tooltip must not simply repeat the visible text of the label.
 
-### 23.3 Tables et dashboards
+### 23.3 Tables and dashboards
 
-Lorsqu’une table existe, conserver les cellules visibles compactes.
+When a table exists, keep the visible cells compact.
 
-Utiliser les tooltips disponibles comme deuxième niveau d’information.
+Use the available tooltips as a second level of information.
 
-Une cellule affichant un état synthétique peut détailler au survol : composition, valeurs sous-jacentes, contexte, provenance, interprétation quantitative et état complémentaire.
+A cell displaying a summary state can detail on hover: composition, underlying values, context, provenance, quantitative interpretation and complementary state.
 
-Le tooltip visuel informe.
+The visual tooltip informs.
 
-Il ne devient pas un tutoriel.
+It does not become a tutorial.
 
-### 23.4 Niveau d’obligation
+### 23.4 Level of obligation
 
-Par défaut, un élément visuel informatif doit avoir un tooltip lorsque Pine le permet techniquement, qu’une information supplémentaire utile existe et que le tooltip n’est pas purement redondant.
+By default, an informative visual element must have a tooltip when Pine technically allows it, useful additional information exists and the tooltip is not purely redundant.
 
-Le titulaire peut demander pour un script donné que les tooltips deviennent obligatoires sur chaque label ou élément informatif techniquement compatible.
+The holder may request, for a given script, that tooltips become mandatory on every technically compatible label or informative element.
 
-Dans ce cas, cette exigence devient stricte.
+In that case, this requirement becomes strict.
 
 ---
 
-## 24. COMMENTAIRES ET DOCUMENTATION INTERNE
+## 24. COMMENTS AND INTERNAL DOCUMENTATION
 
 ### 24.1 Annotations
 
-Documenter les structures et fonctions non triviales avec les annotations adaptées : `@type`, `@field`, `@function`, `@param`, `@returns`.
+Document non-trivial structures and functions with the appropriate annotations: `@type`, `@field`, `@function`, `@param`, `@returns`.
 
-### 24.2 Commenter le pourquoi
+### 24.2 Comment on the why
 
-Ne pas commenter l’évidence.
+Do not comment on the obvious.
 
-Documenter plutôt : raison d’un hoisting, choix no-repaint, contrainte MTF, compromis performance, choix d’un qualifier, raison d’un `barstate` ou raison d’un comportement non évident.
+Document instead: the reason for a hoisting, a no-repaint choice, an MTF constraint, a performance trade-off, the choice of a qualifier, the reason for a `barstate` or the reason for a non-obvious behaviour.
 
-### 24.3 Aucun mur de commentaires — OBLIGATOIRE
+### 24.3 No wall of comments — MANDATORY
 
-Ne jamais produire un énorme bloc de commentaires pour une seule section.
+Never produce a huge block of comments for a single section.
 
-Cela ne signifie pas supprimer ou simplifier l’information nécessaire.
+This does not mean removing or simplifying the necessary information.
 
-Lorsque la logique exige beaucoup d’explications : structurer, découper, hiérarchiser, reformuler, utiliser des étapes ou un mini schéma logique lorsque pertinent.
+When the logic requires a lot of explanation: structure, split, arrange hierarchically, rephrase, use steps or a mini logical diagram when relevant.
 
-Conserver l’intégralité du contenu utile tout en évitant le mur de texte.
+Keep all the useful content while avoiding the wall of text.
 
-### 24.4 Commentaires synchronisés — OBLIGATOIRE
+### 24.4 Synchronized comments — MANDATORY
 
-Après une modification, vérifier systématiquement : tailles d’arrays, nombre de facteurs, nombres de niveaux, noms de sections, noms de settings, cross-references, descriptions de comportement et toute valeur ou quantité explicitement documentée.
+After a modification, systematically check: array sizes, number of factors, numbers of levels, section names, setting names, cross-references, behaviour descriptions and any explicitly documented value or quantity.
 
-Aucun commentaire historique faux ne doit survivre.
+No false historical comment must survive.
 
-### 24.5 Ce qui ne vit pas dans le source — OBLIGATOIRE
+### 24.5 What does not live in the source — MANDATORY
 
-Les commentaires expliquent le fonctionnement, les choix techniques non évidents et les contraintes utiles (§24.2). Ne vivent **pas** dans le source, et sont déplacés vers les artefacts de suivi du produit (`DECISIONS.md`, artefact de suivi désigné par le `CLAUDE.md` local, dossiers de maintenance) :
+Comments explain how the code works, the non-obvious technical choices and the useful constraints (§24.2). The following do **not** live in the source, and are moved to the product's tracking artefacts (`DECISIONS.md`, the tracking artefact designated by the local `CLAUDE.md`, maintenance folders):
 
-- l’historique des lots et des versions de travail (« since lot 15c », « migrated from v3.5 », phases) ;
-- les références à des conversations ou à des sessions de travail ;
-- les instructions adressées à l’assistant ou à l’utilisateur du workspace (« ne jamais changer ce seuil », « AUDIT: », « pending review ») ;
-- les récits de corrections et de revues.
+- the history of batches and working versions ("since lot 15c", "migrated from v3.5", phases);
+- references to conversations or to working sessions;
+- instructions addressed to the assistant or to the workspace user ("never change this threshold", "AUDIT:", "pending review");
+- narratives of fixes and reviews.
 
-Sont préservés : les commentaires techniques nécessaires (invariants numériques, hoisting, lookahead, budgets de ressources), au plus l’identifiant d’une décision lorsqu’il explique un invariant, et les mentions légales légitimes (header, notices de composants tiers). Le guard signale les commentaires de journal de travail (`no-worklog-comments`, avertissement jamais bloquant) ; le nettoyage d’un produit existant est une tâche distincte, décidée par le titulaire après finalisation du script, et ne doit pas changer son comportement.
+The following are preserved: the necessary technical comments (numerical invariants, hoisting, lookahead, resource budgets), at most the identifier of a decision when it explains an invariant, and the legitimate legal notices (header, third-party component notices). The guard flags work-log comments (`no-worklog-comments`, a warning that is never blocking); the cleanup of an existing product is a separate task, decided by the holder after the script is finalized, and must not change its behaviour.
 
 ---
 
-## 25. ROBUSTESSE NUMÉRIQUE ET EDGE CASES
+## 25. NUMERICAL ROBUSTNESS AND EDGE CASES
 
-### 25.1 Division — OBLIGATOIRE SI APPLICABLE
+### 25.1 Division — MANDATORY IF APPLICABLE
 
-Ne jamais appliquer un garde mathématique de manière aveugle.
+Never apply a mathematical guard blindly.
 
-Pour chaque dénominateur réellement sensible :
+For each truly sensitive denominator:
 
-1. déterminer son domaine mathématique ;
-2. déterminer si zéro est valide, invalide ou possible ;
-3. déterminer si le signe est important ;
-4. déterminer ce que doit signifier le résultat lorsque la division est impossible ;
-5. appliquer le garde approprié.
+1. determine its mathematical domain;
+2. determine whether zero is valid, invalid or possible;
+3. determine whether the sign matters;
+4. determine what the result must mean when the division is impossible;
+5. apply the appropriate guard.
 
-Solutions possibles selon le contexte : epsilon, test explicite, préservation du signe, `na`, fallback métier ou aucune protection supplémentaire si mathématiquement inutile.
+Possible solutions depending on the context: epsilon, explicit test, sign preservation, `na`, business fallback or no additional protection if mathematically unnecessary.
 
-Ne jamais appliquer mécaniquement `math.max(x, 1e-10)` à un dénominateur pouvant être négatif si cela détruit son signe.
+Never mechanically apply `math.max(x, 1e-10)` to a denominator that can be negative if this destroys its sign.
 
-`nz()` seul ne constitue pas une protection contre zéro.
+`nz()` alone does not constitute protection against zero.
 
 ### 25.2 Scores
 
-Un score doit respecter son domaine réel.
+A score must respect its real domain.
 
-Exemples : `[0, 1]`, `[-1, +1]`, `0–100` ou autre domaine défini.
+Examples: `[0, 1]`, `[-1, +1]`, `0–100` or another defined domain.
 
-Ne jamais clamp automatiquement tous les scores dans `[0,1]`.
+Never automatically clamp all scores into `[0,1]`.
 
-Clamper uniquement lorsqu’un domaine défini l’exige.
+Clamp only when a defined domain requires it.
 
-### 25.3 Historique
+### 25.3 History
 
-Avant un accès historique dont les premières barres peuvent être problématiques, vérifier la disponibilité de l’historique nécessaire.
+Before a historical access for which the first bars can be problematic, check the availability of the necessary history.
 
 ### 25.4 Drawing coordinates
 
-Respecter les limites Pine actuelles pour les coordonnées et historiques de drawing objects.
+Respect the current Pine limits for the coordinates and histories of drawing objects.
 
-Ne pas copier une constante historique de sécurité sans vérifier qu’elle correspond encore aux limites officielles actuelles.
+Do not copy a historical safety constant without checking that it still matches the current official limits.
 
-### 25.5 Format des prix et valeurs — OBLIGATOIRE SI APPLICABLE
+### 25.5 Format of prices and values — MANDATORY IF APPLICABLE
 
-Ne jamais imposer arbitrairement deux décimales.
+Never arbitrarily impose two decimal places.
 
-Le format d’une valeur doit être choisi selon sa nature réelle.
+The format of a value must be chosen according to its real nature.
 
-Pour un prix, respecter lorsqu’ils sont pertinents : précision de l’instrument, tick minimal, format de cotation, lisibilité utilisateur et capacités actuelles de Pine.
+For a price, respect, when they are relevant: the precision of the instrument, the minimum tick, the quotation format, user readability and the current capabilities of Pine.
 
-Un instrument coté avec une précision différente de deux décimales ne doit pas être artificiellement arrondi à deux décimales.
+An instrument quoted with a precision different from two decimal places must not be artificially rounded to two decimal places.
 
-Les pourcentages, ratios, scores, volumes, temps et autres valeurs utilisent chacun un format correspondant à leur sémantique.
+Percentages, ratios, scores, volumes, times and other values each use a format corresponding to their semantics.
 
-Ne pas appliquer un format de prix à une valeur qui n’est pas un prix.
+Do not apply a price format to a value that is not a price.
 
 ### 25.6 Debugging
 
-Pour du debug temporaire, préférer les mécanismes de logging Pine actuels lorsqu’ils sont adaptés plutôt que polluer le chart avec des labels ou backgrounds temporaires.
+For temporary debugging, prefer the current Pine logging mechanisms when they are suitable rather than polluting the chart with temporary labels or backgrounds.
 
-Avant publication, retirer les logs de debug sauf justification explicite d’un log de production réellement utile.
-
----
-
-## 26. ÉVÉNEMENTS, ÉTATS ET `ta.valuewhen()`
-
-OBLIGATOIRE SI APPLICABLE.
-
-Lorsqu’une fonction telle que `ta.valuewhen()` dépend d’une condition, vérifier que cette condition représente exactement l’événement recherché.
-
-Distinguer strictement un ÉVÉNEMENT ponctuel et un ÉTAT pouvant rester vrai pendant plusieurs barres.
-
-Exemple conceptuel : « un signal qui devient bullish sur cette barre » n’est pas équivalent à « le marché est actuellement bullish ».
-
-Une condition vraie pendant plusieurs barres peut produire une sémantique très différente lorsqu’elle est utilisée comme occurrence dans `ta.valuewhen()`.
-
-Avant d’utiliser une condition événementielle :
-
-1. définir ce qui constitue précisément une occurrence ;
-2. déterminer si le signal doit être edge-triggered ou state-based ;
-3. vérifier la fréquence réelle des occurrences ;
-4. vérifier les conséquences historiques ;
-5. vérifier la documentation actuelle lorsque la sémantique de la fonction est incertaine.
-
-Ne jamais utiliser une condition persistante comme événement par simple commodité.
+Before publication, remove debug logs unless there is an explicit justification for a genuinely useful production log.
 
 ---
 
-## 27. MTF, HISTORIQUE, REALTIME ET REPAINT
+## 26. EVENTS, STATES AND `ta.valuewhen()`
 
-### 27.1 Principe général
+MANDATORY IF APPLICABLE.
 
-Un script qui compile peut être faux en realtime.
+When a function such as `ta.valuewhen()` depends on a condition, check that this condition represents exactly the event sought.
 
-Toujours raisonner séparément sur historical, realtime, bar non confirmée, bar confirmée, requests MTF et Replay.
+Strictly distinguish between a one-off EVENT and a STATE that can remain true for several bars.
 
-### 27.2 Anti-repaint — OBLIGATOIRE
+Conceptual example: "a signal that becomes bullish on this bar" is not equivalent to "the market is currently bullish".
 
-Par défaut, les signaux destinés à être interprétés comme confirmés doivent être non-repaint lorsqu’il est raisonnablement possible de le garantir.
+A condition that is true for several bars can produce very different semantics when it is used as an occurrence in `ta.valuewhen()`.
 
-Un comportement provisoire peut être autorisé lorsqu’il fait réellement partie du produit.
+Before using an event condition:
 
-Dans ce cas, il est volontaire, techniquement compris, documenté, et l’utilisateur ne doit pas le confondre avec un signal confirmé.
+1. define precisely what constitutes an occurrence;
+2. determine whether the signal must be edge-triggered or state-based;
+3. check the actual frequency of the occurrences;
+4. check the historical consequences;
+5. check the current documentation when the semantics of the function are uncertain.
 
-### 27.3 `lookahead` et future leak — OBLIGATOIRE SI APPLICABLE
+Never use a persistent condition as an event out of mere convenience.
 
-Ne jamais utiliser une request avec lookahead pour injecter dans l’historique une valeur qui n’était pas disponible au moment de la barre concernée.
+---
 
-`barmerge.lookahead_on` n’est pas interdit en soi.
+## 27. MTF, HISTORY, REALTIME AND REPAINT
 
-Il peut notamment être approprié dans une request HTF confirmée lorsque l’expression demandée est correctement décalée dans l’historique afin de ne récupérer que des données déjà confirmées, ou dans les autres cas explicitement documentés comme sûrs par TradingView.
+### 27.1 General principle
 
-Pour une request HTF confirmée, vérifier en priorité le pattern officiel actuel fondé sur :
+A script that compiles can be wrong in realtime.
 
-- une expression historiquement décalée, par exemple `[1]` lorsque cette sémantique correspond au besoin ;
-- `lookahead = barmerge.lookahead_on` ;
-- une compréhension explicite du délai introduit ;
-- une cohérence historical/realtime.
+Always reason separately about historical, realtime, unconfirmed bar, confirmed bar, MTF requests and Replay.
 
-Ne jamais utiliser `barmerge.lookahead_on` sur une expression HTF non décalée lorsque cela provoque un lookahead bias historique.
+### 27.2 Anti-repaint — MANDATORY
 
-Toute exception ou utilisation complexe doit être techniquement nécessaire, vérifiée contre la documentation officielle actuelle, comprise en historical, comprise en realtime, comprise après reload, compatible avec la promesse du script et documentée lorsqu’elle affecte l’interprétation utilisateur.
+By default, signals intended to be interpreted as confirmed must be non-repaint when it is reasonably possible to guarantee it.
 
-### 27.4 Détection d’une nouvelle barre HTF
+A provisional behaviour may be allowed when it is genuinely part of the product.
 
-Ne jamais utiliser `bar_index % barsPerHTF` comme détecteur générique de barre HTF.
+In that case, it is intentional, technically understood, documented, and the user must not confuse it with a confirmed signal.
 
-Utiliser un mécanisme temporel adapté à Pine et vérifié dans la documentation actuelle.
+### 27.3 `lookahead` and future leak — MANDATORY IF APPLICABLE
+
+Never use a request with lookahead to inject into history a value that was not available at the time of the bar concerned.
+
+`barmerge.lookahead_on` is not forbidden in itself.
+
+It can in particular be appropriate in a confirmed HTF request when the requested expression is correctly offset in history so as to retrieve only already-confirmed data, or in the other cases explicitly documented as safe by TradingView.
+
+For a confirmed HTF request, check as a priority the current official pattern based on:
+
+- a historically offset expression, for example `[1]` when this semantics matches the need;
+- `lookahead = barmerge.lookahead_on`;
+- an explicit understanding of the delay introduced;
+- historical/realtime consistency.
+
+Never use `barmerge.lookahead_on` on a non-offset HTF expression when this causes a historical lookahead bias.
+
+Any exception or complex use must be technically necessary, verified against the current official documentation, understood in historical, understood in realtime, understood after reload, compatible with the script's promise and documented when it affects the user's interpretation.
+
+### 27.4 Detecting a new HTF bar
+
+Never use `bar_index % barsPerHTF` as a generic HTF bar detector.
+
+Use a time-based mechanism suited to Pine and verified in the current documentation.
 
 ### 27.5 `varip`
 
-Utiliser `varip` uniquement lorsque l’état doit réellement persister tick par tick à l’intérieur de la barre realtime.
+Use `varip` only when the state must really persist tick by tick inside the realtime bar.
 
-Ne pas l’utiliser par réflexe.
+Do not use it by reflex.
 
-### 27.6 Scaling MTF
+### 27.6 MTF scaling
 
-Lorsqu’une période, longueur ATR ou autre paramètre doit être adapté entre timeframes, vérifier mathématiquement la nécessité du scaling.
+When a period, ATR length or other parameter must be adapted between timeframes, verify mathematically the need for scaling.
 
-Ne pas multiplier automatiquement une période par un ratio de timeframe lorsque la définition de l’indicateur ne le justifie pas.
+Do not automatically multiply a period by a timeframe ratio when the definition of the indicator does not justify it.
 
 ---
 
-## 28. PERFORMANCE ET RESSOURCES
+## 28. PERFORMANCE AND RESOURCES
 
-La correction prime sur l’optimisation.
+Correctness takes precedence over optimization.
 
-Une optimisation qui change la sémantique du signal est une régression.
+An optimization that changes the semantics of the signal is a regression.
 
-### 28.1 Limites TradingView
+### 28.1 TradingView limits
 
-Avant de dépendre d’un plafond exact, vérifier la documentation TradingView actuelle et dimensionner le script en conséquence.
+Before depending on an exact cap, check the current TradingView documentation and size the script accordingly.
 
-Ne pas figer dans l’architecture une limite supposée historique sans vérification.
+Do not freeze into the architecture a supposed historical limit without verification.
 
 ### 28.2 Drawing objects
 
-OBLIGATOIRE SI APPLICABLE.
+MANDATORY IF APPLICABLE.
 
-Pour lines, labels et boxes : dimensionner les `max_*_count` selon le besoin réel, ne pas gonfler artificiellement les plafonds, réutiliser un objet existant avec ses setters lorsqu’il représente le même élément logique et éviter création/destruction inutiles à chaque tick.
+For lines, labels and boxes: size the `max_*_count` according to the real need, do not artificially inflate the caps, reuse an existing object with its setters when it represents the same logical element and avoid unnecessary creation/destruction on every tick.
 
-Lorsqu’un objet stocké dans une collection doit disparaître : supprimer l’objet puis retirer sa référence de la collection.
+When an object stored in a collection must disappear: delete the object, then remove its reference from the collection.
 
 ### 28.3 `barstate.islast`
 
-Utiliser `barstate.islast` pour une opération coûteuse uniquement lorsque l’historique de cette opération n’est pas nécessaire.
+Use `barstate.islast` for a costly operation only when the history of this operation is not necessary.
 
-Exemples potentiels : repositionnement d’un label de bord droit, mise à jour d’un dashboard représentant uniquement l’état courant ou réorganisation purement visuelle de la dernière barre.
+Potential examples: repositioning a right-edge label, updating a dashboard representing only the current state or a purely visual reorganization of the last bar.
 
-Ne jamais déplacer sous `barstate.islast` un calcul nécessaire historiquement uniquement pour réduire le coût.
+Never move under `barstate.islast` a historically necessary calculation solely to reduce the cost.
 
-### 28.4 Complexité
+### 28.4 Complexity
 
-Une complexité O(n²) peut être acceptable sur une petite collection strictement bornée.
+An O(n²) complexity can be acceptable on a small, strictly bounded collection.
 
-Dans ce cas : borne claire, petite taille et early exit lorsque possible.
+In that case: clear bound, small size and early exit when possible.
 
-Sur une collection importante ou croissante, rechercher une architecture plus adaptée.
+On a large or growing collection, look for a more suitable architecture.
 
 ### 28.5 `max_bars_back`
 
-Ne pas augmenter massivement `max_bars_back` par réflexe.
+Do not massively increase `max_bars_back` by reflex.
 
-Utiliser les mécanismes Pine actuels les plus ciblés.
-
----
-
-## 29. ÉLÉMENTS VISUELS — APPLICABILITÉ
-
-Aucun type de rendu n’est obligatoire pour tous les scripts.
-
-Ne jamais supposer qu’un indicateur doit contenir table, dashboard, box, label, fill, zone, signal buy/sell, background ou panneau secondaire.
-
-Chaque élément doit exister parce qu’il sert réellement l’objectif fonctionnel.
-
-Lorsqu’un type d’élément n’existe pas dans le script, toutes les conventions propres à ce type sont N/A.
+Use the most targeted current Pine mechanisms.
 
 ---
 
-## 30. PALETTE ET IDENTITÉ VISUELLE
+## 29. VISUAL ELEMENTS — APPLICABILITY
 
-### 30.1 Dark + light — OBLIGATOIRE SI ÉLÉMENTS VISUELS
+No type of rendering is mandatory for all scripts.
 
-La lisibilité doit être testée dans les thèmes TradingView sombre et clair.
+Never assume that an indicator must contain a table, dashboard, box, label, fill, zone, buy/sell signal, background or secondary pane.
 
-Éviter sur les éléments majeurs `#000000` et `#FFFFFF` lorsque ces extrêmes détériorent la compatibilité multi-thème.
+Each element must exist because it genuinely serves the functional objective.
 
-### 30.2 Couleurs professionnelles — PAR DÉFAUT
+When a type of element does not exist in the script, all the conventions specific to that type are N/A.
 
-Ne pas utiliser par défaut les primaires built-in brutes pour les éléments principaux lorsqu’une palette professionnelle plus raffinée est appropriée.
+---
 
-Bases possibles :
+## 30. PALETTE AND VISUAL IDENTITY
+
+### 30.1 Dark + light — MANDATORY IF VISUAL ELEMENTS EXIST
+
+Readability must be tested in the TradingView dark and light themes.
+
+On major elements, avoid `#000000` and `#FFFFFF` when these extremes degrade multi-theme compatibility.
+
+### 30.2 Professional colours — DEFAULT
+
+Do not use the raw built-in primaries by default for the main elements when a more refined professional palette is appropriate.
+
+Possible bases:
 
 ```text
 Bullish   #26A69A
@@ -1440,7 +1446,7 @@ Secondary #AB47BC
 Secondary #FFA726
 ```
 
-Palette TradingView-like possible :
+Possible TradingView-like palette:
 
 ```text
 Bullish #089981
@@ -1448,172 +1454,172 @@ Bearish #F23645
 Neutral #787B86
 ```
 
-Ces palettes sont des points de départ, pas une obligation absolue.
+These palettes are starting points, not an absolute obligation.
 
-Le résultat visuel réel et le benchmark du domaine priment.
+The actual visual result and the domain benchmark take precedence.
 
-### 30.3 Hiérarchie visuelle — OBLIGATOIRE SI APPLICABLE
+### 30.3 Visual hierarchy — MANDATORY IF APPLICABLE
 
-La priorité cognitive détermine saturation, contraste, épaisseur, opacité, taille et position.
+Cognitive priority determines saturation, contrast, thickness, opacity, size and position.
 
-Tendance générale : Critique → plus perceptible ; Contexte → intermédiaire ; Support → plus discret ; Secondaire → neutre.
+General tendency: Critical → more perceptible; Context → intermediate; Support → more discreet; Secondary → neutral.
 
-Quand tout est dominant, rien ne l’est.
+When everything is dominant, nothing is.
 
-### 30.4 Transparence — PAR DÉFAUT
+### 30.4 Transparency — DEFAULT
 
-Plages de départ usuelles : fills/zones 60–95 ; backgrounds 75–100 ; signals/key lines 0–20 ; labels/text 0–10.
+Usual starting ranges: fills/zones 60–95; backgrounds 75–100; signals/key lines 0–20; labels/text 0–10.
 
-Ces plages sont indicatives.
+These ranges are indicative.
 
-Le résultat visuel réel prime.
+The actual visual result takes precedence.
 
-### 30.5 Couleurs configurables
+### 30.5 Configurable colours
 
-Ne pas imposer un `input.color()` pour chaque couleur uniquement par convention.
+Do not impose an `input.color()` for each colour solely by convention.
 
-Rendre configurables les couleurs dont la personnalisation apporte une vraie valeur utilisateur.
+Make configurable the colours whose customization brings real user value.
 
-Les éléments secondaires peuvent être dérivés d’une palette centrale cohérente.
+Secondary elements may be derived from a coherent central palette.
 
-Pour un script complexe, des presets peuvent être meilleurs qu’une multitude de sélecteurs individuels.
+For a complex script, presets can be better than a multitude of individual selectors.
 
-Le titulaire peut explicitement demander une personnalisation totale pour un script donné.
+The holder may explicitly request full customization for a given script.
 
-### 30.6 Cohérence inter-script
+### 30.6 Cross-script consistency
 
-Conserver une logique sémantique cohérente entre les scripts du titulaire.
+Keep a consistent semantic logic across the holder's scripts.
 
-Un même sens bullish, bearish ou neutral doit rester immédiatement reconnaissable lorsque plusieurs indicateurs sont combinés.
+A given bullish, bearish or neutral meaning must remain immediately recognizable when several indicators are combined.
 
 ---
 
 ## 31. SEMANTIC VERSIONING
 
-RELEASE UNIQUEMENT.
+RELEASE ONLY.
 
-La version produit suit `MAJOR.MINOR.PATCH`, par exemple `3.1.2`.
+The product version follows `MAJOR.MINOR.PATCH`, for example `3.1.2`.
 
-Ne pas ajouter `V` dans la valeur SemVer canonique.
+Do not add `V` to the canonical SemVer value.
 
-Dans le code source : `// Version: 3.1.2`.
+In the source code: `// Version: 3.1.2`.
 
-La version produit n’apparaît ailleurs que sur dérogation explicite du titulaire.
+The product version appears elsewhere only by explicit derogation from the holder.
 
-### 31.1 Principe fondamental
+### 31.1 Fundamental principle
 
-La catégorie SemVer se décide d’après l’impact réel pour l’utilisateur, la compatibilité, les sorties modifiées, les réglages affectés et la nécessité éventuelle d’une migration.
+The SemVer category is decided according to the real impact for the user, compatibility, the modified outputs, the affected settings and the possible necessity of a migration.
 
-Ne jamais décider PATCH, MINOR ou MAJOR uniquement d’après la catégorie technique du changement.
+Never decide PATCH, MINOR or MAJOR solely on the basis of the technical category of the change.
 
 ### 31.2 MAJOR
 
-Utiliser notamment lorsque l’impact est incompatible avec l’existant : breaking change, suppression de fonctionnalité, renommage incompatible de settings visibles, changement important du comportement par défaut, changement majeur des sorties ou signaux, restructuration majeure UX, changement de philosophie ou migration utilisateur requise.
+Use in particular when the impact is incompatible with what already exists: breaking change, removal of a feature, incompatible renaming of visible settings, significant change to the default behaviour, major change to the outputs or signals, major UX restructuring, change of philosophy or required user migration.
 
 ### 31.3 MINOR
 
-Utiliser lorsque l’évolution ajoute ou améliore substantiellement le produit sans casser l’usage existant : nouvelle fonctionnalité compatible, nouveau mode, nouvelle alerte, extension substantielle ou amélioration notable de performance/stabilité.
+Use when the change adds to or substantially improves the product without breaking existing usage: new compatible feature, new mode, new alert, substantial extension or notable improvement in performance/stability.
 
 ### 31.4 PATCH
 
-Utiliser lorsqu’une correction est compatible avec l’existant et possède un impact limité : bug fix compatible, correction de tooltip, correction de label, correction d’alerte, optimisation silencieuse ou refactoring interne sans changement utilisateur significatif.
+Use when a fix is compatible with what already exists and has a limited impact: compatible bug fix, tooltip fix, label fix, alert fix, silent optimization or internal refactoring without a significant change for the user.
 
-### 31.5 Bugfix pouvant changer les sorties
+### 31.5 Bugfix that can change the outputs
 
-Un correctif technique n’est pas automatiquement PATCH.
+A technical fix is not automatically PATCH.
 
-Une correction d’un repaint non intentionnel peut modifier fortement les signaux historiques.
+A fix of an unintentional repaint can strongly modify the historical signals.
 
-Dans ce cas, classifier la version selon l’impact réel : PATCH, MINOR ou MAJOR.
+In that case, classify the version according to the real impact: PATCH, MINOR or MAJOR.
 
-La nature « bugfix » ne détermine jamais seule le niveau SemVer.
+The "bugfix" nature alone never determines the SemVer level.
 
-### 31.6 Bêta
+### 31.6 Beta
 
-Les versions bêta sont destinées aux tests privés lorsque ce processus est utilisé.
+Beta versions are intended for private testing when this process is used.
 
-Ne jamais présenter une bêta comme une release stable.
+Never present a beta as a stable release.
 
-### 31.7 Payant et breaking change
+### 31.7 Paid script and breaking change
 
-Pour une MAJOR breaking d’un script payant : préparer une communication proactive, expliquer la migration et préciser ce qui change pour les utilisateurs existants.
+For a breaking MAJOR of a paid script: prepare proactive communication, explain the migration and specify what changes for existing users.
 
 ---
 
 ## 32. CHANGELOG
 
-RELEASE UNIQUEMENT.
+RELEASE ONLY.
 
-Utiliser le format TradingView/PineCoders retenu :
+Use the chosen TradingView/PineCoders format:
 
 ```text
 █ [b]SECTION TITLE[/b]
  • Item text
 ```
 
-Utiliser des séparateurs lourds entre sections majeures.
+Use heavy separators between major sections.
 
-Structure standard lorsqu’applicable : NEW, IMPROVED, REMOVED, BREAKING CHANGES, THANKS.
+Standard structure when applicable: NEW, IMPROVED, REMOVED, BREAKING CHANGES, THANKS.
 
-Ajouter une section spécifique uniquement lorsqu’elle apporte une valeur réelle : ALERTS, MIGRATION NOTES, FIXED, etc.
+Add a specific section only when it brings real value: ALERTS, MIGRATION NOTES, FIXED, etc.
 
-### 32.1 Règles communes
+### 32.1 Common rules
 
-- pas d’emoji ;
-- pas de headings Markdown ;
-- BBCode parcimonieux ;
-- aucune URL promotionnelle ;
-- claims factuels vérifiés contre le code ;
-- pas de nombre approximatif présenté comme exact ;
-- changelog complet conservé avec le produit (`release/CHANGELOG.md`) et exporté, le cas échéant, vers la destination GitHub configurée ;
-- changelog condensé pour TradingView ;
-- lignes raisonnablement courtes pour préserver la lisibilité.
+- no emoji;
+- no Markdown headings;
+- BBCode used sparingly;
+- no promotional URL;
+- factual claims verified against the code;
+- no approximate number presented as exact;
+- complete changelog kept with the product (`release/CHANGELOG.md`) and exported, where applicable, to the configured GitHub destination;
+- condensed changelog for TradingView;
+- reasonably short lines to preserve readability.
 
-Une formulation standard de crédit PineCoders peut être utilisée lorsqu’elle est pertinente :
+A standard PineCoders credit wording may be used when it is relevant:
 
 ```text
 Thanks to the PineCoders community for the formatting conventions and coding standards that guided this release.
 ```
 
-### 32.2 Source fermé (COMMERCIAL, PRIVATE, FREE à source fermé)
+### 32.2 Closed source (COMMERCIAL, PRIVATE, FREE with closed source)
 
-Le ton met davantage l’accent sur maîtrise, stabilité, compatibilité et conséquences utilisateur.
+The tone puts more emphasis on control, stability, compatibility and consequences for users.
 
-Lorsque vrai et utile, préciser : `No breaking change for existing users.`
+When true and useful, state: `No breaking change for existing users.`
 
-Toute fonctionnalité expérimentale doit être explicitement étiquetée `BETA`.
+Any experimental feature must be explicitly labelled `BETA`.
 
-Ne pas présenter comme stable une fonctionnalité encore réellement expérimentale.
+Do not present as stable a feature that is still genuinely experimental.
 
-### 32.3 Profil FREE à source public
+### 32.3 FREE profile with public source
 
-La section THANKS peut être davantage développée pour reconnaître contributeurs, auteurs open-source, techniques utilisées et inspirations vérifiables.
+The THANKS section may be developed further to acknowledge contributors, open-source authors, techniques used and verifiable inspirations.
 
-Le ton peut être légèrement plus collaboratif.
+The tone may be slightly more collaborative.
 
 ---
 
-## 33. TUTORIEL UTILISATEUR
+## 33. USER TUTORIAL
 
-OBLIGATOIRE À LA RELEASE LORSQU’UN TUTORIEL EST REQUIS ; PRÉPARABLE À TOUT MOMENT.
+MANDATORY AT RELEASE WHEN A TUTORIAL IS REQUIRED; CAN BE PREPARED AT ANY TIME.
 
-Le tutoriel et la documentation du produit sont accessibles comme action à part entière (`pine-docs`, menu « Documentation / tutoriel »), sans obligation de déclencher une préparation complète de publication. Un tutoriel préparé hors release est finalisé et revu (§33.4) à la release.
+The tutorial and the product documentation are accessible as an action in their own right (`pine-docs`, menu "Documentation / tutorial"), with no obligation to trigger a complete publication preparation. A tutorial prepared outside a release is finalized and reviewed (§33.4) at the release.
 
-### 33.1 Règles communes
+### 33.1 Common rules
 
-Le tutoriel est en anglais, explique le produit et son utilisation, documente les settings, les éléments visuels et les alertes lorsqu’elles existent, décrit les limites importantes et ne révèle pas inutilement l’implémentation.
+The tutorial is in English, explains the product and its use, documents the settings, the visual elements and the alerts when they exist, describes the important limits and does not needlessly reveal the implementation.
 
-Un même modèle de qualité s’applique aux profils FREE, PRIVATE et COMMERCIAL : seules diffèrent les informations réellement liées au produit, à sa distribution et à ses conditions d’accès (licence, mode de publication, accès, support). Les conventions visuelles ci-dessous (§33.2, §33.3) sont des directions par défaut liées au positionnement du produit, jamais des niveaux de qualité.
+The same quality model applies to the FREE, PRIVATE and COMMERCIAL profiles: only the information actually related to the product, to its distribution and to its access conditions (licence, publication mode, access, support) differs. The visual conventions below (§33.2, §33.3) are default directions tied to the product's positioning, never quality levels.
 
-Il ne contient aucun numéro de version produit sauf dérogation explicite du titulaire.
+It contains no product version number, except by explicit derogation from the holder.
 
-Aucune URL de licence dans le tutoriel.
+No licence URL in the tutorial.
 
-### 33.2 Convention « premium » (par défaut pour COMMERCIAL et PRIVATE)
+### 33.2 "Premium" convention (default for COMMERCIAL and PRIVATE)
 
-Direction : premium, dark neutral, sobre, professionnelle, compacte, peu de chrome décoratif.
+Direction: premium, dark neutral, sober, professional, compact, little decorative chrome.
 
-Palette de référence :
+Reference palette:
 
 ```text
 Background       #1E1E1E
@@ -1628,21 +1634,21 @@ Alternating row  #2D2D2D / #1E1E1E
 Separator        #2A2E39
 ```
 
-Typographie de référence lorsqu’elle est disponible : `Segoe UI`.
+Reference typography, when available: `Segoe UI`.
 
-Monospace possible : `Consolas`.
+Possible monospace: `Consolas`.
 
-Structure par défaut : US Letter, pas de header, pas de footer, pas de numéro de page visible, couverture épurée.
+Default structure: US Letter, no header, no footer, no visible page number, clean cover.
 
-La couverture peut contenir nom, `Complete Tutorial`, auteur (titulaire) et canal de support lorsque pertinent — jamais de site fermé ni de lien promotionnel ; la référence publique éventuelle est le dépôt GitHub configuré comme destination.
+The cover may contain the name, `Complete Tutorial`, the author (holder) and the support channel when relevant — never a closed website or a promotional link; the public reference, if any, is the GitHub repository configured as a destination.
 
-Ne pas y mettre de version produit.
+Do not put a product version on it.
 
-### 33.3 Convention « documentaire » (par défaut pour FREE)
+### 33.3 "Documentary" convention (default for FREE)
 
-Direction : document de référence, dark blue / teal, pédagogique, structurée, communautaire sans paraître amateur.
+Direction: reference document, dark blue / teal, educational, structured, community-oriented without looking amateurish.
 
-Palette de référence :
+Reference palette:
 
 ```text
 Background        #1A1A2E
@@ -1655,477 +1661,477 @@ Tertiary          #B0BEC5
 Separator         #00897B
 ```
 
-Typographie de référence lorsqu’elle est disponible : `Arial`.
+Reference typography, when available: `Arial`.
 
-Structure : A4 acceptable, header présent, footer présent, pagination autorisée, présentation plus documentaire.
+Structure: A4 acceptable, header present, footer present, pagination allowed, more documentary presentation.
 
-Header : `{Indicator Name} — Tutorial`.
+Header: `{Indicator Name} — Tutorial`.
 
-Le footer peut contenir `Page {N}`.
+The footer may contain `Page {N}`.
 
-La couverture peut être plus riche que celle d’un produit payant, mais ne contient aucun numéro de version produit.
+The cover may be richer than that of a paid product, but contains no product version number.
 
-### 33.4 Revue du tutoriel
+### 33.4 Tutorial review
 
-Avant livraison, vérifier : redondance, complétude, absence de références de code inutiles, absence de version produit sauf dérogation, absence d’URL de licence user-facing, exactitude factuelle, cohérence terminologique et cohérence des cross-references/noms de settings.
-
----
-
-## 34. PUBLICATION TRADINGVIEW
-
-RELEASE UNIQUEMENT.
-
-Toujours vérifier les règles TradingView, Vendor Requirements éventuelles, limites et procédures de publication actuelles immédiatement avant publication.
-
-Ne jamais dépendre uniquement d’une règle mémorisée.
-
-Deux artefacts sont distincts : description initiale et release notes.
-
-### 34.1 Règles communes
-
-La description doit être self-contained, en anglais, factuelle, professionnelle, honnête et immédiatement compréhensible.
-
-Les premières phrases doivent expliquer rapidement ce qu’est le script, à quoi il sert et pourquoi il est pertinent.
-
-Ordre de référence : OVERVIEW, CONCEPTS, FEATURES, HOW TO USE, LIMITATIONS, NOTES / THANKS.
-
-Adapter seulement lorsqu’une meilleure organisation est justifiée.
-
-### 34.2 Profil FREE à source public
-
-Contenu de référence :
-
-- OVERVIEW — objectif et positionnement ;
-- CONCEPTS — cadre théorique ou méthodologie importante ;
-- FEATURES — fonctionnalités principales ;
-- HOW TO USE — workflow trader ;
-- LIMITATIONS — contextes moins adaptés, limites, dépendance au timeframe, comportement provisoire éventuel ;
-- THANKS — crédits lorsqu’applicables.
-
-Tonalité : pédagogique, contributive, transparente.
-
-### 34.3 Source fermé (COMMERCIAL, PRIVATE publié, FREE à source fermé)
-
-Ajouter une section forte du type `WHAT MAKES IT UNIQUE`.
-
-Elle doit expliquer la valeur distinctive du produit sans révéler inutilement coefficients, formules propriétaires, règles internes reconstructibles ou détails privés.
-
-Elle doit démontrer problème résolu, originalité, différenciation, valeur réelle et approche originale à un niveau compréhensible.
-
-Ne pas remplacer cette démonstration par de la hype.
-
-Éviter notamment : `revolutionary`, `guaranteed`, `100% accurate`, `proven profits` ainsi que toute promesse de gain injustifiée.
-
-Toujours vérifier les restrictions TradingView actuelles avant publication.
-
-### 34.4 Mode de publication payant — OBLIGATOIRE
-
-Lorsqu’un accès payant est prévu, vérifier les Vendor Requirements et modes de publication TradingView actuels avant toute publication.
-
-À la date de vérification de ce standard :
-
-- les scripts open-source sont gratuits ;
-- les scripts protected sont gratuits ;
-- un produit COMMERCIAL (accès payant) publié publiquement sur TradingView utilise un script public `invite-only` pour le contrôle d’accès (axe `publication: tradingview-invite-only`) ;
-- un `Paid Space` n’est pas un mode de publication distinct : c’est un dispositif de monétisation TradingView pouvant regrouper des scripts publics `invite-only` pour les auteurs éligibles ;
-- les règles applicables aux scripts privés et aux vendeurs doivent être vérifiées avant toute utilisation ou monétisation.
-
-Ne jamais supposer que ces mécanismes resteront inchangés.
-
-Avant chaque publication payante :
-
-1. vérifier les modes actuellement autorisés ;
-2. vérifier les Vendor Requirements actuelles ;
-3. utiliser uniquement un mode de publication et un mécanisme de monétisation explicitement autorisés ;
-4. pour un produit public à accès payant, utiliser le mode public `invite-only` tant qu’il demeure le mode TradingView applicable au contrôle d’accès payant ;
-5. utiliser un `Paid Space` uniquement si le titulaire est éligible et si ce dispositif est approprié au produit ;
-6. ne jamais utiliser un mode protected comme produit payant ;
-7. ne jamais supposer qu’une publication privée constitue la voie normale ou recommandée d’un produit payant ; vérifier les règles actuelles avant toute utilisation de ce mode ;
-8. respecter les règles d’accès, de solicitation, de pricing et de communication applicables au mécanisme choisi.
-9. lorsqu'un mode `invite-only` est utilisé, remplir le champ `Author's instructions` avec des instructions d'accès conformes aux règles actuelles, en commençant par l'anglais lorsque TradingView l'exige ; ne jamais laisser ce champ vide.
-
-Le terme `invite-only` décrit un mécanisme de publication et de contrôle d’accès, jamais une catégorie de benchmark ni le nom de la licence commerciale.
-
-### 34.5 Chart de publication — OBLIGATOIRE
-
-Lors d’une publication publique, vérifier le chart associé à la publication selon les règles TradingView actuelles.
-
-Le chart doit :
-
-- être propre et immédiatement compréhensible ;
-- permettre d’identifier clairement la sortie du script publié ;
-- afficher les informations complètes de symbole et de timeframe ainsi que le nom de l’indicateur ;
-- ne pas contenir d’autres scripts sauf nécessité réelle expliquée dans la description ;
-- n’utiliser drawings ou images que lorsqu’ils aident réellement à comprendre le script et que leur rôle est expliqué ;
-- ne pas utiliser un chart non standard pour publier une strategy, un script qui émet des alertes ou tout autre script générant des signaux de trading de quelque nature que ce soit lorsque les règles TradingView actuelles l'interdisent ;
-- ne jamais masquer un lookahead bias, un future leak ou tout autre comportement historique trompeur.
-
-Avant publication, contrôler également que le chart et la description représentent le comportement réel du script dans des conditions compatibles avec son usage prévu.
-
-### 34.6 Benchmark de publication
-
-Utiliser le même corpus que pour le développement : scripts publics open-source pertinents, Editors’ Picks pertinents et autres excellentes références open-source lorsque nécessaires.
-
-La différence entre profils réside dans les conditions de distribution et d’accès du produit, jamais dans un corpus de benchmark closed-source ni dans un niveau de qualité.
+Before delivery, check: redundancy, completeness, absence of unnecessary code references, absence of a product version except by derogation, absence of a user-facing licence URL, factual accuracy, terminological consistency and consistency of cross-references/setting names.
 
 ---
 
-## 35. TESTS PRÉ-RELEASE
+## 34. TRADINGVIEW PUBLICATION
 
-RELEASE UNIQUEMENT, SELON APPLICABILITÉ.
+RELEASE ONLY.
 
-Compiler sans warning n’est pas une preuve suffisante.
+Always check the current TradingView rules, any Vendor Requirements, limits and publication procedures immediately before publication.
 
-La matrice de tests doit être adaptée aux fonctions réelles du script.
+Never depend solely on a memorized rule.
 
-### 35.1 Symboles
+Two artefacts are distinct: initial description and release notes.
 
-Pour une release significative, viser une couverture diversifiée lorsque le script le permet : forex majeur, indice, crypto, action liquide, future, instrument exotique ou moins liquide.
+### 34.1 Common rules
 
-Si le script est conçu uniquement pour une classe spécifique, utiliser une matrice représentative de cette classe.
+The description must be self-contained, in English, factual, professional, honest and immediately understandable.
+
+The first sentences must quickly explain what the script is, what it is for and why it is relevant.
+
+Reference order: OVERVIEW, CONCEPTS, FEATURES, HOW TO USE, LIMITATIONS, NOTES / THANKS.
+
+Adapt only when a better organization is justified.
+
+### 34.2 FREE profile with public source
+
+Reference content:
+
+- OVERVIEW — objective and positioning;
+- CONCEPTS — theoretical framework or important methodology;
+- FEATURES — main features;
+- HOW TO USE — trader workflow;
+- LIMITATIONS — less suitable contexts, limits, timeframe dependence, any provisional behaviour;
+- THANKS — credits when applicable.
+
+Tone: educational, contributive, transparent.
+
+### 34.3 Closed source (COMMERCIAL, published PRIVATE, FREE with closed source)
+
+Add a strong section of the `WHAT MAKES IT UNIQUE` type.
+
+It must explain the product's distinctive value without needlessly revealing coefficients, proprietary formulas, reconstructible internal rules or private details.
+
+It must demonstrate the problem solved, originality, differentiation, real value and original approach at an understandable level.
+
+Do not replace this demonstration with hype.
+
+Avoid in particular: `revolutionary`, `guaranteed`, `100% accurate`, `proven profits` as well as any unjustified promise of gain.
+
+Always check the current TradingView restrictions before publication.
+
+### 34.4 Paid publication mode — MANDATORY
+
+When paid access is planned, check the current Vendor Requirements and TradingView publication modes before any publication.
+
+As of the verification date of this standard:
+
+- open-source scripts are free;
+- protected scripts are free;
+- a COMMERCIAL product (paid access) published publicly on TradingView uses a public `invite-only` script for access control (axis `publication: tradingview-invite-only`);
+- a `Paid Space` is not a distinct publication mode: it is a TradingView monetization mechanism that can group public `invite-only` scripts for eligible authors;
+- the rules applicable to private scripts and to vendors must be checked before any use or monetization.
+
+Never assume that these mechanisms will remain unchanged.
+
+Before each paid publication:
+
+1. check the currently allowed modes;
+2. check the current Vendor Requirements;
+3. use only a publication mode and a monetization mechanism that are explicitly allowed;
+4. for a public product with paid access, use the public `invite-only` mode as long as it remains the TradingView mode applicable to paid access control;
+5. use a `Paid Space` only if the holder is eligible and if this mechanism is appropriate for the product;
+6. never use a protected mode as a paid product;
+7. never assume that a private publication constitutes the normal or recommended route for a paid product; check the current rules before any use of this mode;
+8. respect the access, solicitation, pricing and communication rules applicable to the chosen mechanism.
+9. when an `invite-only` mode is used, fill in the `Author's instructions` field with access instructions that comply with the current rules, starting with English when TradingView requires it; never leave this field empty.
+
+The term `invite-only` describes a publication and access-control mechanism, never a benchmark category nor the name of the commercial licence.
+
+### 34.5 Publication chart — MANDATORY
+
+For a public publication, check the chart associated with the publication according to the current TradingView rules.
+
+The chart must:
+
+- be clean and immediately understandable;
+- make it possible to clearly identify the output of the published script;
+- display the complete symbol and timeframe information as well as the name of the indicator;
+- not contain other scripts unless there is a real necessity explained in the description;
+- use drawings or images only when they genuinely help to understand the script and their role is explained;
+- not use a non-standard chart to publish a strategy, a script that issues alerts or any other script generating trading signals of any kind whatsoever when the current TradingView rules forbid it;
+- never hide a lookahead bias, a future leak or any other misleading historical behaviour.
+
+Before publication, also check that the chart and the description represent the actual behaviour of the script under conditions compatible with its intended use.
+
+### 34.6 Publication benchmark
+
+Use the same corpus as for development: relevant public open-source scripts, relevant Editors’ Picks and other excellent open-source references when necessary.
+
+The difference between profiles lies in the distribution and access conditions of the product, never in a closed-source benchmark corpus nor in a quality level.
+
+---
+
+## 35. PRE-RELEASE TESTS
+
+RELEASE ONLY, ACCORDING TO APPLICABILITY.
+
+Compiling without warnings is not sufficient evidence.
+
+The test matrix must be adapted to the actual functions of the script.
+
+### 35.1 Symbols
+
+For a significant release, aim for diversified coverage when the script allows it: major forex, index, crypto, liquid stock, future, exotic or less liquid instrument.
+
+If the script is designed only for a specific class, use a matrix representative of that class.
 
 ### 35.2 Timeframes
 
-Couvrir selon applicabilité : intraday rapide, intraday standard, swing, long terme.
+Cover according to applicability: fast intraday, standard intraday, swing, long term.
 
 ### 35.3 Modes
 
-Tester selon pertinence : historical, realtime, Replay.
+Test according to relevance: historical, realtime, Replay.
 
-Pour une logique realtime sensible, laisser le script fonctionner suffisamment longtemps sur un marché actif pour observer réellement son comportement.
+For sensitive realtime logic, let the script run long enough on an active market to really observe its behaviour.
 
-### 35.4 Affichage
+### 35.4 Display
 
-Vérifier selon applicabilité : éléments manquants, superpositions, clipping, positions, dark theme, light theme, densité, lisibilité des labels, tables, boxes et fills.
+Check according to applicability: missing elements, overlaps, clipping, positions, dark theme, light theme, density, readability of labels, tables, boxes and fills.
 
 ### 35.5 Performance
 
-Vérifier : chargement, changement de symbole, changement de timeframe, scroll, absence de freeze, absence de timeout, volume d’historique important, croissance des collections et objets graphiques.
+Check: loading, symbol change, timeframe change, scroll, absence of freezes, absence of timeouts, large history volume, growth of collections and graphical objects.
 
 ### 35.6 Repaint
 
-Comparer historical, realtime et Replay.
+Compare historical, realtime and Replay.
 
-Les signaux présentés comme confirmés doivent rester stables.
+Signals presented as confirmed must remain stable.
 
-### 35.7 Alertes
+### 35.7 Alerts
 
-Uniquement si le script possède des alertes : créer chaque type, déclencher les conditions, vérifier le texte, les placeholders, l’absence de valeur `na` inattendue et la cohérence avec le signal visible.
+Only if the script has alerts: create each type, trigger the conditions, check the text, the placeholders, the absence of an unexpected `na` value and the consistency with the visible signal.
 
-### 35.8 Settings extrêmes
+### 35.8 Extreme settings
 
-Tester min, max, limites, tous OFF, tous ON, combinaisons atypiques et relations parent/enfant.
+Test min, max, limits, all OFF, all ON, atypical combinations and parent/child relationships.
 
-### 35.9 Instruments atypiques
+### 35.9 Atypical instruments
 
-Lorsque pertinent : petit tick, grand nominal, faible liquidité, gaps, sessions discontinues, faible volume.
+When relevant: small tick, large nominal, low liquidity, gaps, discontinuous sessions, low volume.
 
-### 35.10 Release avec bug connu
+### 35.10 Release with a known bug
 
-Ne pas publier une release dont un bug significatif connu n’est pas corrigé.
+Do not publish a release in which a known significant bug is not fixed.
 
-Le report d’une release est préférable à une publication volontairement défectueuse.
+Postponing a release is preferable to a deliberately defective publication.
 
 ---
 
-## 36. REVUE POST-CODE — QUATRE AXES
+## 36. POST-CODE REVIEW — FOUR AXES
 
-Après chaque modification cohérente : relire selon la couverture de §9.2 puis appliquer les quatre axes suivants sur cette couverture. Qui les applique dépend du niveau (§9.1) : en travail courant, quelle que soit la classe de la tâche, le développeur lui-même (auto-revue limitée au périmètre modifié, contrôle du diff) ; dans un audit approfondi demandé, en préparation de publication, ou à la demande du titulaire, un reviewer indépendant à contexte frais, une seule fois par unité de travail, sans cascade de contre-revues.
+After each coherent modification: re-read according to the coverage of §9.2, then apply the following four axes to that coverage. Who applies them depends on the level (§9.1): in routine work, whatever the class of the task, the developer themselves (self-review limited to the modified scope, diff check); in a requested deep audit, in publication preparation, or at the holder's request, an independent fresh-context reviewer, only once per unit of work, without a cascade of counter-reviews.
 
-### AXE 1 — INTÉGRITÉ CONTEXTUELLE
+### AXIS 1 — CONTEXTUAL INTEGRITY
 
-Vérifier appelants, consommateurs, side effects, invariants, state, `var` / `varip`, inputs, requests, MTF, resource budget, historique, realtime, edge cases, éléments visuels et alertes.
+Check callers, consumers, side effects, invariants, state, `var` / `varip`, inputs, requests, MTF, resource budget, history, realtime, edge cases, visual elements and alerts.
 
-Question principale :
+Main question:
 
-> La modification reste-t-elle correcte une fois replacée dans l’ensemble du script ?
+> Does the modification remain correct once placed back in the script as a whole?
 
-### AXE 2 — ARTEFACTS DÉPENDANTS
+### AXIS 2 — DEPENDENT ARTEFACTS
 
-Vérifier si la modification nécessite de synchroniser : tooltip de setting, tooltip visuel, label, table, commentaire, alerte, changelog, tutoriel, description TradingView, page web ou message de release.
+Check whether the modification requires synchronizing: setting tooltip, visual tooltip, label, table, comment, alert, changelog, tutorial, TradingView description, web page or release message.
 
-Un changement de code ne doit jamais laisser derrière lui une documentation devenue fausse.
+A code change must never leave behind documentation that has become false.
 
-### AXE 3 — CONVENTIONS APPLICABLES
+### AXIS 3 — APPLICABLE CONVENTIONS
 
-Repasser les conventions de ce document qui s’appliquent réellement.
+Go back over the conventions of this document that actually apply.
 
-Ne pas forcer artificiellement une convention concernant table absente, labels absents, alertes absentes, MTF absent, boxes absentes, livrable absent ou fonctionnalité absente.
+Do not artificially force a convention concerning an absent table, absent labels, absent alerts, absent MTF, absent boxes, an absent deliverable or an absent feature.
 
-Une règle sans objet est `N/A` et non une tâche à inventer.
+A rule without an object is `N/A` and not a task to invent.
 
-### AXE 4 — REGARD FRAIS
+### AXIS 4 — FRESH EYES
 
-Relire comme un développeur découvrant le script sans connaître la conversation.
+Re-read as a developer discovering the script without knowing the conversation.
 
-Vérifier : architecture compréhensible, noms sémantiques, commentaires suffisants, absence d’hypothèse cachée, absence d’héritage injustifié d’un autre script, cohérence des settings et comportement compréhensible sans mémoire de la session.
+Check: understandable architecture, semantic names, sufficient comments, absence of hidden assumptions, absence of unjustified inheritance from another script, consistency of the settings and behaviour understandable without memory of the session.
 
-Questions :
+Questions:
 
-- Le code modifié est-il compréhensible sans connaître cette conversation ?
-- Un nouveau lecteur comprendrait-il l’intention derrière chaque changement ?
-- Certains choix semblent-ils hérités d’une ancienne session ou d’un autre projet sans justification ?
-- La modification respecte-t-elle l’identité de CE script ?
-- Quel élément paraîtrait étrange, ambigu ou fragile à quelqu’un qui découvre ce fichier aujourd’hui ?
+- Is the modified code understandable without knowing this conversation?
+- Would a new reader understand the intention behind each change?
+- Do some choices seem inherited from an old session or from another project without justification?
+- Does the modification respect the identity of THIS script?
+- What element would seem strange, ambiguous or fragile to someone discovering this file today?
 
 ---
 
 ## 37. ANTI-PATTERNS
 
-### 37.1 Inventer un fait
+### 37.1 Inventing a fact
 
-Ne jamais inventer API Pine, comportement runtime, limite, syntaxe, règle TradingView ou capacité actuelle.
+Never invent a Pine API, runtime behaviour, limit, syntax, TradingView rule or current capability.
 
-Lire ou vérifier.
+Read or verify.
 
-### 37.2 Recherche fictive
+### 37.2 Fictitious research
 
-Ne jamais prétendre avoir consulté documentation, Editors’ Picks, script open-source, règle TradingView ou résultat TradingView si cela n’a pas réellement été fait.
+Never claim to have consulted documentation, Editors’ Picks, an open-source script, a TradingView rule or a TradingView result if this has not actually been done.
 
 ### 37.3 Scope creep
 
-Une correction reste une correction.
+A fix remains a fix.
 
-Ne pas ajouter une fonctionnalité non demandée sous prétexte qu’elle serait meilleure.
+Do not add an unrequested feature on the pretext that it would be better.
 
-Proposer les décisions produit au titulaire avant de les implémenter.
+Propose product decisions to the holder before implementing them.
 
-### 37.4 Réécriture inutile
+### 37.4 Unnecessary rewrite
 
-Ne pas réécrire un bloc complet lorsqu’une modification ciblée propre suffit.
+Do not rewrite a complete block when a clean targeted modification is enough.
 
 ### 37.5 Franglais
 
-Zéro franglais dans le code ou les livrables.
+Zero franglais in the code or the deliverables.
 
-### 37.6 Internals user-facing
+### 37.6 User-facing internals
 
-Ne pas montrer à l’utilisateur noms de fonctions, champs internes, paramètres propriétaires, détails de storage, noms de methods ou mécanismes Pine.
+Do not show the user function names, internal fields, proprietary parameters, storage details, method names or Pine mechanisms.
 
-### 37.7 Anciennes conventions contradictoires
+### 37.7 Contradictory old conventions
 
-Une ancienne habitude n’est pas une autorité.
+An old habit is not an authority.
 
-La documentation officielle actuelle prime lorsqu’elle démontre que l’ancienne règle est fausse.
+The current official documentation takes precedence when it demonstrates that the old rule is wrong.
 
-### 37.8 Couleurs built-in primaires par défaut
+### 37.8 Primary built-in colours by default
 
-Éviter un rendu fondé par défaut sur les couleurs built-in brutes lorsqu’une palette professionnelle plus adaptée doit être utilisée.
+Avoid a rendering based by default on raw built-in colours when a more suitable professional palette must be used.
 
-### 37.9 Hallucination d’API
+### 37.9 API hallucination
 
-Ne jamais créer une fonction, propriété ou paramètre Pine depuis une mémoire incertaine.
+Never create a Pine function, property or parameter from uncertain memory.
 
-### 37.10 Héritage d’un autre script
+### 37.10 Inheritance from another script
 
-Ne pas importer sans raison préfixe, architecture, nom, ordre des sections, palette, réglage ou feature d’un autre projet du titulaire.
+Do not import without reason a prefix, architecture, name, section order, palette, setting or feature from another project of the holder.
 
-### 37.11 Modulo HTF
+### 37.11 HTF modulo
 
-Ne pas utiliser `bar_index % barsPerHTF` comme raccourci pour une vraie synchronisation temporelle.
+Do not use `bar_index % barsPerHTF` as a shortcut for genuine time-based synchronization.
 
-### 37.12 `var` pour constante
+### 37.12 `var` for a constant
 
-Ne pas utiliser `var` simplement parce qu’une valeur existe pendant toute la vie du script.
+Do not use `var` simply because a value exists throughout the life of the script.
 
-### 37.13 Side effects dans `and` / `or`
+### 37.13 Side effects in `and` / `or`
 
-Aucune mutation ou fonction stateful indispensable dans un opérande pouvant ne pas être évalué.
+No essential mutation or stateful function in an operand that might not be evaluated.
 
-### 37.14 Copie depuis le benchmark
+### 37.14 Copying from the benchmark
 
-Ne jamais transformer une analyse de code open-source en copie silencieuse.
+Never turn an analysis of open-source code into silent copying.
 
-Comprendre n’est pas une autorisation de réutiliser.
+Understanding is not an authorization to reuse.
 
-Chercher à surpasser une référence ne donne aucun droit supplémentaire sur son code ou sa logique distinctive.
+Seeking to surpass a reference gives no additional right over its code or its distinctive logic.
 
 ### 37.15 `shorttitle`
 
-Ne jamais ajouter `shorttitle` par habitude, même si un exemple officiel Pine en contient un.
+Never add `shorttitle` out of habit, even if an official Pine example contains one.
 
-Cette Convention Personnelle interdit son utilisation sauf dérogation explicite.
+This Personal Convention forbids its use except by explicit derogation.
 
-### 37.16 Version produit hors header
+### 37.16 Product version outside the header
 
-Ne jamais afficher la version produit en dehors du header du code source sauf dérogation explicite du titulaire.
+Never display the product version outside the source code header, except by explicit derogation from the holder.
 
 ### 37.17 Future leak
 
-Ne jamais utiliser une request, un offset, une structure historique ou une combinaison de `lookahead` pour donner artificiellement à l’historique une information indisponible à l’époque de la barre.
+Never use a request, an offset, a historical structure or a combination of `lookahead` to artificially provide history with information that was unavailable at the time of the bar.
 
-### 37.18 Publication payante non autorisée
+### 37.18 Unauthorized paid publication
 
-Ne jamais vendre un script via un mode de publication que les règles TradingView actuelles ne reconnaissent pas comme compatible avec un accès payant.
+Never sell a script through a publication mode that the current TradingView rules do not recognize as compatible with paid access.
 
-### 37.19 Journal de travail dans le source
+### 37.19 Work log in the source
 
-Ne jamais laisser dans un source l’historique des lots et versions de travail, des références à des conversations, des instructions à l’assistant ou à l’utilisateur, ni des récits de corrections et de revues (§24.5). Ils vivent dans les artefacts de suivi du produit.
-
----
-
-## 38. WORKFLOW — SCRIPT EXISTANT
-
-Pour une modification d’un script existant :
-
-1. Comprendre précisément la demande du titulaire.
-2. Classer la tâche (§2) ; le niveau de vérification (§9.1) est le travail courant sauf audit demandé par le titulaire ou préparation de publication.
-3. Identifier le profil de licence et les axes de distribution (`SCRIPT.json`).
-4. Lire la cartographie du produit (`ARCHITECTURE.md`, `CLAUDE.md` local) puis les blocs concernés et leurs dépendances pertinentes, étendues selon la classe de la tâche ; lecture intégrale seulement dans un audit approfondi explicitement demandé.
-5. Mettre à jour la cartographie seulement si elle est devenue fausse.
-6. Établir l’inventaire d’impact.
-7. Vérifier la documentation Pine actuelle pertinente.
-8. Déterminer si un benchmark TradingView apporte une valeur réelle à la tâche.
-9. Lorsque pertinent, rechercher les meilleurs scripts publics open-source et Editors’ Picks du domaine.
-10. Identifier ce que les meilleures références font bien et ce qui peut être surpassé.
-11. Concevoir une solution indépendante et originale visant un niveau supérieur lorsque raisonnablement possible.
-12. Ne réutiliser aucun code tiers sans passer par la règle de provenance et de droits.
-13. Définir la modification minimale cohérente.
-14. Implémenter section par section.
-15. Relire selon la couverture de §9.2 et contrôler le diff.
-16. Travail courant, toutes classes : auto-revue sur les quatre axes (§36) limitée au périmètre modifié ; audit approfondi demandé ou préparation de publication : revue indépendante à contexte frais.
-17. Scanner les anti-patterns dans le périmètre modifié.
-18. Vérifier les artefacts dépendants.
-19. Exécuter les vérifications mécaniques (guard) et, seulement si prévu dans le périmètre, l’exécution locale PineTS.
-20. Préparer la validation TradingView proportionnée au changement.
-21. Tester réellement dans TradingView.
-22. Corriger tout problème réel constaté.
-23. Revalider après correction.
-24. Préparer uniquement les livrables nécessaires.
+Never leave in a source the history of batches and working versions, references to conversations, instructions to the assistant or to the user, or narratives of fixes and reviews (§24.5). They live in the product's tracking artefacts.
 
 ---
 
-## 39. WORKFLOW — NOUVEAU SCRIPT
+## 38. WORKFLOW — EXISTING SCRIPT
 
-Pour un nouveau script :
+For a modification of an existing script:
 
-1. Comprendre l’objectif fonctionnel.
-2. Définir l’audience.
-3. Déterminer le type Pine puis le profil de licence et ses axes (§5) ; pour une library destinée à être publiée, dériver obligatoirement FREE à source public tant que la règle TradingView actuelle l'impose.
-4. Vérifier que l’objectif initial est suffisamment complet, abouti et différencié pour le produit visé — l’ambition dépend du produit, pas de son profil.
-5. Vérifier les capacités Pine V6 actuelles pertinentes.
-6. Rechercher les meilleurs scripts publics open-source du domaine.
-7. Accorder une attention prioritaire aux Editors’ Picks pertinents.
-8. Compléter avec d’autres références open-source de haute qualité lorsque nécessaire.
-9. Étudier les meilleures solutions techniques, UX, visuelles et architecturales accessibles.
-10. Identifier explicitement les limites, compromis et faiblesses des références.
-11. Définir comment la solution du titulaire peut les surpasser sans imiter leur logique distinctive ni copier leur code.
-12. Respecter la frontière entre benchmark et réutilisation de code.
-13. Définir la différenciation réelle.
-14. Cartographier l’architecture prévue.
-15. Définir les settings réellement nécessaires.
-16. Définir types, enums et UDTs éventuels.
-17. Définir calculs et état.
-18. Définir sorties visuelles réellement nécessaires.
-19. Définir alertes seulement si utiles.
-20. Définir stratégie MTF / realtime si applicable.
-21. Construire section par section.
-22. Relire selon la couverture de §9.2 après chaque modification cohérente.
-23. Effectuer les quatre axes post-code.
-24. Scanner les anti-patterns.
-25. Effectuer les tests applicables.
-26. Valider réellement dans TradingView.
-27. Corriger puis revalider.
-28. Préparer la documentation et les éléments de publication adaptés au profil et aux axes de distribution.
+1. Understand the holder's request precisely.
+2. Classify the task (§2); the verification level (§9.1) is routine work, except in an audit requested by the holder or in publication preparation.
+3. Identify the licence profile and the distribution axes (`SCRIPT.json`).
+4. Read the product map (`ARCHITECTURE.md`, local `CLAUDE.md`), then the blocks concerned and their relevant dependencies, extended according to the class of the task; full read only in an explicitly requested deep audit.
+5. Update the map only if it has become wrong.
+6. Establish the impact inventory.
+7. Check the relevant current Pine documentation.
+8. Determine whether a TradingView benchmark brings real value to the task.
+9. When relevant, search for the best public open-source scripts and Editors’ Picks in the domain.
+10. Identify what the best references do well and what can be surpassed.
+11. Design an independent and original solution aiming at a higher level when reasonably possible.
+12. Do not reuse any third-party code without going through the provenance and rights rule.
+13. Define the minimal coherent modification.
+14. Implement section by section.
+15. Re-read according to the coverage of §9.2 and check the diff.
+16. Routine work, all classes: self-review on the four axes (§36) limited to the modified scope; requested deep audit or publication preparation: independent fresh-context review.
+17. Scan for anti-patterns in the modified scope.
+18. Check the dependent artefacts.
+19. Run the mechanical checks (guard) and, only if planned in the scope, the local PineTS execution.
+20. Prepare the TradingView validation proportionate to the change.
+21. Actually test in TradingView.
+22. Fix any real problem found.
+23. Revalidate after the fix.
+24. Prepare only the necessary deliverables.
 
 ---
 
-## 40. VALIDATION TRADINGVIEW
+## 39. WORKFLOW — NEW SCRIPT
 
-OBLIGATOIRE AVANT VALIDATION FINALE.
+For a new script:
 
-TradingView constitue la validation empirique finale du script.
-
-Une vérification locale ne remplace pas compilation TradingView, runtime TradingView, rendu graphique TradingView, comportement realtime, comportement historique, Replay lorsque pertinent, création réelle des alertes et rendu dark/light.
-
-Lorsque Claude Code n’a pas accès directement à TradingView :
-
-1. ne pas prétendre que le script a été validé ;
-2. préparer précisément ce qui doit être testé ;
-3. attendre le résultat réel ;
-4. corriger à partir du résultat ;
-5. revalider si nécessaire.
+1. Understand the functional objective.
+2. Define the audience.
+3. Determine the Pine type, then the licence profile and its axes (§5); for a library intended to be published, mandatorily derive FREE with public source as long as the current TradingView rule imposes it.
+4. Check that the initial objective is sufficiently complete, mature and differentiated for the intended product — the ambition depends on the product, not on its profile.
+5. Check the relevant current Pine V6 capabilities.
+6. Search for the best public open-source scripts in the domain.
+7. Give priority attention to the relevant Editors’ Picks.
+8. Supplement with other high-quality open-source references when necessary.
+9. Study the best accessible technical, UX, visual and architectural solutions.
+10. Explicitly identify the limits, trade-offs and weaknesses of the references.
+11. Define how the holder's solution can surpass them without imitating their distinctive logic or copying their code.
+12. Respect the boundary between benchmark and code reuse.
+13. Define the real differentiation.
+14. Map the planned architecture.
+15. Define the settings that are really necessary.
+16. Define any types, enums and UDTs.
+17. Define calculations and state.
+18. Define the visual outputs that are really necessary.
+19. Define alerts only if useful.
+20. Define the MTF / realtime strategy if applicable.
+21. Build section by section.
+22. Re-read according to the coverage of §9.2 after each coherent modification.
+23. Perform the four post-code axes.
+24. Scan for anti-patterns.
+25. Perform the applicable tests.
+26. Actually validate in TradingView.
+27. Fix, then revalidate.
+28. Prepare the documentation and the publication elements suited to the profile and to the distribution axes.
 
 ---
 
-## 41. LIVRABLES DE RELEASE
+## 40. TRADINGVIEW VALIDATION
 
-RELEASE UNIQUEMENT.
+MANDATORY BEFORE FINAL VALIDATION.
 
-Le jeu de livrables dépend de la release.
+TradingView constitutes the final empirical validation of the script.
 
-Ne pas produire un artefact sans nécessité.
+A local verification does not replace TradingView compilation, TradingView runtime, TradingView graphical rendering, realtime behaviour, historical behaviour, Replay when relevant, actual creation of the alerts and dark/light rendering.
 
-Pour une release importante, peuvent notamment être nécessaires : script Pine V6, tutoriel utilisateur, changelog complet, release notes TradingView, description initiale si nouvelle publication, mise à jour de la destination GitHub configurée (export préparé, aperçu des fichiers, publication seulement après autorisation explicite), annonce en plain American English destinée à des non-développeurs si le titulaire en diffuse une, et migration guide lorsqu’une breaking change le nécessite. Aucun site fermé ni canal non configuré n’est un livrable.
+When Claude Code does not have direct access to TradingView:
 
-Pour un PATCH mineur, ne pas refaire artificiellement tous les livrables si aucun ne doit changer.
+1. do not claim that the script has been validated;
+2. prepare precisely what must be tested;
+3. wait for the actual result;
+4. fix based on the result;
+5. revalidate if necessary.
 
 ---
 
-## 42. STANDARD DE FIN
+## 41. RELEASE DELIVERABLES
 
-Un script n’est pas terminé parce qu’il compile.
+RELEASE ONLY.
 
-Il est terminé lorsque toutes les dimensions applicables sont cohérentes :
+The set of deliverables depends on the release.
+
+Do not produce an artefact without necessity.
+
+For an important release, the following may in particular be necessary: Pine V6 script, user tutorial, complete changelog, TradingView release notes, initial description if it is a new publication, update of the configured GitHub destination (prepared export, preview of the files, publication only after explicit authorization), announcement in plain American English intended for non-developers if the holder distributes one, and migration guide when a breaking change requires it. Neither a closed website nor an unconfigured channel is a deliverable.
+
+For a minor PATCH, do not artificially redo all the deliverables if none of them must change.
+
+---
+
+## 42. COMPLETION STANDARD
+
+A script is not finished because it compiles.
+
+It is finished when all the applicable dimensions are coherent:
 
 ```text
-OBJECTIF FONCTIONNEL
+FUNCTIONAL OBJECTIVE
 +
-DOCUMENTATION TRADINGVIEW ACTUELLE
+CURRENT TRADINGVIEW DOCUMENTATION
 +
-COMPATIBILITÉ PINE SCRIPT V6
+PINE SCRIPT V6 COMPATIBILITY
 +
-ARCHITECTURE DU SCRIPT
+SCRIPT ARCHITECTURE
 +
-CONVENTIONS PERSONNELLES APPLICABLES
+APPLICABLE PERSONAL CONVENTIONS
 +
-PROFIL DE LICENCE ET AXES DE DISTRIBUTION
+LICENCE PROFILE AND DISTRIBUTION AXES
 +
-BENCHMARK OPEN-SOURCE / EDITORS’ PICKS PERTINENT
+RELEVANT OPEN-SOURCE / EDITORS’ PICKS BENCHMARK
 +
-DÉPASSEMENT QUALITATIF DES RÉFÉRENCES LORSQUE POSSIBLE
+QUALITATIVE SURPASSING OF THE REFERENCES WHEN POSSIBLE
 +
-ORIGINALITÉ DE LA SOLUTION
+ORIGINALITY OF THE SOLUTION
 +
-PROVENANCE ET DROITS DU CODE
+CODE PROVENANCE AND RIGHTS
 +
 UX
 +
-ROBUSTESSE
+ROBUSTNESS
 +
-HISTORIQUE / REALTIME
+HISTORICAL / REALTIME
 +
 ANTI-REPAINT
 +
 PERFORMANCE
 +
-QUALITÉ VISUELLE
+VISUAL QUALITY
 +
 DOCUMENTATION
 +
-REGARD FRAIS
+FRESH EYES
 +
-VALIDATION TRADINGVIEW RÉELLE
+ACTUAL TRADINGVIEW VALIDATION
 ```
 
-Quel que soit le profil, l’objectif initial et le produit obtenu doivent atteindre le niveau de complétude, de finition et de différenciation que le produit vise, sans confondre ambition avec accumulation de fonctionnalités.
+Whatever the profile, the initial objective and the resulting product must reach the level of completeness, finish and differentiation that the product aims for, without confusing ambition with an accumulation of features.
 
-Le benchmark n’a jamais pour objectif la simple parité.
+The benchmark never has mere parity as its objective.
 
-Lorsqu’une référence publique fournit une solution de haute qualité, la cible est de faire mieux dans les dimensions pertinentes où une amélioration réelle est possible, tout en restant une conception originale et indépendante.
+When a public reference provides a high-quality solution, the target is to do better in the relevant dimensions where a real improvement is possible, while remaining an original and independent design.
 
-Ne jamais écrire du code pour satisfaire le prompt.
+Never write code to satisfy the prompt.
 
-Ne jamais détériorer un script pour satisfaire une convention hors contexte.
+Never degrade a script to satisfy a convention outside its context.
 
-Ne jamais transformer une bonne pratique en obligation lorsqu’elle est N/A.
+Never turn a good practice into an obligation when it is N/A.
 
-Ne jamais transformer un benchmark en copie.
+Never turn a benchmark into a copy.
 
-Ne jamais confondre dépassement qualitatif et imitation.
+Never confuse qualitative surpassing with imitation.
 
-Le prompt sert le script.
+The prompt serves the script.
 
-Le script sert l’utilisateur.
+The script serves the user.
 
-L’objectif final est de produire des indicateurs Pine Script cohérents, robustes, lisibles, professionnels, distinctifs, originaux et techniquement justes, conformes à l’intention du titulaire et au comportement réel actuel de TradingView.
+The final objective is to produce Pine Script indicators that are coherent, robust, readable, professional, distinctive, original and technically correct, conforming to the holder's intention and to the current actual behaviour of TradingView.

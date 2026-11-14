@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # /tv-mode — changement du mode TradingView persistant
 
+Langue : répondre dans la langue configurée (`language` de `session-status --json`).
+
 Usage : `/tv-mode manual` ou `/tv-mode chrome-experimental`.
 
 Exécuter le contrôleur déterministe partagé (unique propriétaire de la mutation) :

@@ -336,7 +336,8 @@ def hook_session_start(root, stdin_data):
 
     status = session_status(root)
     status["stop_info"] = _read_stop_info(root, consume=not is_subagent,
-                                          session_id=session_id)
+                                          session_id=session_id,
+                                          lang=status.get("language"))
     status["hook_errors"] = _hook_errors(root, mark_reported=not is_subagent)
     status["cleanup_info"] = cleanup_lines
     return _format_summary(status), status
@@ -344,7 +345,7 @@ def hook_session_start(root, stdin_data):
 
 def _format_summary(status):
     lang = status.get("language") or i18n.DEFAULT_LANGUAGE
-    lines = ["PWS"]
+    lines = ["PWS", i18n.t("summary.language", lang)]
     g = status["git"]
     if g["is_repo"]:
         git_line = i18n.t("summary.git.local", lang,
@@ -855,11 +856,14 @@ def _hook_stop(root, stdin_data):
     # a declared import is accounted for: it must not make another file's
     # correspondence look ambiguous
     others = {k: v for k, v in current.items() if k not in imported}
+    # Structured items (2026-11-14): the words are chosen when the items are
+    # shown, in the language in force at that moment (_render_stop_item); the
+    # attribution logic below is unchanged.
     introduced, info = [], []
     sensitive = False
 
-    def note(rel, category, check, detail):
-        info.append("%s: [%s] %s — %s" % (rel, check, detail, category))
+    def note(rel, label, check, detail):
+        info.append({"k": "note", "rel": rel, "check": check, "text": detail, "label": label})
 
     for rel in sorted(current):
         if baseline.get(rel) == current[rel]:
@@ -875,7 +879,7 @@ def _hook_stop(root, stdin_data):
                                          renames)
         record = None
         at_import = rel in imported and category != "unchanged"
-        moment = "a l'import" if at_import else "au demarrage"
+        moment = "import" if at_import else "start"
         if at_import:
             record = imported[rel][1]
         elif isinstance(attached, list):
@@ -897,12 +901,11 @@ def _hook_stop(root, stdin_data):
 
         product = registered_sources.get(rel)
         if product is None:
-            msg = "UNREGISTERED — executer pine-onboard"
             if category in ("modified", "moved-modified", "new",
                             "imported-modified"):
-                introduced.append("%s: modifie pendant la session mais %s" % (rel, msg))
+                introduced.append({"k": "unregistered_modified", "rel": rel})
             else:
-                info.append("%s: %s — %s" % (rel, msg, _CATEGORY_LABELS[category]))
+                info.append({"k": "unregistered", "rel": rel, "cat": category})
             continue
 
         findings = guard.check_source(root / rel, _product_policy(product, identity),
@@ -914,16 +917,14 @@ def _hook_stop(root, stdin_data):
                 details[f["check"]] = f["detail"]
         if category == "indeterminate":
             for (check, subject), n in sorted(counts.items()):
-                note(rel, "attribution indeterminee (provenance du fichier non "
-                          "etablie : verifier sa provenance)",
-                     check, _subject_text(subject, details[check]))
+                note(rel, {"k": "indeterminate"}, check, _subject_text(subject, details[check]))
             if not counts:
-                info.append("%s: provenance non etablie — aucun finding bloquant" % rel)
+                info.append({"k": "indeterminate_clean", "rel": rel})
             continue
         if category == "new":
             for (check, subject), n in sorted(counts.items()):
-                introduced.append("%s: [%s] %s (nouveau fichier)"
-                                  % (rel, check, _subject_text(subject, details[check])))
+                introduced.append({"k": "new_file", "rel": rel, "check": check,
+                                   "text": _subject_text(subject, details[check])})
                 if check in LICENCE_SENSITIVE_CHECKS:
                     sensitive = True
             continue
@@ -935,51 +936,102 @@ def _hook_stop(root, stdin_data):
         for (check, subject), n in sorted(counts.items()):
             text = _subject_text(subject, details[check])
             if not evaluable or check in unevaluable:
-                label = ("rendu visible par le contexte (check non evaluable "
-                         "%s)" % moment)
-                if content_changed:
-                    # stated as a fact, not as a cause: the content changed
-                    # too, so an introduction cannot be excluded
-                    label += (" ; contenu modifie pendant la session : une "
-                              "introduction n'est pas exclue")
-                note(rel, label, check, text)
+                # "changed" is stated as a fact, not as a cause: the content
+                # changed too, so an introduction cannot be excluded
+                note(rel, {"k": "visible", "moment": moment, "changed": content_changed},
+                     check, text)
                 continue
             before = base_counts.get((check, subject), 0)
             if before:
                 if at_import:
-                    label = "preexistant %s" % moment
+                    label = {"k": "preexisting", "moment": moment}
                 elif unproven:
-                    label = ("present a la reprise (lignee de session non etablie : "
-                             "une introduction anterieure n'est pas exclue)")
+                    label = {"k": "resumed"}
                 else:
-                    label = "preexistant"
+                    label = {"k": "preexisting"}
                 note(rel, label, check, text)
             if n > before:
-                introduced.append("%s: [%s] %s" % (rel, check, text))
+                introduced.append({"k": "introduced", "rel": rel, "check": check, "text": text})
                 if check in LICENCE_SENSITIVE_CHECKS:
                     sensitive = True
 
-    _write_stop_info(root, session_id, info)
+    lang = _configured_language(root)   # the language in force now, at Stop
+    _write_stop_info(root, session_id, info, lang)
     if introduced:
-        reason = ("Violations mecaniques reparables introduites pendant la session "
-                  "(guard PWS):\n- " + "\n- ".join(introduced[:12]))
+        reason = (i18n.t("stop.reason.introduced", lang) + "\n- "
+                  + "\n- ".join(_render_stop_item(i, lang) or str(i) for i in introduced[:12]))
         if sensitive:
-            reason += ("\n\nNe jamais retirer ni modifier une notice de licence, une "
-                       "attribution ou une reference legale tierce pour satisfaire le "
-                       "guard : si un constat porte sur une telle mention, le presenter "
-                       "au titulaire et attendre sa decision.")
+            reason += "\n\n" + i18n.t("stop.reason.legal", lang)
         if info:
-            reason += ("\n\nSignale sans blocage (non introduit pendant la "
-                       "session):\n- " + "\n- ".join(info[:8]))
+            reason += ("\n\n" + i18n.t("stop.reason.info", lang) + "\n- "
+                       + "\n- ".join(_render_stop_item(i, lang) or str(i) for i in info[:8]))
         return 0, json.dumps({"decision": "block", "reason": reason})
     return 0, ""
 
 
-_CATEGORY_LABELS = {
-    "moved-unchanged": "deplace sans modification, deja non enregistre",
-    "imported-unchanged": "import declare, contenu inchange, onboarding a terminer",
-    "indeterminate": "attribution indeterminee (provenance du fichier non etablie)",
-}
+def _configured_language(root):
+    """Language in force now (`language` of pws.config.json); a missing or
+    unreadable configuration or an unknown value gives the catalogue default,
+    as everywhere else (config.read_config, i18n.normalize_language)."""
+    try:
+        return i18n.normalize_language(config.read_config(root)["data"].get("language"))
+    except Exception:  # noqa: BLE001 — a hook never fails on its presentation
+        return i18n.DEFAULT_LANGUAGE
+
+
+def _render_stop_label(label, lang):
+    """Words of the category of a non-blocking finding, in `lang`; None when
+    `label` is not a known structure."""
+    if not isinstance(label, dict):
+        return None
+    kind, moment = label.get("k"), label.get("moment")
+    if moment not in (None, "start", "import"):
+        return None
+    at = i18n.t("stop.moment." + moment, lang) if moment else None
+    if kind == "indeterminate":
+        return i18n.t("stop.label.indeterminate", lang)
+    if kind == "resumed":
+        return i18n.t("stop.label.resumed", lang)
+    if kind == "preexisting":
+        return (i18n.t("stop.label.preexisting_at", lang, moment=at) if at
+                else i18n.t("stop.label.preexisting", lang))
+    if kind == "visible" and at:
+        text = i18n.t("stop.label.visible", lang, moment=at)
+        if label.get("changed") is True:
+            text += i18n.t("stop.label.visible.changed", lang)
+        return text
+    return None
+
+
+def _render_stop_item(item, lang):
+    """One line of Stop information or of a blocking reason, in `lang`. Paths,
+    check identifiers and guard details are reproduced exactly. None when the
+    item is not a known structure (its recorded text is then shown as is)."""
+    if not isinstance(item, dict) or not isinstance(item.get("rel"), str):
+        return None
+    kind, rel = item.get("k"), item["rel"]
+    if kind == "unregistered_modified":
+        return i18n.t("stop.item.unregistered_modified", lang, rel=rel)
+    if kind == "unregistered":
+        key = "stop.category.%s" % item.get("cat")
+        if not i18n.has_key(key):
+            return None
+        return i18n.t("stop.item.unregistered", lang, rel=rel, category=i18n.t(key, lang))
+    if kind == "indeterminate_clean":
+        return i18n.t("stop.item.indeterminate_clean", lang, rel=rel)
+    check, text = item.get("check"), item.get("text")
+    if not isinstance(check, str) or not isinstance(text, str):
+        return None
+    if kind == "introduced":
+        return i18n.t("stop.item.introduced", lang, rel=rel, check=check, text=text)
+    if kind == "new_file":
+        return i18n.t("stop.item.new_file", lang, rel=rel, check=check, text=text)
+    if kind == "note":
+        label = _render_stop_label(item.get("label"), lang)
+        if label is None:
+            return None
+        return i18n.t("stop.item.note", lang, rel=rel, check=check, text=text, label=label)
+    return None
 
 
 def _subject_text(subject, detail):
@@ -1031,27 +1083,41 @@ def _info_tree_real(root):
     return core.runtime_tree_is_real(root, SESSION_DIR_REL.parts + (STOP_INFO_DIR,))
 
 
-def _write_stop_info(root, session_id, info):
+STOP_INFO_FORMAT = 2   # 2026-11-14: structured items, worded when shown
+
+
+def _write_stop_info(root, session_id, info, lang=None):
     """Persist the non-blocking Stop information of THIS session for the
     next SessionStart summary (exit-0 stdout of a Stop hook is not injected
-    into context). Never touches the file of another session."""
+    into context). Never touches the file of another session. Format 2:
+    `items` (structured, worded in the language in force when they are shown)
+    and `info` (the same lines worded at write time, in `language` — kept so
+    that a reader of the format 1 still finds them)."""
     if not _runtime_writable(root) or not _info_tree_real(root):
         return
     path = _stop_info_path(root, session_id)
+    lang = i18n.normalize_language(lang)
     try:
         if info:
+            items = info[:50]
             path.parent.mkdir(parents=True, exist_ok=True)
-            core.atomic_write_json(path, {"session_id": session_id, "info": info[:50]})
+            core.atomic_write_json(path, {
+                "session_id": session_id, "format": STOP_INFO_FORMAT, "language": lang,
+                "items": items, "info": [_render_stop_item(i, lang) or str(i) for i in items]})
         elif path.exists():
             path.unlink()
     except OSError:
         pass
 
 
-def _read_stop_info(root, consume, session_id=None):
+def _read_stop_info(root, consume, session_id=None, lang=None):
     """Pending Stop information of every session, oldest first, each shown
     once; a line of another session is labelled with its identifier. The
-    file written before 2026-11-13 (stop-info.json) is read the same way."""
+    file written before 2026-11-13 (stop-info.json) is read the same way.
+    Structured items are worded in `lang`, the language in force at display;
+    a line recorded as text only (earlier versions) or an item of unknown
+    structure is shown as it was recorded, marked as such, never
+    reinterpreted."""
     sdir = Path(root) / SESSION_DIR_REL
     sources = [(sdir / "stop-info.json", None)]
     if _info_tree_real(root) and (sdir / STOP_INFO_DIR).is_dir():
@@ -1073,10 +1139,22 @@ def _read_stop_info(root, consume, session_id=None):
         if path.is_symlink() or not path.is_file():
             continue
         data, err = core.read_json(path)
-        if err or not isinstance(data, dict) or not isinstance(data.get("info"), list):
+        if err or not isinstance(data, dict):
+            continue
+        items, recorded = data.get("items"), data.get("info")
+        if not isinstance(items, list) and not isinstance(recorded, list):
             continue
         label = "" if stem is None or stem == own else "[session %s] " % stem[:8]
-        out.extend(label + str(x) for x in data["info"])
+        if isinstance(items, list):
+            for i, item in enumerate(items):
+                line = _render_stop_item(item, lang)
+                if line is None:
+                    if not (isinstance(recorded, list) and i < len(recorded)):
+                        continue
+                    line = i18n.t("stop.recorded", lang) + str(recorded[i])
+                out.append(label + line)
+        else:
+            out.extend(label + i18n.t("stop.recorded", lang) + str(x) for x in recorded)
         if consume and _runtime_writable(root):
             try:
                 path.unlink()

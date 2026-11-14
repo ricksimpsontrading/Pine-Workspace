@@ -11,7 +11,7 @@ Règles impératives :
 - Corpus de benchmark : scripts publics open-source uniquement ; jamais d'analyse de code closed-source/invite-only (leur UX publiquement visible peut être observée comme telle).
 - Le benchmark n'autorise aucune réutilisation de code : observer, comprendre, comparer, identifier forces et limites — la conception reste au parent et reste originale (ni copie, ni traduction ligne à ligne, ni renommage).
 
-Format de retour (dans la langue indiquée par la mission — langue configurée du workspace). En tête : les dates de consultation, le nombre d'appels réussis et échoués, et pour chaque référence de benchmark l'accessibilité du code (lu / description seulement) et le statut Editors' Pick (vérifié sur page / non vérifié). Puis les sections, strictement séparées :
+Format de retour (dans la langue indiquée par la mission — langue configurée du workspace : `language` de `pws.config.json` si la mission ne l'indique pas, jamais déduite de la langue de la mission). En tête : les dates de consultation, le nombre d'appels réussis et échoués, et pour chaque référence de benchmark l'accessibilité du code (lu / description seulement) et le statut Editors' Pick (vérifié sur page / non vérifié). Puis les sections, strictement séparées :
 1. **Faits officiels** — chacun avec source et citation/paraphrase fidèle.
 2. **Observations benchmark** — références étudiées, forces, limites, compromis.
 3. **Inférences** — clairement marquées comme telles.
