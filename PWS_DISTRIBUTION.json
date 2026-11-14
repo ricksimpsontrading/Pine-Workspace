@@ -1,5 +1,5 @@
 {
-  "built_at": "2026-11-14T01:35:33Z",
+  "built_at": "2026-11-14T03:37:57Z",
   "excluded_by_construction": [
     "scripts",
     "docs/maintenance",
@@ -50,7 +50,7 @@
     "INSTALL.md": "ea1723dc1e6a72d47ab651eb40c4dd1ca4457b449ea3e9756810ad8289e8db6a",
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "NOTICE": "f2d1bb699d84b9ed584f8421c5bcb43e787b99950c313fc9efc3eeb13f92c1c6",
-    "README.md": "2b13eeb1bc565e1514f9b7bcf1812cf15162363a60d7a725f9f67183ca550caf",
+    "README.md": "2b1e93fef75221bcda0dbe6deb1adc8e15780d1c0c224a6f6a84ac25a5e03f74",
     "THIRD_PARTY_NOTICES.md": "920c4086510c7af18939d6dc51455c7a3acea055166df929d528cf90709af10a",
     "VERSION": "c89b87c262e9d5ffd20e73aac74a1772adcc9f5a21682cc33adcf5086e5fef5c",
     "docs/architecture/ARCHITECTURE.md": "d5bc2e7eeeeea7b6e86c101080721d31220bd818ba63faa6f0d9fdd0424e7bce",
@@ -215,7 +215,7 @@
     "macos": "supported first",
     "windows": "deferred"
   },
-  "source_commit": "d65b5e9f00e5c764bf45c30c0a1727fe72eec25a",
+  "source_commit": "27fb2c4202c829e9cc6aaae009bbf72729b3f7da",
   "source_dirty": false,
   "workspace_version": "2.1.0"
 }

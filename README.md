@@ -1,47 +1,201 @@
 # Pine Workspace
 
-Workspace Claude Code autonome pour développer, maintenir, documenter, valider et préparer la publication de scripts Pine Script V6. Aucun autre projet n'est requis : ce dossier est sa propre racine, lancé depuis lui-même. L'identité du titulaire des scripts, la langue de travail et les préférences vivent dans `pws.config.json` (configuration personnelle).
+**A structured Claude Code workspace for developing, maintaining, and publishing Pine Script v6 projects.**
 
-*English: Pine Workspace is a self-contained Claude Code workspace for Pine Script V6 development. Installation: `INSTALL.md`. Licences of the workspace's own components: Apache-2.0 for the core, AGPL-3.0-only for the PineTS thin adapter (`NOTICE`, `docs/licensing/`); your scripts remain yours.*
+Pine Workspace (PWS) brings development workflows, coding standards, documentation, validation tools, and publication preparation into one self-contained workspace. Use it to create indicators, strategies, and libraries—or continue working on existing scripts.
 
-## Démarrer
+Start with the guided `/pws` menu, choose an action, then select your project. Configure your own identity and choose English or French for the interface.
+
+[Download a release](https://github.com/ricksimpsontrading/Pine-Workspace/releases) · [Installation guide](INSTALL.md) · [Changelog](CHANGELOG.md) · [Licensing](docs/licensing/LICENSING.md)
+
+## What you can do
+
+| Task | How Pine Workspace helps |
+|---|---|
+| **Create a script** | Define the purpose, research the approach, and plan the architecture before implementation. |
+| **Import an existing script** | Examine its code, record its existing license, and establish project-specific context. |
+| **Develop and maintain** | Make focused changes with proportionate checks and a review of the resulting differences. |
+| **Document your work** | Prepare explanations and tutorials for free, private, and commercial projects. |
+| **Validate behavior** | Prepare TradingView checks and optionally run local behavioral tests with PineTS. |
+| **Request an audit** | Run a deeper review when explicitly requested. |
+| **Prepare publication** | Review licensing, documentation, and readiness before authorizing an export to GitHub. |
+
+The same development and documentation standards apply to free and commercial scripts.
+
+## Requirements
+
+| Component | Requirement |
+|---|---|
+| **macOS** | First supported platform. Linux has not been verified; Windows support is deferred. |
+| **Python 3.9 or later** | Required for the installer and workspace tooling. The Python tooling uses the standard library. |
+| **Claude Code** | Required for the guided assistant workflows. |
+| **Git** | Recommended for local history and required for Git-based publication workflows. |
+| **Node.js and npm** | Optional; needed only for PineTS local tests. |
+
+Pine Workspace runs inside Claude Code. Install and configure Claude Code before starting a workspace session.
+
+## Quick start
+
+### 1. Download and verify
+
+From the [Releases page](https://github.com/ricksimpsontrading/Pine-Workspace/releases), download the packaged ZIP and its matching `.sha256` file.
+
+For version 2.1.0, place both files in the same folder and run this command from that folder:
 
 ```bash
-cd "<dossier du workspace>"
-python3 -m tools.pws_workspace init --language fr --copyright-holder "Votre nom"   # première configuration (une fois)
-claude                     # session normale ; l'état PWS s'affiche au démarrage
-/pws                       # menu guidé (action d'abord, script ensuite)
+shasum -a 256 -c pine-workspace-2.1.0.zip.sha256
 ```
 
-Nouvelle installation depuis une distribution : `INSTALL.md`. Mise à jour d'une installation existante : `/pws → Maintenance / configuration → Outils et mises à jour → Mettre à jour Pine-Workspace` (recherche explicite sur le dépôt officiel ou paquet local, plan, confirmation, puis `upgrade` et `migrate`), détails dans `docs/architecture/MIGRATION.md` ; jamais de réinstallation par-dessus.
+The result should report `OK`. This checks download integrity; the release does not include a cryptographic signature.
 
-## Les gestes principaux
+### 2. Install
 
-- **Ajouter un script existant** : créer `scripts/<slug>/` et y déposer le `.pine`. Il est détecté UNREGISTERED et onboardé par la skill `pine-onboard` — analyse réelle du code, contexte spécifique, jamais de template.
-- **Nouveau script** : décrire l'objectif à Claude (ou `/pws → Nouveau script`). Le workflow `pine-new` conçoit le produit avant tout code (recherche, benchmark, différenciation, architecture) et choisit un profil de licence : FREE (CC BY-NC-SA 4.0), FREE à source fermé, PRIVATE, COMMERCIAL (`docs/licensing/PROFILES.md`). Le profil ne change pas le niveau d'exigence.
-- **Modifier** : `pine-develop` (lecture ciblée, contrôle du diff, vérifications proportionnées). **Audit approfondi** : `pine-audit` (explicite, périmètre annoncé). **Documentation / tutoriel** : `pine-docs` à tout moment. **Publication** : `pine-release` (ne publie jamais) puis, si souhaité, `pine-github` (plan, aperçu, publication sur autorisation).
-
-## Vérifier l'état du workspace
+Extract the ZIP, open Terminal in the extracted package folder, and run:
 
 ```bash
-python3 -m tools.pws_workspace doctor          # diagnostic complet, lecture seule (ne répare jamais)
-python3 -m tools.pws_workspace session-status  # état compact
-python3 -m tools.pws_workspace tooling-status  # outils intégrés (PineTS) : versions, identité, calibration
+python3 install.py
 ```
 
-## Mode de validation TradingView
+The installer lets you choose:
 
-`manual` (défaut) : Claude prépare la matrice de tests, le titulaire observe dans TradingView. `chrome-experimental` : automatisation partielle via le navigateur, explicitement optionnelle, avec fallback manuel. Changement (réservé au titulaire) : `/tv-mode manual` ou `/tv-mode chrome-experimental`, ou `/pws → Maintenance / configuration → Configuration`.
+- an installation folder;
+- English or French;
+- the copyright holder for your own scripts.
 
-## Outils, archives, Git
+**Choose a separate installation folder.** The extracted package is the installer source, not your working installation. The installer refuses to overwrite a non-empty destination.
 
-- **PineTS** (laboratoire local, jamais une validation TradingView) : installé par le titulaire (`npm ci --ignore-scripts` dans `tools/pine_exec`), géré par `pine-tools` (`pinets check-update`, `install <version> --yes`, `verify`, `rollback`) ; aucune mise à jour silencieuse ; une mise à jour rend les calibrations STALE.
-- **Archives et nettoyage** : `pine-maintenance` — entretien déterministe des temporaires recréables au lancement, import vérifié d'archives externes dans `docs/maintenance/archives/` avec index des déplacements. Ces archives locales ne remplacent pas une sauvegarde indépendante du disque.
-- **Git** : local-first ; commits uniquement sur décision explicite du titulaire ; `git push` et l'export GitHub soumis à autorisation explicite. Sans Git installé, PWS fonctionne en mode dégradé documenté (pas d'historique local).
+See [INSTALL.md](INSTALL.md) for detailed instructions, verification steps, and known installation limitations.
 
-## Aller plus loin
+### 3. Open your workspace
 
-- Procédures détaillées : `docs/architecture/OPERATIONS.md`
-- Architecture et justifications : `docs/architecture/ARCHITECTURE.md`
-- Standard Pine canonique : `standards/PINE_SCRIPT_V6_STANDARD.md` (index : `standards/INDEX.md`)
-- Licences : `NOTICE` et `docs/licensing/LICENSING.md` (Apache-2.0 du cœur PWS, AGPL-3.0-only de l'adaptateur PineTS, composants tiers), `docs/licensing/` (profils, modèles, notices tierces)
+In Terminal, switch to the installation folder you selected:
+
+```bash
+cd "/path/to/your/pine-workspace"
+python3 -m tools.pws_workspace doctor
+claude
+```
+
+Once Claude Code is running, enter:
+
+```text
+/pws
+```
+
+`/pws` is a command inside Claude Code, not a shell command.
+
+The guided menu helps you choose your next action and the script to work on.
+
+## Your workspace, your identity
+
+Personal settings are stored in `pws.config.json`, including your identity, language, and workspace preferences. This configuration is excluded from version control and public distributions.
+
+- **English is the default interface language.** French is also available.
+- **Your scripts use your identity.** Pine Workspace does not insert its author's identity as the owner of your projects.
+- **Generated legal templates are in English.** Imported legal documents retain their original content and language.
+- **Licensing is project-specific.** Existing licenses are recorded rather than silently replaced.
+
+You can change your preferences through the configuration menu.
+
+## Everyday workflows
+
+### Start a new project
+
+Open `/pws` or describe your goal to Claude Code. The development workflow considers research, architecture, and project requirements before writing code.
+
+### Continue an existing script
+
+Place the `.pine` file in a project folder under `scripts/<project-name>/` and ask Pine Workspace to import it. The onboarding workflow examines the actual code and establishes its context and licensing information.
+
+### Request focused changes or a deeper review
+
+Routine development uses checks proportionate to the change. A comprehensive audit is a separate, explicitly requested workflow.
+
+Documentation and tutorials can be prepared at any stage; they do not require publication.
+
+### Prepare a publication
+
+Publication preparation and publication itself are separate steps. Review the proposed destination and files before authorizing an export.
+
+Git commits and pushes require authorization. Preparing a publication does not automatically publish a script to GitHub or TradingView.
+
+## Validation: TradingView and PineTS
+
+**TradingView remains the authority for Pine Script compilation and chart behavior.**
+
+The default `manual` mode prepares checks for you to perform in TradingView. The optional `chrome-experimental` mode supports partial browser automation with a manual fallback.
+
+PineTS provides an optional local testing environment. It can help investigate behavior, but a successful PineTS test does not establish TradingView compatibility.
+
+PineTS is not bundled with the distribution. See the [optional PineTS installation instructions](INSTALL.md#5-optional-local-pinets-tests) before installing it. Its installation, updates, verification, and rollback are managed explicitly; it is never updated silently.
+
+## Updates and maintenance
+
+To update an existing installation, open `/pws`, navigate to **Maintenance / configuration → Tools and updates**, and choose **Update Pine-Workspace**.
+
+The guided workflow lets you:
+
+1. Check official releases or select a local package.
+2. Review the changes, limitations, and update plan.
+3. Confirm the operation.
+4. Apply the update and required migrations, then inspect the result.
+
+**Do not reinstall over an existing workspace.** Follow the [migration and rollback guide](docs/architecture/MIGRATION.md).
+
+Workspace archives are stored locally under `docs/maintenance/archives/`. Local archives and Git history do not replace a backup on a separate device or service.
+
+### Useful diagnostics
+
+Run these commands from your installed workspace:
+
+```bash
+# Read-only diagnostic report
+python3 -m tools.pws_workspace doctor
+
+# Compact workspace status
+python3 -m tools.pws_workspace session-status
+
+# Integrated tooling status
+python3 -m tools.pws_workspace tooling-status
+```
+
+The diagnostic command reports findings; it does not automatically repair them.
+
+## Licensing
+
+Pine Workspace is distributed with component-specific licenses:
+
+| Component | License |
+|---|---|
+| **Pine Workspace core** | [Apache License 2.0](LICENSE) |
+| **PineTS adapter** | [GNU AGPL v3 only](tools/pine_exec/LICENSE) |
+| **PineTS engine, installed separately** | Its own license; see [third-party notices](THIRD_PARTY_NOTICES.md) |
+| **Reusable legal templates** | [Apache License 2.0](LICENSE), plus the [Template Permission](docs/licensing/TEMPLATE_PERMISSION.md) |
+
+Your scripts have their own licensing terms. Pine Workspace provides **FREE**, **PRIVATE**, and **COMMERCIAL** profiles and supports recording recognized licenses for imported scripts. A profile does not by itself determine source visibility or publication mode.
+
+See the [license profiles](docs/licensing/PROFILES.md), [licensing matrix](docs/licensing/LICENSING.md), and [NOTICE](NOTICE) for details.
+
+The legal scope of the boundary between the Apache-licensed core and the AGPL-licensed adapter remains unresolved. The documented allocation of licenses and successful technical tests do not constitute legal clearance. Generated legal templates are starting points to adapt, not universally applicable legal advice.
+
+## Documentation
+
+| Guide | Purpose |
+|---|---|
+| [Installation](INSTALL.md) | Requirements, setup, configuration, and installation checks |
+| [Operations](docs/architecture/OPERATIONS.md) | Detailed workspace procedures |
+| [Migration and rollback](docs/architecture/MIGRATION.md) | Updating an existing installation and recovery procedures |
+| [Architecture](docs/architecture/ARCHITECTURE.md) | Workspace structure and design decisions |
+| [Pine Script standard](standards/PINE_SCRIPT_V6_STANDARD.md) | Development conventions |
+| [Standard index](standards/INDEX.md) | Navigation through the standard |
+| [Licensing](docs/licensing/LICENSING.md) | Component licenses, notices, and documented uncertainties |
+
+Some internal reference documents are currently written in French or contain both languages.
+
+## Reporting an issue
+
+Use [GitHub Issues](https://github.com/ricksimpsontrading/Pine-Workspace/issues) to report a reproducible problem.
+
+Include your Pine Workspace version, operating system, the steps to reproduce the issue, and the relevant error message. Use a minimal example where possible.
+
+Before posting, remove credentials, personal configuration, private script source, and any other sensitive information from logs or screenshots.
