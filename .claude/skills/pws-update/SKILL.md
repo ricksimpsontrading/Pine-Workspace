@@ -7,7 +7,27 @@ description: Mise à jour guidée de Pine-Workspace lui-même — version instal
 
 Langue : répondre dans la langue configurée (`language` de `session-status --json`).
 
-Parcours ratifié le 2026-11-08 : `/pws → Maintenance / configuration → Outils et mises à jour → Mettre à jour Pine-Workspace`. Toute la logique est celle de `tools/pws_workspace/update.py`, qui orchestre les autorités existantes `upgrade` (code) et `migrate` (données) : aucune seconde mécanique de copie, de sauvegarde ni de restauration. Aucune recherche réseau au démarrage, aucune mise à jour automatique, aucun jeton ni authentification GitHub pour consulter une release publique.
+Parcours ratifié le 2026-11-08, rendu continu en 2.2.0 : `/pws → Maintenance / configuration → Outils et mises à jour → Mettre à jour Pine-Workspace`. Toute la logique est celle de `tools/pws_workspace/update.py` (enchaîné par `update_guide.py`), qui orchestre les autorités existantes `upgrade` (code) et `migrate` (données) : aucune seconde mécanique de copie, de sauvegarde ni de restauration. Aucune recherche réseau au démarrage, aucune mise à jour automatique, aucun jeton ni authentification GitHub pour consulter une release publique.
+
+## 0. Parcours guidé (par défaut depuis 2.2.0)
+
+Le titulaire n'a pas à connaître ni à enchaîner les sous-commandes : Claude Code les enchaîne, présente la synthèse localisée de chaque étape (`summary.text`, déjà dans la langue configurée ; ne pas la réécrire, ne rien y ajouter d'inventé) et ne pose qu'une seule question de confirmation, sur le plan.
+
+| Étape | Commande | Nature |
+|---|---|---|
+| 1. État local | `python3 -m tools.pws_workspace update guide --stage state` | lecture seule |
+| 2. Recherche | `update guide --stage search` (`--include-prereleases` seulement à la demande explicite du titulaire) | réseau explicite ; rien téléchargé ; erreur ou absence de release ≠ « à jour » |
+| 3–5. Préparation, vérification et plan | `update guide --stage prepare` (release trouvée) ou `update guide --stage prepare --package <zip ou dossier> [--sha256 <empreinte>]` (paquet local) | téléchargement hors de l'installation, provenance, empreinte, archive, manifeste, puis plan lié par empreinte ; seul le fichier de plan est écrit ; sur l'amont de développement : arrêt avant tout téléchargement, avec l'explication `pwsg.dev.explain` |
+| 6. Application | `update guide --stage apply --plan-file <plan> --yes`, seulement après « Appliquer » | `upgrade` puis migrations par le nouveau code, vérification du manifeste, diagnostic |
+| 7. Bilan | synthèse du résultat de l'étape 6 | ce qui a changé, résultat, récupération, action restante |
+
+Règles du parcours :
+
+- **Notes de version** (étape 2) : `notes_state` vaut `available`, `absent` ou `unusable`. Seulement si `available` : proposer un résumé utile dans la langue configurée, tiré **exclusivement** de `notes_text` (rien d'ajouté, aucune promesse), en signalant que le texte d'origine est en anglais ; sinon dire que les changements ne sont pas décrits, sans rien déduire.
+- **Confirmation** : la synthèse de l'étape 3–5 contient `confirm` (question « Appliquer ce plan ? », options Appliquer / Annuler, `binding`). Poser **une seule** question AskUserQuestion avec ces libellés. « Annuler » → aucune commande, répondre `guide.cancelled`. « Appliquer » → étape 6 sans redemander d'autorisation étape par étape. Toute modification du plan (autre paquet, autre version, état local modifié) impose une nouvelle préparation et une nouvelle question ; l'application refuse d'elle-même un plan dont l'empreinte ne correspond plus.
+- **Bilan** : présenter `summary` de l'étape 6 tel quel ; seul `status == applied` est une réussite ; dès que le code est installé, ne jamais dire que rien n'a changé ; un diagnostic `unavailable` ou `not-run` n'est jamais réussi.
+- Permissions techniques de Claude Code : indépendantes du parcours ; ne jamais promettre leur disparition, ne jamais contourner un refus ni élargir les réglages pour faire passer une étape.
+- Les sections ci-dessous décrivent les sous-commandes individuelles, toujours disponibles pour un usage avancé ; leurs règles de lecture valent aussi pour le parcours guidé.
 
 ## 1. Écran d'état (toujours d'abord, lecture seule)
 
@@ -21,7 +41,7 @@ Annoncer, à partir de cette sortie et sans rien improviser :
 2. **Dernière recherche** (`last_check`) : `checked_at` nul → « non recherchée : on ignore si une version plus récente existe » ; sinon la date, le `result` (`update-available`, `up-to-date`, `no-release`, `error`, `ahead` = version installée plus récente que la dernière publiée), la version `latest`, et la `source` (`github` = consultation réelle ; `simulated` = réponse déterministe de test, jamais présentée comme une consultation réelle). Un `error` ou un `no-release` ne devient jamais « à jour ». Un résultat ancien reste un résultat daté : proposer une nouvelle recherche.
 3. **Migrations en attente** avec le code actuel (`pending_migrations`) et **sauvegardes** existantes (`backups`).
 
-## 2. Écrans d'actions (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
+## 2. Écrans d'actions — usage avancé (textes visibles rendus dans la langue configurée — libellés de référence ci-dessous en français —, Retour partout)
 
 ```text
 Écran 1 : Rechercher une nouvelle version · Consulter les changements et limites · Suite… · Retour

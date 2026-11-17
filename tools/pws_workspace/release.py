@@ -127,8 +127,8 @@ def write_artefacts(dist_dir, target, ver, changelog_text="", git=None, force=Fa
                          "node_npm": "optional, local PineTS tests only (engine not shipped)",
                          "platforms": marker.get("platform_support")},
         "install": "python3 install.py  (from the extracted package folder; never over an existing installation)",
-        "update": "%s (menus in French: %s), or: update prepare --package <zip> ; update plan --package-dir … ; "
-                  "update apply --plan-file … --yes" % (_update_path("en"), _update_path("fr")),
+        "update": "%s (menus in French: %s): guided path; or, from a terminal: update guide --stage prepare "
+                  "--package <zip> ; update guide --stage apply --plan-file … --yes" % (_update_path("en"), _update_path("fr")),
         "integrity": "SHA-256 of the archive (zip_sha256; also the .sha256 asset) — integrity only, no cryptographic signature",
         "notes": update.RELEASE_NOTES,
     }

@@ -1,0 +1,18 @@
+{
+  "schema": "pws-calibration-comparison-v1",
+  "note": "Reproducible comparisons run by the guided recalibration (pinets guide). Each case names its source, dataset and independent reference by their case_artifacts names in capabilities.json (hash-checked before any run). The series rules restate the existing contract of tools/tests/test_pine_exec.py (exact concordance of SMA5, PREV and MID; EMA5 against the SMA-seed series within the relative tolerance documented in the known_divergences of ta-ema). A rule is never relaxed to make a new engine pass; a divergence leaves the capabilities STALE and asks for the holder's decision.",
+  "cases": {
+    "calib-core": {
+      "source": "calib-core.pine",
+      "dataset": "lcg-42-60.json",
+      "reference": "calib-core.expected.json",
+      "series": {
+        "SMA5": {"reference": "SMA5", "mode": "exact"},
+        "PREV": {"reference": "PREV", "mode": "exact"},
+        "MID": {"reference": "MID", "mode": "exact"},
+        "EMA5": {"reference": "EMA5_sma_seed", "mode": "relative", "tolerance": 1e-9,
+                 "basis": "known_divergences of ta-ema: SMA-seed convention, float accumulation differences of at most 1 ulp at 12 digits"}
+      }
+    }
+  }
+}

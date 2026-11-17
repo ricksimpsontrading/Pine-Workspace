@@ -893,9 +893,11 @@ def install_plan(root, target_version):
             "requires": "--yes (nothing happens without it)"}
 
 
-def install(root, target_version, yes=False, npm_runner=None):
+def install(root, target_version, yes=False, npm_runner=None, precheck=None):
     """Execute the install plan. `npm_runner(cmd, cwd)` is injectable for
-    tests; default runs npm. Returns a report; stops at the first failure
+    tests; default runs npm. `precheck()` (optional) runs under the shared
+    mutation lock before anything is written and refuses the installation
+    when it returns a message. Returns a report; stops at the first failure
     (the rollback point already exists at that moment)."""
     plan = install_plan(root, target_version)
     if plan["problems"]:
@@ -907,6 +909,10 @@ def install(root, target_version, yes=False, npm_runner=None):
                 "error": "rollback point cannot be saved — aborting before any change: %s" % ROLLBACK_TREE_REFUSED}
     try:
         with _lock(root):
+            if precheck is not None:       # caller's re-check UNDER the lock, before the first change (2.2.0)
+                problem = precheck()
+                if problem:
+                    return {"ok": False, "plan": plan, "error": "refused before any change: %s" % problem}
             return _install_locked(root, target_version, plan, npm_runner)
     except TimeoutError:
         return {"ok": False, "plan": plan, "error": "another PWS mutation holds the lock — nothing changed"}

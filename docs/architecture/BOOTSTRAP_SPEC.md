@@ -22,7 +22,8 @@ Legacy TradingView mode amendment (§19A: provenance of an explicit choice; conf
 Amendment of the licences of imported scripts (§45.2, §45.4, §45.4bis: compatible extension of schema 3, finding C-19) and of the actual-visibility check before sending a closed source (guided GitHub export path, finding I-06) decided by the holder: 2026-11-13  
 Amendment of the original legal documents of imported scripts (§45.2, §45.4, §45.4bis, guided GitHub export path: `license.documents`, compatible extension of schema 3, export as is) and of the destination identity check for every send (guided GitHub export path) requested by the holder: 2026-11-14  
 Reference-documentation language amendment (this specification translated into English, faithfully: requirements, section numbers, identifiers and decision references unchanged) and explicit statement of the configured language at session start (§40.2, §40.3) requested by the holder: 2026-11-14  
-Amendment aligning the PWS menu description on the generated menu (§1.3, §40.5, with the TradingView mode route in the `tv-mode` section and §61) and wording the Stop hook messages in the configured language (§41.3) requested by the holder: 2026-11-14
+Amendment aligning the PWS menu description on the generated menu (§1.3, §40.5, with the TradingView mode route in the `tv-mode` section and §61) and wording the Stop hook messages in the configured language (§41.3) requested by the holder: 2026-11-14  
+Permission amendment (§20.2: no PWS ask rule for local commits, local builds, update searches and downloads without application; Git/GitHub readings allowed; confirmations kept for the main publication, deletion, restoration, installation and update-application commands) decided by the holder: 2026-11-14
 
 ---
 
@@ -1214,17 +1215,17 @@ Principles:
 
 - routine Git reading: allowable;
 - `git diff`, `git status`, `git log`, `git show`: normal use;
-- `git commit`: user confirmation;
-- creation/modification/deletion of a remote: user confirmation;
+- `git commit` (local): no PWS ask rule since 2.2.0 — Claude Code decides as usual; a commit stays subject to the holder's agreement (CLAUDE.md);
+- reading the remotes (`git remote`, `git remote -v`, `git remote get-url`) and the local tags (`git tag`): allowed; creation/modification/deletion/renaming of a remote: user confirmation; deletion or forced replacement of a tag: user confirmation;
 - `git push`: user confirmation (never a general authorization; `--force` refused);
-- `gh`: read-only allowed (`auth status`, `repo view`); `auth login`, `repo create`: confirmation; `repo delete`, `api`, `secret`, `auth token`: refusal;
-- read-only PWS subcommands: allowable; mutating subcommands with an external or irreversible effect (`github publish`, `github fetch`, `pinets install`, `pinets rollback`, `pinets check-update`, `migrate --apply`, `migrate --rollback`, `maintenance archives-remove-source`): confirmation;
+- `gh`: read-only allowed (`auth status`, `repo view`, `release view`, `release list`); `auth login`, `repo create`, `release create|edit|upload|delete|delete-asset`: confirmation; `repo delete`, `api`, `secret`, `auth token`: refusal;
+- read-only PWS subcommands: allowable; mutating subcommands with an external or irreversible effect (`github publish`, `github fetch`, `pinets install`, `pinets rollback`, `migrate --apply`, `migrate --rollback`, `maintenance archives-remove-source`, `update apply`, `upgrade`): confirmation; local builds (`build-distribution`, `build-release`), update searches (`update check`, `pinets check-update`) and update downloads prepared locally without application (`update fetch`): no PWS ask rule since 2.2.0 — Claude Code decides as usual;
 - destructive Git commands: confirmation or refusal depending on severity;
 - permission bypass: do not enable it from the project.
 
 Check the current `allow` / `ask` / `deny` syntax.
 
-Never add a broad permission only to avoid prompts.
+Never add a broad permission only to avoid prompts. Removing an ask rule adds no authorization: Claude Code's normal decision applies (in auto mode, its classifier, which may still prompt), and a technical permission never replaces the authorization of the mission. The rules match the command text they recognize; they do not guarantee a confirmation for every possible spelling of an act.
 
 ### 20.3 Hooks
 

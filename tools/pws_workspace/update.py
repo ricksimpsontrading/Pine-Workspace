@@ -534,12 +534,24 @@ def _prepared_info(package_dir):
     return None
 
 
-def _plan_hash(root, pkg_manifest, up, may_apply):
+def _plan_hash(root, pkg_manifest, up, may_apply, origin=None, provenance=None, archive_sha256=None):
+    """Binds the approval to the installation (state of each core entry), the
+    package (every file hash) and, since 2.2.0, to its origin, its recorded
+    provenance and the archive verified by fetch/prepare."""
     return core.sha256_bytes(core.canonical_json({
         "installation": str(root), "from": up["from_version"], "to": up["to_version"],
         "package_files": pkg_manifest["files"],
         "entries": [(e["path"], e["action"]) for e in up["entries"]],
-        "migrations_may_apply": may_apply}).encode("utf-8"))
+        "migrations_may_apply": may_apply, "origin": origin, "provenance": provenance,
+        "archive_sha256": archive_sha256}).encode("utf-8"))
+
+
+def _prepared_archive_sha(prepared):
+    if not isinstance(prepared, dict):
+        return None
+    release = prepared.get("release") if isinstance(prepared.get("release"), dict) else {}
+    sha = release.get("zip_sha256") or prepared.get("sha256")
+    return sha if isinstance(sha, str) else None
 
 
 def plan(root, package_dir, origin=None, write=True, plan_file=None):
@@ -610,7 +622,9 @@ def plan(root, package_dir, origin=None, write=True, plan_file=None):
     out["backups"] = {"upgrade": upgrade.list_backups(root), "migration": migration.list_backups(root),
                       "new_backup_before_apply": str(upgrade.BACKUP_REL) + "/<stamp>/"}
     out["rollback"] = rollback_info(root)["order"]
-    out["plan_hash"] = _plan_hash(root, pkg_manifest, up, out["migrations_may_apply"])
+    out["archive_sha256"] = _prepared_archive_sha(prepared)
+    out["plan_hash"] = _plan_hash(root, pkg_manifest, up, out["migrations_may_apply"], out["origin"],
+                                  out["provenance"], out["archive_sha256"])
     out["ok"] = not out["refusals"]
     # a kept local file whose new version already sits beside it (.pws-new, verified) needs nothing more
     pending_kept = [e["path"] for e in up["entries"] if e["action"] == "keep-local"

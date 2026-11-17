@@ -93,7 +93,9 @@ cd tools/pine_exec && npm ci --ignore-scripts
 PineTS is installed by **you**, from npm, at the exact version pinned in `package-lock.json`,
 under PineTS's own licence (AGPL-3.0-only — see `THIRD_PARTY_NOTICES.md`). PWS never updates it
 silently; `python3 -m tools.pws_workspace pinets check-update` is an explicit query, and
-`pinets install <version> --yes` an explicit, reversible operation. PineTS is a local laboratory;
+`pinets install <version> --yes` an explicit, reversible operation; the guided path
+(`/pws → Maintenance / configuration → Tools and updates → PineTS`) chains them with one
+confirmation. PineTS is a local laboratory;
 TradingView remains the validation authority.
 
 ## 6. Start

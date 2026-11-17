@@ -112,7 +112,9 @@ class TestPineExec(unittest.TestCase):
                       "capabilities_used", "normalized_payload_sha256"):
             self.assertIn(field, run)
             self.assertIsNotNone(run[field], field)
-        self.assertEqual(run["pinets_version"], "0.10.0")
+        # the version actually pinned (not a constant: a guided PineTS update must leave this test valid)
+        pinned = json.loads((PINE_EXEC / "package.json").read_text(encoding="utf-8"))["dependencies"]["pinets"]
+        self.assertEqual(run["pinets_version"], pinned)
         self.assertEqual(run["normalization_schema"], "pws-pinets-norm-v2")
         self.assertEqual(run["executor_fingerprint"],
                          calib["environment"]["executor_fingerprint"],

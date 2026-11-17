@@ -92,11 +92,11 @@ _CATALOGUE = {
     "menu.maintenance.tools.desc": {"en": "PineTS on one side, the update of Pine-Workspace itself on the other.",
                                     "fr": "PineTS d'un côté, la mise à jour de Pine-Workspace lui-même de l'autre."},
     "menu.tools.pinets": {"en": "PineTS", "fr": "PineTS"},
-    "menu.tools.pinets.desc": {"en": "PineTS state, installation check, update search, install, recalibration, return to a saved version.",
-                               "fr": "État de PineTS, vérification de l'installation, recherche de mise à jour, installation, recalibration, retour à une version sauvegardée."},
+    "menu.tools.pinets.desc": {"en": "Guided update of PineTS: state, search, plan, one confirmation, install, checks and recalibration; return to a saved version.",
+                               "fr": "Mise à jour guidée de PineTS : état, recherche, plan, une confirmation, installation, vérifications et recalibration ; retour à une version sauvegardée."},
     "menu.tools.update": {"en": "Update Pine-Workspace", "fr": "Mettre à jour Pine-Workspace"},
-    "menu.tools.update.desc": {"en": "Installed version, explicit search for a new version, plan before applying, rollback. Nothing is applied without your confirmation.",
-                               "fr": "Version installée, recherche explicite d'une nouvelle version, plan avant application, retour arrière. Rien n'est appliqué sans votre confirmation."},
+    "menu.tools.update.desc": {"en": "Guided update: state, search, changes, verified plan, one confirmation, application and summary. Nothing is applied without your confirmation.",
+                               "fr": "Mise à jour guidée : état, recherche, changements, plan vérifié, une confirmation, application et bilan. Rien n'est appliqué sans votre confirmation."},
     "menu.maintenance.archives": {"en": "Archives and cleanup", "fr": "Archives et nettoyage"},
     "menu.maintenance.archives.desc": {"en": "Cleanup of recreatable temporary files and import of archives.",
                                        "fr": "Entretien des fichiers temporaires recréables et import d'archives."},
@@ -314,6 +314,12 @@ _CATALOGUE = {
     "cleanup.skipped_lock": {"en": "cleanup skipped: another maintenance run holds the lock",
                              "fr": "entretien ignoré : une autre exécution détient le verrou"},
 }
+
+
+# guided update paths (2.2.0): texts kept in their own module, one catalogue
+from .guide_text import CATALOGUE as _GUIDE_CATALOGUE  # noqa: E402
+
+_CATALOGUE.update(_GUIDE_CATALOGUE)
 
 
 def normalize_language(value):

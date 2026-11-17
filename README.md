@@ -40,10 +40,10 @@ Pine Workspace runs inside Claude Code. Install and configure Claude Code before
 
 From the [Releases page](https://github.com/ricksimpsontrading/Pine-Workspace/releases), download the packaged ZIP and its matching `.sha256` file.
 
-For version 2.1.1, place both files in the same folder and run this command from that folder:
+For version 2.2.0, place both files in the same folder and run this command from that folder:
 
 ```bash
-shasum -a 256 -c pine-workspace-2.1.1.zip.sha256
+shasum -a 256 -c pine-workspace-2.2.0.zip.sha256
 ```
 
 The result should report `OK`. This checks download integrity; the release does not include a cryptographic signature.
@@ -127,7 +127,7 @@ The default `manual` mode prepares checks for you to perform in TradingView. The
 
 PineTS provides an optional local testing environment. It can help investigate behavior, but a successful PineTS test does not establish TradingView compatibility.
 
-PineTS is not bundled with the distribution. See the [optional PineTS installation instructions](INSTALL.md#5-optional-local-pinets-tests) before installing it. Its installation, updates, verification, and rollback are managed explicitly; it is never updated silently.
+PineTS is not bundled with the distribution. See the [optional PineTS installation instructions](INSTALL.md#5-optional-local-pinets-tests) before installing it. Its installation, updates, verification, and rollback are managed explicitly; it is never updated silently. Once it is installed, **Tools and updates → PineTS** guides an update of the engine: search, changes and licence review, one confirmation of a verified plan, verified restore point, installation, checks, and recalibration against the existing independent references.
 
 ## Updates and maintenance
 
@@ -135,10 +135,10 @@ To update an existing installation, open `/pws`, navigate to **Maintenance / con
 
 The guided workflow lets you:
 
-1. Check official releases or select a local package.
-2. Review the changes, limitations, and update plan.
-3. Confirm the operation.
-4. Apply the update and required migrations, then inspect the result.
+1. See the installed version and search the official releases (or select a local package).
+2. Review the changes, limitations, and the verified update plan: what will change, what is kept, and the checks.
+3. Confirm the plan once.
+4. Let the update and the planned migrations be applied and checked, then read the summary: result, remaining action, and recovery.
 
 **Do not reinstall over an existing workspace.** Follow the [migration and rollback guide](docs/architecture/MIGRATION.md).
 

@@ -350,9 +350,17 @@ def _apply_locked(root, package, p, copy, report):
         if a == "keep-local":
             touched.append(e["path"] + ".pws-new")
     touched.append(MARKER)
-    bdir = _new_backup_dir(root)
+    try:
+        bdir = _new_backup_dir(root)
+    except OSError as exc:      # backup impossible: refused before the first write (2.2.0)
+        report["error"] = "backup folder could not be created — nothing changed: %s" % exc
+        return report
     report["backup"] = str(bdir)
-    manifest, problems = _backup(root, bdir, touched)
+    try:
+        manifest, problems = _backup(root, bdir, touched)
+    except OSError as exc:
+        manifest = {"stamp": bdir.name, "files": [], "created_at": core.precise_now()}
+        problems = ["backup copy failed: %s" % exc]
     manifest["from_version"] = p["from_version"]
     manifest["to_version"] = p["to_version"]
     manifest["migrations_at_apply"] = _migration_records(root)

@@ -103,10 +103,22 @@ def _main(argv=None):
     sub.add_parser("tooling-status", help="read-only view of the integrated tools (PineTS)")
     pn = sub.add_parser("pinets", help="PineTS lifecycle")
     pn.add_argument("action", choices=("status", "verify", "check-update", "install",
-                                       "rollback", "recalibrate-plan"))
-    pn.add_argument("version", nargs="?", help="exact version for install/rollback")
+                                       "rollback", "recalibrate-plan", "guide"))
+    pn.add_argument("version", nargs="?", help="exact version for install/rollback/guide prepare")
     pn.add_argument("--yes", action="store_true")
     pn.add_argument("--record", action="store_true", help="verify: record the artifact hash")
+    pn.add_argument("--stage", choices=("state", "search", "prepare", "apply"), default="state",
+                    help="guide: stage of the guided path (2.2.0)")
+    pn.add_argument("--plan-file", help="guide prepare: where to write the plan; guide apply: the approved plan")
+    pn.add_argument("--dest", help="guide prepare: download folder (default: temporary, outside the workspace)")
+    pn.add_argument("--no-recalibrate", action="store_true", help="guide prepare: plan the installation without "
+                                                                  "the recalibration")
+    pn.add_argument("--recalibrate-only", action="store_true", help="guide prepare: plan a recalibration of the "
+                                                                    "current engine")
+    pn.add_argument("--text", action="store_true", help="guide: print the localized summary only")
+    pn.add_argument("--accept-license-text", metavar="SHA256",
+                    help="guide prepare: the holder's explicit decision to accept THIS changed LICENSE text "
+                         "(its SHA-256, shown by a previous preparation) for the version prepared")
 
     gh = sub.add_parser("github", help="GitHub export workflow")
     gh.add_argument("action", choices=("status", "destinations", "destination-add",
@@ -182,7 +194,11 @@ def _main(argv=None):
 
     ud = sub.add_parser("update", help="guided update of an INSTALLED core from the official releases or a "
                                        "local package (orchestrates `upgrade` then `migrate`; nothing automatic)")
-    ud.add_argument("action", choices=("status", "check", "fetch", "prepare", "plan", "apply", "rollback-info"))
+    ud.add_argument("action", choices=("status", "check", "fetch", "prepare", "plan", "apply", "rollback-info",
+                                       "guide"))
+    ud.add_argument("--stage", choices=("state", "search", "prepare", "apply"), default="state",
+                    help="guide: stage of the guided path (2.2.0)")
+    ud.add_argument("--text", action="store_true", help="guide: print the localized summary only")
     ud.add_argument("--tag", help="fetch: tag of the release found by the last search")
     ud.add_argument("--package", help="prepare: local archive (.zip) or extracted package folder")
     ud.add_argument("--sha256", help="prepare: expected SHA-256 of the local archive")
@@ -382,6 +398,24 @@ def _main(argv=None):
             r = tooling.rollback(root, args.version, yes=args.yes)
             _p(r)
             return 0 if r["ok"] else 1
+        elif args.action == "guide":
+            from . import pinets_guide
+            st = args.stage
+            if st == "state":
+                r = pinets_guide.state(root)
+            elif st == "search":
+                r = pinets_guide.search(root)
+            elif st == "prepare":
+                r = pinets_guide.prepare(root, target=args.version, recalibrate=not args.no_recalibrate,
+                                         dest=args.dest, plan_file=args.plan_file,
+                                         recalibrate_only=args.recalibrate_only,
+                                         accept_license_text=args.accept_license_text)
+            else:
+                if not args.plan_file:
+                    _p({"ok": False, "error": "--plan-file <approved plan> is required"})
+                    return 1
+                r = pinets_guide.apply(root, args.plan_file, yes=args.yes)
+            return _guide_out(r, args.text)
         else:
             _p(tooling.recalibrate_plan(root))
     elif args.cmd == "github":
@@ -553,6 +587,22 @@ def _main(argv=None):
             _p(update.status(root))
         elif a == "rollback-info":
             _p(update.rollback_info(root))
+        elif a == "guide":
+            from . import update_guide
+            st = args.stage
+            if st == "state":
+                r = update_guide.state(root)
+            elif st == "search":
+                r = update_guide.search(root, include_prereleases=args.include_prereleases)
+            elif st == "prepare":
+                r = update_guide.prepare(root, package=args.package, sha256=args.sha256, dest=args.dest,
+                                         plan_file=args.plan_file)
+            else:
+                if not args.plan_file:
+                    _p({"ok": False, "error": "--plan-file <approved plan> is required"})
+                    return 1
+                r = update_guide.apply(root, args.plan_file, yes=args.yes)
+            return _guide_out(r, args.text)
         elif a == "check":
             r = update.check(root, include_prereleases=args.include_prereleases)
             _p(r)
@@ -588,6 +638,25 @@ def _main(argv=None):
         _p(r)
         return 0 if r["ok"] else 1
     return 0
+
+
+def _guide_out(r, text_only):
+    """Guided paths: the whole result as JSON (summary included), or only the
+    localized summary text. Exit code 0 when the stage reached its expected
+    outcome: state / search answered (a failed search is 1), a plan written,
+    an application declared successful."""
+    if text_only:
+        print(r["summary"]["text"])
+    else:
+        _p(r)
+    stage = r.get("stage")
+    if stage == "state":
+        return 0
+    if stage == "search":
+        return 1 if (r.get("result") or {}).get("result") == "error" else 0
+    if stage == "prepare":
+        return 0 if r.get("applicable") else 1
+    return 0 if r.get("ok") else 1
 
 
 def main(argv=None):

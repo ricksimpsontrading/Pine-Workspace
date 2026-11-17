@@ -11,6 +11,118 @@ doctor). A published version is never replaced silently: a corrected delivery ge
 Each entry lists what changed and the limits that remain, so that the guided update path can show
 them before anything is applied.
 
+## [2.2.0] — Guided updates of Pine Workspace and PineTS, fewer permission prompts (prepared 2026-11-17)
+
+### What this version is
+
+A compatible evolution of the 2.1.1 core. It makes the update of Pine Workspace and of the PineTS
+engine one continuous guided path from the existing menu entries, and it includes the lightening of
+the shared permission rules prepared as 2.1.2 (never published: its changes are part of 2.2.0). The
+existing commands, states and protections are reused: no second installer, migration engine or
+restoration mechanism. No data migration other than the usual recording of the version (m004).
+
+### Added — guided update paths
+
+- `/pws → Maintenance / configuration → Tools and updates` now leads, for Pine Workspace and for
+  PineTS, through the same seven steps: local state, explicit search at the official source, changes
+  and limits, preparation and verification, a precise plan with ONE confirmation, application with the
+  planned checks, and a faithful summary with the remaining action and the recovery elements. Claude
+  Code chains the steps; the user does not have to know the subcommands. Each step returns a short
+  summary in the configured language (what will change, what is kept, the planned checks, the result,
+  the remaining action); the technical details stay in the JSON result.
+- Pine Workspace (`update guide --stage state|search|prepare|apply`): orchestrates the existing
+  `update check`, `fetch` / `prepare`, `plan` and `apply` (code by `upgrade`, then the planned data
+  migrations by the new code, verification of the installed files, diagnostic). Release notes are
+  classified available / absent / unusable and are never replaced by an invented description; a failed
+  search or an absence of release is never "up to date"; pre-releases only on request. On the
+  development upstream the path stops before any download and explains why.
+- PineTS (`pinets guide --stage state|search|prepare|apply`): one exact version is prepared without
+  installing anything — registry metadata, download of the npm archive outside the workspace (scripts
+  disabled), integrity equal to the registry value, archive read without extraction (package.json,
+  LICENSE, the artifact loaded by the adapter and its hash), Node / npm prerequisites, licence compared
+  with the recorded assessment (a different licence identifier stops the plan for the holder's
+  decision), release notes published on the repository declared by the package, recalibration cases.
+  After the confirmation: re-check of the engine against the plan, verified rollback point (nothing is
+  installed if it cannot be saved), installation by the existing `pinets install`, identity of the
+  engine obtained against the archive of the plan, `pinets verify`, then the recalibration.
+- Guided recalibration (`recalibration.py`, comparison contract
+  `tools/pine_exec/calibration/comparisons.json`): the existing calibration case is executed by the
+  adapter's runner and compared with its independent reference (exact, or within the documented
+  tolerance of `ta-ema`). Only the capabilities actually re-exercised with success become CURRENT;
+  `capability_status` and `known_divergences` are never changed (CURRENT never becomes GATING); the
+  references are hash-checked and never rewritten; runs, comparison and the previous calibration file
+  are kept with their provenance under `.claude/runtime/pinets-recalibration/`. A divergence or an
+  unconcluded case leaves the capabilities STALE and asks for the holder's decision. A recalibration is
+  declared successful only when the calibration file was written and re-read as decided; a run report
+  is used only when coherent with its exit code and naming the engine executed, the adapter's
+  normalization schema, the executor fingerprint and the calibrated source and dataset; NaN,
+  infinities and wrongly typed values are invalid.
+- A PineTS plan that includes the recalibration is bound to the comparison contract and to every
+  artifact it names; a change refuses the application before any change of the engine (checked again
+  under the shared lock). A LICENSE text that differs from the recorded examined copy (same identifier)
+  stops the plan until an explicit decision of the holder bound to that exact text is recorded in a new
+  plan; a different identifier, or no recorded reference, stops it for a new licence analysis. A recalibration of
+  the current engine alone can be planned the same way.
+
+### Changed
+
+- The plan of a Pine Workspace update is also bound to the origin, the recorded provenance and the
+  verified archive of the package: a change after the approval refuses the application, nothing
+  changed.
+- A core update whose backup folder cannot be created is refused before the first write ("nothing
+  changed") instead of ending on an internal error.
+- Ask rules added for the two guided application steps (`update guide --stage apply …`, `pinets guide
+  --stage apply …`), like `update apply` and `pinets install`; the states, searches and preparations of
+  the guided paths have none.
+- Permissions (prepared as 2.1.2): PWS no longer imposes a systematic confirmation (ask rule) on
+  local commits, local builds (`build-distribution`, `build-release`), update searches (`update check`, `pinets check-update`) and
+  update downloads prepared locally without application (`update fetch`). Removing these rules grants
+  nothing: Claude Code's normal mechanism decides, and in auto mode its classifier may still ask for
+  confirmation or refuse.
+- Git and GitHub readings are allowed: `git remote`, `git remote -v`, `git remote get-url`, `git tag`
+  (listing), `gh release view`, `gh release list`. The former broad ask rules on `git remote`, `git tag`
+  and `gh release` are narrowed to the modifying forms: adding, changing, removing or renaming a remote;
+  deleting or force-replacing a tag; creating, editing, uploading to or deleting a release.
+- Explicit ask rules are kept for the main publication, deletion, restoration, installation and
+  update-application commands (`git push`, `github publish`, `github fetch`, `update apply`, `upgrade`,
+  `migrate --apply` and `--rollback`, `pinets install`, `rollback` and `verify --record`, cleanup
+  `--execute`, archive import and source removal, destination removal, licence writes, `gh repo create`,
+  `gh auth login`, `init`). The deny rules and the hooks are unchanged; no general authorization of
+  Bash, Python, Node or the PWS tool is added, and no permission mode is set by the project.
+- Documentation: specification §20.2, file contracts and the operations guide (new "Permissions
+  (Claude Code)" section) describe the rules and their limits; the operations guide also describes the
+  guided update paths ("Guided updates" section), the skills `pws-update` and `pine-tools` follow them.
+
+### Limits
+
+- The guided paths do not make the code update and the data migrations atomic, and add no automatic
+  rollback of the whole path: the summary names the backups and the existing restoration commands.
+- PineTS compatibility is established only by the executed comparisons, within the calibration case
+  (one synthetic dataset, a few capabilities); a version number or a successful npm installation never
+  proves it. The release notes of PineTS come from the repository declared by the package; their
+  correspondence with the npm artifact is not proven. The licence review is documentary, not a legal
+  guarantee; the recorded licence copy is never updated automatically.
+- The integrity checks (SHA-256 published with a release, npm registry integrity) do not prove
+  authenticity: no signature chain exists.
+- The tests of the paths use isolated installations and simulated network answers; the rendering of the
+  summaries and of the confirmation question in Claude Code is an interface observation still to be made.
+- The rules match the command text they recognize; they do not guarantee a confirmation for every
+  possible variant of an act (for example `git -C <dir> remote add`, `git tag -fa`, `gh -R <repo> release
+  create`). Personal and managed settings may change the result: an ask or deny rule from any settings
+  file still applies, and an allow rule never outranks an ask rule.
+- A technical permission never replaces the authorization of the mission: publishing still requires
+  the holder's explicit agreement in the workflows concerned.
+- An installation whose `.claude/settings.json` was modified locally keeps its file: the update plan
+  lists it as kept locally (`keep-local`) and writes the new rules beside it as
+  `.claude/settings.json.pws-new`, to merge by hand; they are not applied automatically to that file.
+- The limits listed for 2.1.1 still apply.
+
+### Licence
+
+Unchanged: Apache License 2.0 for the core (`LICENSE`) and GNU AGPL v3 only for the PineTS thin
+adapter (`tools/pine_exec/LICENSE`); third-party notices in `THIRD_PARTY_NOTICES.md`; the Template
+Permission for the licence templates (`docs/licensing/TEMPLATE_PERMISSION.md`).
+
 ## [2.1.1] — PWS menu banner, English reference documentation, language rule (prepared 2026-11-14)
 
 ### What this version is
