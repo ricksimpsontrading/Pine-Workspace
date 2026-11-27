@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+"""Test stand-in for macOS osascript (save window / confirmation). Plays the next answer of the
+JSON plan in $FAKE_OSA_PLAN ([{"stdout", "rc", "stderr"}...]) and logs its argv to $FAKE_OSA_LOG."""
+import json, os, sys
+log, plan = os.environ["FAKE_OSA_LOG"], os.environ["FAKE_OSA_PLAN"]
+with open(log, "a") as f: f.write(json.dumps(sys.argv[1:]) + "\n")
+steps = json.load(open(plan)); step = steps.pop(0) if steps else {"rc": 1, "stderr": "no plan (-1)"}
+json.dump(steps, open(plan, "w"))
+sys.stdout.write(step.get("stdout", "")); sys.stderr.write(step.get("stderr", ""))
+sys.exit(step.get("rc", 0))

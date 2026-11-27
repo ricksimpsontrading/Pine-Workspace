@@ -81,6 +81,8 @@ FILE_MAP = (
     ("tools/pine_exec/normalize.mjs", "tools/pine_exec/normalize.mjs"),
     ("tools/pine_exec/datasets.mjs", "tools/pine_exec/datasets.mjs"),
     ("tools/pine_exec/fingerprint.mjs", "tools/pine_exec/fingerprint.mjs"),
+    # imported by runner.mjs at load time: without it no local test runs, numeric included
+    ("tools/pine_exec/graphics.mjs", "tools/pine_exec/graphics.mjs"),
     ("tools/pine_exec/package.json", "tools/pine_exec/package.json"),
     ("tools/pine_exec/package-lock.json", "tools/pine_exec/package-lock.json"),
     ("tools/pine_exec/LICENSE", "tools/pine_exec/LICENSE"),            # adapter: GNU AGPL v3 only
@@ -100,9 +102,20 @@ DIR_MAP = (
     ("tools/tests", "tools/tests"),
     ("tools/pine_exec/calibration", "tools/pine_exec/calibration"),
 )
+# Components the CLI ships by default (`build-release` / `build-distribution`; `--without-vela` makes a special
+# numeric-only build). distribution.build() itself ships them only when asked (`optional`). Without the browser
+# chart the numeric test is complete; the chart option is not offered and a chart request is refused.
+OPTIONAL_DIRS = {
+    # browser chart (Vela) of the local test: page script + locked package manifest; node_modules is
+    # never shipped (installed from the lockfile: `npm ci --ignore-scripts` in tools/vela_view). The
+    # reader it relies on (annex_reader, reader contract v1) is part of the core.
+    "vela-view": (("tools/vela_view", "tools/vela_view"),),
+}
+OPTIONAL_REQUIRES = {}
 SKIP_NAMES = {"__pycache__", ".DS_Store", "node_modules"}
 SKIP_SUFFIXES = (".pyc", ".lock")
 NEVER_SHIP = ("scripts", "docs/maintenance", ".claude/runtime", ".claude/settings.local.json",
+              "tools/visual",                 # terminal viewers (iTerm2, Terminal.app): withdrawn, never shipped
               "pws.config.json", "docs/architecture/BOOTSTRAP_REPORT.md",
               "docs/architecture/CORRECTIVE_REPORT_2026-09-05.md")
 
@@ -389,19 +402,28 @@ def scan_personal(tree, patterns):
     return hits
 
 
-def build(root, target, force=False, account=None):
+def build(root, target, force=False, account=None, optional=()):
     """Build the distribution into `target`. `account` overrides the system
     account name used by the personal-data scan (tests: simulated environment).
     The target is classified before anything is written or deleted; a genuine
     previous build is replaced only with `force`, by building beside it and
-    swapping (the old tree is removed after a second check)."""
+    swapping (the old tree is removed after a second check). `optional` names
+    OPTIONAL_DIRS components to ship as well (default: none)."""
     root = Path(root)
+    optional = set(optional or ())
+    optional |= {r for o in list(optional) for r in OPTIONAL_REQUIRES.get(o, ())}
+    optional = tuple(sorted(optional))
+    unknown = [o for o in optional if o not in OPTIONAL_DIRS]
+    if unknown:
+        return {"ok": False, "clean": False, "error": "unknown optional component(s): %s (known: %s)"
+                % (", ".join(unknown), ", ".join(sorted(OPTIONAL_DIRS))), "target": str(target)}
+    dir_map = DIR_MAP + tuple(pair for o in optional for pair in OPTIONAL_DIRS[o])
     target = Path(target)
     kind, message = classify_target(root, target)
     if kind == "refused" or (kind == "previous-build" and not force):
         return {"ok": False, "clean": False, "error": message, "target": str(target), "target_kind": kind}
     missing = [src for src, _ in FILE_MAP if not (root / src).is_file()]
-    missing += [src for src, _ in DIR_MAP if not (root / src).is_dir()]
+    missing += [src for src, _ in dir_map if not (root / src).is_dir()]
     if missing:
         return {"ok": False, "clean": False, "error": "source files missing: %s" % ", ".join(missing),
                 "target": str(target), "target_kind": kind}
@@ -421,7 +443,7 @@ def build(root, target, force=False, account=None):
         _ship(root / src, d)
         copied.append(d)
     shipped = {work / dst for _, dst in FILE_MAP}          # LICENSING.md: FILE_MAP and DIR_MAP, copied once
-    for src, dst in DIR_MAP:
+    for src, dst in dir_map:
         _copy_tree(root / src, work / dst, copied, root=root, tracked=tracked, untracked=untracked,
                    skip=shipped)
     (work / "VERSION").write_text(version.WORKSPACE_VERSION + "\n", encoding="utf-8")
@@ -435,10 +457,12 @@ def build(root, target, force=False, account=None):
         "source_commit": git.get("commit"),
         "source_dirty": git.get("dirty"),
         "personal_pattern_hits": hits,
+        "optional_components": list(optional),
     })
     result = {"ok": not leaked and not hits, "clean": not hits and not leaked, "target": str(target),
               "target_kind": kind, "files": len(marker["files"]), "leaked": leaked,
               "personal_pattern_hits": hits, "untracked_not_shipped": sorted(untracked),
+              "optional_components": list(optional),
               "marker": str(target / MARKER)}
     if kind == "previous-build":
         # swap: the new tree is complete and verified; the old one is re-checked before removal

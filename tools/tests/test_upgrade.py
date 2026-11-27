@@ -39,7 +39,7 @@ def _build_packages(base):
 
 
 def _install(pkg, target, home):
-    env = dict(os.environ, HOME=str(home))
+    env = dict(os.environ, HOME=str(home), PWS_INSTALL_SKIP_COMPONENTS="1")
     proc = subprocess.run([sys.executable, str(pkg / "install.py"), "--target", str(target),
                            "--language", "fr", "--copyright-holder", "Holder Test", "--yes"],
                           capture_output=True, text=True, env=env)

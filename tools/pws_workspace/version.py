@@ -20,7 +20,7 @@ consistency check of `build-release` against the top entry of CHANGELOG.md.
 """
 import re
 
-WORKSPACE_VERSION = "2.2.0"
+WORKSPACE_VERSION = "2.3.0"
 CONFIG_SCHEMA_VERSION = 1
 MANIFEST_SCHEMA_VERSION = 3
 MANIFEST_SCHEMA_LEGACY = 1

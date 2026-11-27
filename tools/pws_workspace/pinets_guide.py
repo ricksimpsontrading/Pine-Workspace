@@ -160,12 +160,15 @@ def _sri_sha512(path):
     return "sha512-" + base64.b64encode(h.digest()).decode("ascii")
 
 
-def read_tarball(path):
+def read_tarball(path, wanted=None, entry=None, optional=()):
     """Read an npm archive WITHOUT extracting it: every member must be a
     regular file or folder under `package/`, with no absolute path, `..`,
     link or device. Returns (files {relative name: bytes} for the members
-    needed, artifact sha256, problems)."""
-    wanted = {"package.json", "LICENSE", ENTRY[2:]}
+    needed, artifact sha256, problems). `wanted`/`entry` default to PineTS's
+    (package.json, LICENSE, the runner's entry); another component (Vela) passes
+    its own; members in `optional` are read when present, never required."""
+    entry = entry or ENTRY
+    wanted = set(wanted or {"package.json", "LICENSE", entry[2:]}) | {entry[2:]} | set(optional)
     files, problems, artifact_sha = {}, [], None
     try:
         with tarfile.open(str(path), "r:gz") as tf:
@@ -186,11 +189,11 @@ def read_tarball(path):
                 if m.isreg() and rel in wanted:
                     data = tf.extractfile(m).read()
                     files[rel] = data
-                    if rel == ENTRY[2:]:
+                    if rel == entry[2:]:
                         artifact_sha = hashlib.sha256(data).hexdigest()
     except (tarfile.TarError, OSError, EOFError) as exc:
         return {}, None, ["archive unreadable: %s" % exc]
-    for rel in sorted(wanted - set(files)):
+    for rel in sorted(wanted - set(files) - set(optional)):
         problems.append("the archive has no %s" % rel)
     return files, artifact_sha, problems
 

@@ -1,0 +1,112 @@
+{
+ "seq": 6,
+ "slug": "ref-pane-rsi",
+ "revision_sha256": "0fc58b1a99b765d193902b87718f8e9660ce2e0270c9303e875a4067a37af4de",
+ "reason": "save",
+ "updated_at": "2026-11-23T20:32:41.690394Z",
+ "run_id": "pexec-09676248-642a-4c21-9a1b-d3b9aeb9798b",
+ "run_dir": "<phase-c-workspace>/.claude/runtime/pine-local-test/ref-pane-rsi/20261123T203241Z-bb6f08f2",
+ "execution_status": "PINETS_EXECUTION_PASS",
+ "error": null,
+ "engine_invocations": 1,
+ "last_good": {
+  "run_id": "pexec-09676248-642a-4c21-9a1b-d3b9aeb9798b",
+  "run_dir": "<phase-c-workspace>/.claude/runtime/pine-local-test/ref-pane-rsi/20261123T203241Z-bb6f08f2",
+  "revision_sha256": "0fc58b1a99b765d193902b87718f8e9660ce2e0270c9303e875a4067a37af4de",
+  "timestamp": "2026-11-23T20:32:41Z",
+  "finished_at": "2026-11-23T20:32:41.690394Z"
+ },
+ "computing": null,
+ "state": "ok",
+ "result": {
+  "seq": 6,
+  "revision_sha256": "0fc58b1a99b765d193902b87718f8e9660ce2e0270c9303e875a4067a37af4de",
+  "state": "ok",
+  "run_id": "pexec-09676248-642a-4c21-9a1b-d3b9aeb9798b",
+  "run_dir": "<phase-c-workspace>/.claude/runtime/pine-local-test/ref-pane-rsi/20261123T203241Z-bb6f08f2",
+  "execution_status": "PINETS_EXECUTION_PASS",
+  "error": null,
+  "refusal": null,
+  "timestamp": "2026-11-23T20:32:41Z",
+  "finished_at": "2026-11-23T20:32:41.690394Z"
+ },
+ "qualification": {
+  "compared_with": {
+   "run_id": "pexec-00e3c6da-38ab-4672-9600-b4270447cb96",
+   "revision_sha256": "79b19262b4e81f29b325525a5bde670ed5f7b1eb0d5d0fc1e7bd4fcf7c8c746f",
+   "timestamp": "2026-11-23T20:32:39Z",
+   "run_dir": "<phase-c-workspace>/.claude/runtime/pine-local-test/ref-pane-rsi/20261123T203239Z-e7f96789"
+  },
+  "result": {
+   "run_id": "pexec-09676248-642a-4c21-9a1b-d3b9aeb9798b",
+   "revision_sha256": "0fc58b1a99b765d193902b87718f8e9660ce2e0270c9303e875a4067a37af4de",
+   "timestamp": "2026-11-23T20:32:41Z"
+  },
+  "authority": "Observation only: a difference is neither a confirmed regression nor an accepted baseline nor a TradingView validation. EXPECTED / UNEXPECTED / UNRESOLVED is decided by Claude Code against the impact inventory of the request (spec 24.4.9); UNRESOLVED when the evidence does not decide.",
+  "source": "comment-only",
+  "compare_runs": {
+   "comparable": true,
+   "status": "PINETS_REGRESSION_UNCHANGED",
+   "changed": []
+  },
+  "annex": "compared (reader contract v1 passed on both)",
+  "facets": {
+   "values": [],
+   "signals": [],
+   "objects": [],
+   "styles": []
+  },
+  "changed_facets": [],
+  "change": "comment-only",
+  "capabilities_used": {
+   "color-green": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "MISSING",
+    "effective_gating": false
+   },
+   "color-orange": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "MISSING",
+    "effective_gating": false
+   },
+   "color-red": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "MISSING",
+    "effective_gating": false
+   },
+   "declaration-indicator": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "CURRENT",
+    "effective_gating": false
+   },
+   "plot-hline": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "MISSING",
+    "effective_gating": false
+   },
+   "plot-plot": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "CURRENT",
+    "effective_gating": false
+   },
+   "series-builtin": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "CURRENT",
+    "effective_gating": false
+   },
+   "ta-rsi": {
+    "capability_status": "EXPERIMENTAL",
+    "calibration_status": "MISSING",
+    "effective_gating": false
+   }
+  },
+  "all_effectively_gating": false,
+  "capabilities_delta": {
+   "added": [],
+   "removed": []
+  },
+  "uncertain": [],
+  "gating_note": "at least one capability used is not GATING+CURRENT: no blocking conclusion",
+  "accepted_baselines": []
+ }
+}

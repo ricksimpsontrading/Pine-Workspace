@@ -62,7 +62,7 @@ SESSION_REL = core.RUNTIME_REL / "session"
 ARCHIVES_REL = Path("docs/maintenance/archives")
 PROTECTED_DIR_NAMES = {".git", "node_modules"}
 # trees never entered by the cleanup walk (reference material, rollbacks)
-PROTECTED_RUNTIME_SUBTREES = {"pinets-rollback", "pinets-eval", "pine-local-test",
+PROTECTED_RUNTIME_SUBTREES = {"pinets-rollback", "pinets-eval", "pine-local-test", "vela-view",
                               "migration-backup", "github-export", "maintenance"}
 # files of the session folder that are never snapshots
 SESSION_SIDE_FILES = {"latest.json", "stop-info.json", "imports.json"}

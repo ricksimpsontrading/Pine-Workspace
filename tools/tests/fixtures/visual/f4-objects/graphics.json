@@ -1,0 +1,152 @@
+{
+ "schema": "pws-pinets-graphics-v0.2-exp",
+ "run_id": "pexec-812929e2-69e1-4a97-9033-bc7924c79f50",
+ "source_sha256": "2472b3e1fbae414b6bb58a11c24baeb2f279b11aebb81fd6c839757cab117213",
+ "dataset_sha256": "65bb3837349c878e427ddde6da3a6ba89c836878dcb19c8de1db1c8833f16b9b",
+ "pinets_version": "0.10.0",
+ "executor_fingerprint": "2da0a6351962f161d61b1e9bded756644b8a165fcf28f47b01e5ee3c5e43da6b",
+ "normalization_schema": "pws-pinets-norm-v2",
+ "normalized_payload_sha256": "9eda3991053993c15087b5f83e528fd8fe0770d9c6767d1d66d26e12e4f84763",
+ "declaration": {
+  "title": "F4 objects",
+  "shorttitle": "",
+  "overlay": true,
+  "format": "inherit",
+  "precision": 10,
+  "scale": "points",
+  "max_bars_back": 0,
+  "max_lines_count": 50,
+  "max_labels_count": 50,
+  "max_boxes_count": 50,
+  "max_polylines_count": 50
+ },
+ "series": [],
+ "drawings": {
+  "boxes": [],
+  "labels": [
+   {
+    "id": 0,
+    "x": 1578916800000,
+    "y": 112.35,
+    "text": "time-anchored",
+    "xloc": "bt",
+    "yloc": "pr",
+    "color": "#311B92",
+    "style": "style_label_down",
+    "textcolor": "#FFFFFF",
+    "size": "normal",
+    "textalign": "center",
+    "tooltip": "",
+    "text_font_family": "default",
+    "force_overlay": false,
+    "text_formatting": "none",
+    "_deleted": false,
+    "channel": "__labels__"
+   }
+  ],
+  "linefills": [
+   {
+    "id": 0,
+    "line1": {
+     "id": 0,
+     "x1": 50,
+     "y1": 104.89,
+     "x2": 80,
+     "y2": 106.67,
+     "xloc": "bi",
+     "extend": "none",
+     "color": "#FF9800",
+     "style": "style_solid",
+     "width": 1,
+     "_deleted": false
+    },
+    "line2": {
+     "id": 1,
+     "x1": 50,
+     "y1": 106.67,
+     "x2": 80,
+     "y2": 104.89,
+     "xloc": "bi",
+     "extend": "none",
+     "color": "#2962FF",
+     "style": "style_solid",
+     "width": 1,
+     "_deleted": false
+    },
+    "color": "#FDD83526",
+    "force_overlay": false,
+    "_deleted": false,
+    "channel": "__linefills__"
+   }
+  ],
+  "lines": [
+   {
+    "id": 0,
+    "x1": 50,
+    "y1": 104.89,
+    "x2": 80,
+    "y2": 106.67,
+    "xloc": "bi",
+    "extend": "none",
+    "color": "#FF9800",
+    "style": "style_solid",
+    "width": 1,
+    "force_overlay": false,
+    "_deleted": false,
+    "channel": "__lines__"
+   },
+   {
+    "id": 1,
+    "x1": 50,
+    "y1": 106.67,
+    "x2": 80,
+    "y2": 104.89,
+    "xloc": "bi",
+    "extend": "none",
+    "color": "#2962FF",
+    "style": "style_solid",
+    "width": 1,
+    "force_overlay": false,
+    "_deleted": false,
+    "channel": "__lines__"
+   }
+  ],
+  "polylines": [
+   {
+    "id": 0,
+    "points": [
+     {
+      "index": 200,
+      "price": 105.72
+     },
+     {
+      "index": 215,
+      "price": 106.65
+     },
+     {
+      "index": 230,
+      "price": 105.72
+     }
+    ],
+    "curved": false,
+    "closed": false,
+    "xloc": "bi",
+    "line_color": "#089981",
+    "fill_color": "",
+    "line_style": "style_solid",
+    "line_width": 2,
+    "force_overlay": false,
+    "_deleted": false,
+    "channel": "__polylines__"
+   }
+  ],
+  "tables": []
+ },
+ "drawings_scope": "final-state",
+ "limits": [
+  "drawings: final state of the objects alive at the end of the run; no per-bar history",
+  "callsite: order of plot-family calls in the transpiled source; absent for shapes, chars, bgcolor",
+  "colors: as produced by the engine (#RRGGBB or #RRGGBBAA); null when na",
+  "points: v is null and ohlc holds [o,h,l,c] for plotcandle/plotbar; o holds per-point options other than color"
+ ]
+}

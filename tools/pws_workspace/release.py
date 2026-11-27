@@ -124,7 +124,7 @@ def write_artefacts(dist_dir, target, ver, changelog_text="", git=None, force=Fa
         "source_commit": git.get("commit"), "source_dirty": git.get("dirty"), "built_at": _now(),
         "requirements": {"python": "3.9 or later, standard library only",
                          "git": "optional (degraded mode without it)",
-                         "node_npm": "optional, local PineTS tests only (engine not shipped)",
+                         "node_npm": "for local tests and charts: the installer prepares PineTS and Vela with npm (neither is shipped)",
                          "platforms": marker.get("platform_support")},
         "install": "python3 install.py  (from the extracted package folder; never over an existing installation)",
         "update": "%s (menus in French: %s): guided path; or, from a terminal: update guide --stage prepare "
@@ -161,7 +161,7 @@ def write_artefacts(dist_dir, target, ver, changelog_text="", git=None, force=Fa
     return report
 
 
-def build_release(root, target, force=False, allow_dirty=False):
+def build_release(root, target, force=False, allow_dirty=False, optional=()):
     """Build and verify the artefacts of the CURRENT version into `target`.
     Publication artefacts come from a COMMITTED, CLEAN tree (audit I-03): the
     archive then holds exactly the content of `source_commit`. `allow_dirty`
@@ -187,7 +187,7 @@ def build_release(root, target, force=False, allow_dirty=False):
         report["problems"].append("%s.zip already exists — a published version is never rebuilt silently; pass "
                                   "--force only for an UNPUBLISHED build" % name)
         return report
-    built = distribution.build(root, target / name, force=force)
+    built = distribution.build(root, target / name, force=force, optional=optional)
     report["distribution"] = built
     if not built["ok"] or not built["clean"]:
         report["problems"].append("distribution not clean: %s" % (built.get("error") or built.get("personal_pattern_hits")))

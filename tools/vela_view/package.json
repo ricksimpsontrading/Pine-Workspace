@@ -1,0 +1,11 @@
+{
+  "name": "pws-vela-view",
+  "version": "0.0.0",
+  "private": true,
+  "description": "EXPERIMENTAL local chart page of the 'inspect the result' path (isolated study copy): Vela renders series already computed by the PWS adapter (tools/pine_exec). Never runs PineTS for the page.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@luxalgo/vela": "0.10.15"
+  }
+}

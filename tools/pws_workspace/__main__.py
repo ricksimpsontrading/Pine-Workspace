@@ -18,7 +18,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import (banner, config, core, doctor, guard, i18n, licensing, maintenance,
+from . import (banner, config, core, doctor, guard, i18n, licensing, local_test, maintenance,
                menu, migration, scan, session, standard, tooling, tv_mode,
                update, validation, version)
 
@@ -100,7 +100,41 @@ def _main(argv=None):
     mg.add_argument("--rollback", metavar="STAMP")
     mg.add_argument("--list-backups", action="store_true")
 
+    lt = sub.add_parser("local-test", help="EXPERIMENTAL: local PineTS test of one registered script, with the "
+                                           "optional graphics annex and its browser chart (Vela)")
+    lt.add_argument("action", choices=("plan", "run", "open", "work", "watch", "status", "stop", "view", "inspect",
+                                       "expect", "observe", "next", "impact"))
+    lt.add_argument("--slug", help="plan/run: registered script")
+    lt.add_argument("--dataset", help="run: local dataset (pws-dataset-v1)")
+    lt.add_argument("--graphics", action="store_true", help="run: prepare the chart (graphics annex, same execution)")
+    lt.add_argument("--run-dir", help="open/view/inspect: run folder of an earlier test")
+    lt.add_argument("--run-id", help="open/view/inspect: find the earlier test by its run_id")
+    lt.add_argument("--wait", type=float, default=None, help="status (default 0) / inspect --work (default 60): seconds to wait "
+                    "for the result of the saved revision, bounded to 600")
+    lt.add_argument("--series", help="observe: series key (e.g. RSI)")
+    lt.add_argument("--timeout", type=float, default=30, help="observe: seconds to wait for Vela's answer (bounded)")
+    lt.add_argument("--keep-open", action="store_true", help="observe: leave the observation tab open")
+    lt.add_argument("--change", default="", help="expect: facets expected to change (values,signals,objects,styles)")
+    lt.add_argument("--unchanged", default="", help="expect: facets expected to stay unchanged")
+    lt.add_argument("--note", default="", help="expect: the impact inventory in one line")
+    lt.add_argument("--from-impact", action="store_true", help="expect: add the per-output predictions of `local-test impact`")
+    lt.add_argument("--work", action="store_true", help="view/inspect: the session work script (latest result)")
+    lt.add_argument("--bar", type=int, help="view: bar inspected first; inspect: bar to read (default last)")
+    lt.add_argument("--compare-run-id", help="inspect: compare with an earlier run (values and source diff)")
+    lt.add_argument("--no-browser", action="store_true", help="view: write the page without opening it")
+
     sub.add_parser("tooling-status", help="read-only view of the integrated tools (PineTS)")
+    vg = sub.add_parser("vela", help="EXPERIMENTAL: guided update of Vela, the browser chart (tools/vela_view)")
+    vg.add_argument("action", choices=("guide", "rollback", "points"))
+    vg.add_argument("version", nargs="?", help="guide prepare: exact target version (default: latest stable)")
+    vg.add_argument("--stage", choices=("state", "search", "prepare", "probe", "apply"), default="state")
+    vg.add_argument("--plan-file", help="guide prepare: where to write the plan; probe/apply: the approved plan")
+    vg.add_argument("--dest", help="guide prepare: download folder, outside the workspace (default: temporary)")
+    vg.add_argument("--accept-license", action="append", default=[], metavar="PKG@VERSION=LICENSE",
+                    help="guide prepare: explicit decision accepting one licence change (repeatable)")
+    vg.add_argument("--point", help="rollback: name of the verified point (default: latest of another version)")
+    vg.add_argument("--yes", action="store_true")
+    vg.add_argument("--text", action="store_true", help="print the localized summary only")
     pn = sub.add_parser("pinets", help="PineTS lifecycle")
     pn.add_argument("action", choices=("status", "verify", "check-update", "install",
                                        "rollback", "recalibrate-plan", "guide"))
@@ -176,9 +210,18 @@ def _main(argv=None):
                          "(repeatable)")
     lc.add_argument("--dry-run", action="store_true", help="set-fields: show the changes, write nothing")
 
+    cp = sub.add_parser("components", help="prepare (or resume preparing) PineTS, the demonstration data and Vela "
+                                         "for local tests and charts (npm ci from the shipped lockfiles)")
+    cp.add_argument("action", choices=("prepare", "status"))
+    cp.add_argument("--language", choices=("en", "fr"))
+    cp.add_argument("--text", action="store_true", help="print the localized summary only")
+
     bd = sub.add_parser("build-distribution", help="build the public distribution tree")
     bd.add_argument("--target", required=True)
     bd.add_argument("--force", action="store_true", help="replace a previous PWS distribution build")
+    bd.add_argument("--with-vela", action="store_true", help="kept for compatibility: Vela is shipped by default")
+    bd.add_argument("--without-vela", action="store_true",
+                    help="special numeric-only build, without the browser chart (tools/vela_view)")
 
     up = sub.add_parser("upgrade", help="upgrade an installed core from a distribution package")
     up.add_argument("--from", dest="package", help="distribution package folder")
@@ -212,6 +255,9 @@ def _main(argv=None):
                                               "version (distribution, archive, SHA-256, RELEASE.json, notes)")
     br.add_argument("--target", required=True)
     br.add_argument("--force", action="store_true", help="replace an UNPUBLISHED build of the same version")
+    br.add_argument("--with-vela", action="store_true", help="kept for compatibility: Vela is shipped by default")
+    br.add_argument("--without-vela", action="store_true",
+                    help="special numeric-only build, without the browser chart (tools/vela_view)")
 
     args = parser.parse_args(argv)
     root = Path(args.root) if args.root else core.workspace_root()
@@ -374,6 +420,123 @@ def _main(argv=None):
             r = migration.rollback(root, args.rollback)
             _p(r)
             return 0 if r["ok"] else 1
+    elif args.cmd == "local-test":
+        try:
+            if args.action in ("work", "watch", "status", "stop", "view", "inspect", "expect", "observe", "next", "impact"):
+                from . import live
+                if args.action == "work":
+                    if not (args.slug and args.dataset):
+                        raise ValueError("--slug and --dataset are required")
+                    r = live.start_work(root, args.slug, args.dataset, lang)
+                elif args.action == "watch":
+                    r = live.watch(root)
+                elif args.action == "status":
+                    r = live.status(root, wait=args.wait or 0)
+                elif args.action == "impact":
+                    r = live.impact_of_change(root)
+                elif args.action == "next":
+                    from . import recommend
+                    r = recommend.next_check(root, wait=args.wait or 0)
+                elif args.action == "expect":
+                    sp = lambda v: [x.strip() for x in v.split(",") if x.strip()]
+                    r = live.expect(root, change=sp(args.change), unchanged=sp(args.unchanged), note=args.note,
+                                    from_impact=args.from_impact)
+                elif args.action == "observe":
+                    if args.series is None or args.bar is None:
+                        raise ValueError("--series and --bar are required")
+                    run_dir = args.run_dir or (local_test.find_run(root, args.run_id) if args.run_id else None)
+                    if args.work or not run_dir:
+                        st_ = live.status(root, wait=args.wait or 0)
+                        if not st_.get("ok"):
+                            raise ValueError("no run: --run-dir, --run-id or --work")
+                        if not st_["fresh"]:
+                            r = {"ok": False, "status": "not observed: no result of the requested revision yet",
+                                 "freshness": {k: st_[k] for k in ("requested", "computing", "result", "last_good", "wait")},
+                                 "engine_invocations": 0}
+                            _p(r); return 1
+                        run_dir = st_["result"]["run_dir"]
+                    r = live.observe(root, run_dir, args.bar, args.series, lang=lang, timeout=args.timeout,
+                                     keep_open=args.keep_open)
+                elif args.action == "stop":
+                    r = live.stop_watch(root)
+                else:
+                    run_dir = args.run_dir or (local_test.find_run(root, args.run_id) if args.run_id else None)
+                    if args.action == "inspect" and (args.work or not run_dir):
+                        cmp_ = local_test.find_run(root, args.compare_run_id) if args.compare_run_id else None
+                        if args.compare_run_id and cmp_ is None:
+                            raise ValueError("unknown run_id: %s" % args.compare_run_id)
+                        w = 60 if args.wait is None else args.wait
+                        r = live.inspect_work(root, bar=args.bar, wait=w, compare=cmp_)
+                        _p(r); return 0 if r.get("ok", True) else 1
+                    if args.work or not run_dir:
+                        lt_ = {}
+                        if args.action == "view" and (args.work or not run_dir):
+                            r = live.open_view(root, work=True, bar=args.bar, lang=lang, browser=not args.no_browser)
+                            _p(r); return 0 if r.get("ok") else 7
+                        run_dir = lt_.get("run_dir")
+                    if not run_dir:
+                        raise ValueError("no run: --run-dir, --run-id or --work")
+                    if args.action == "view":
+                        r = live.open_view(root, run_dir=run_dir, bar=args.bar, lang=lang, browser=not args.no_browser)
+                        _p(r); return 0 if r.get("ok") else 7      # 7: browser chart not available here
+                    else:
+                        cmp_ = local_test.find_run(root, args.compare_run_id) if args.compare_run_id else None
+                        if args.compare_run_id and cmp_ is None:
+                            raise ValueError("unknown run_id: %s" % args.compare_run_id)
+                        r = live.inspect(root, run_dir, bar=args.bar, compare=cmp_)
+                _p(r)
+                return 0 if r.get("ok", True) else 1
+            if args.action == "plan":
+                r = local_test.plan(root, args.slug, lang)
+            elif args.action == "run":
+                if not args.dataset:
+                    raise ValueError("--dataset is required")
+                r = local_test.run(root, args.slug, args.dataset, args.graphics, lang)
+            else:                            # open: "Open the chart" of an earlier test, in the browser (Vela)
+                from . import live
+                run_dir = args.run_dir
+                if not run_dir and args.run_id:
+                    run_dir = local_test.find_run(root, args.run_id)
+                    if run_dir is None:
+                        raise ValueError(local_test._t("lt.reason.not_found", lang) + ": " + args.run_id)
+                if not run_dir:
+                    raise ValueError("--run-dir or --run-id is required")
+                if live.vela_state(root) != "ready":
+                    r = live.vela_absence(root, lang); _p(r); return 7
+                r = local_test.reopen(root, run_dir, lang)   # reader contract v1 first: a refusal opens nothing
+                if r.get("ok"):
+                    r = live.open_view(root, run_dir=run_dir, bar=args.bar, lang=lang, browser=not args.no_browser)
+        except ValueError as exc:
+            _p({"ok": False, "error": str(exc)})
+            return 2
+        _p(r)
+        if args.action == "run" and r.get("ok") and args.graphics and not r.get("open"):
+            return 5                         # numeric result PASS, chart not available (never a source failure)
+        if args.action == "open" and not r.get("ok"):
+            return 4
+        return 0 if r.get("ok") else 1
+    elif args.cmd == "vela":
+        from . import vela_guide
+        if args.action == "points":
+            r = {"points": vela_guide.list_points(root)}
+        elif args.action == "rollback":
+            r = vela_guide.rollback(root, point=args.point, yes=args.yes, lang=lang)
+        elif args.stage == "state":
+            r = vela_guide.state(root, lang)
+        elif args.stage == "search":
+            r = vela_guide.search(root, lang)
+        elif args.stage == "prepare":
+            r = vela_guide.prepare(root, target=args.version, lang=lang, accept_license=args.accept_license,
+                                   dest=args.dest, plan_file=args.plan_file)
+        elif args.stage == "probe":
+            r = vela_guide.probe(root, args.plan_file, lang)
+        else:
+            r = vela_guide.apply(root, args.plan_file, yes=args.yes, lang=lang)
+        if args.text and isinstance(r.get("summary"), dict):
+            print(r["summary"]["text"])
+        else:
+            _p(r)
+        return 0 if r.get("ok", r.get("applicable", True)) is not False else 1
     elif args.cmd == "tooling-status":
         _p(tooling.status(root))
     elif args.cmd == "pinets":
@@ -557,9 +720,22 @@ def _main(argv=None):
             r = licensing.write_rendered(root, args.slug, args.kind, dest)
             _p(r)
             return 0 if r["ok"] else 1
+    elif args.cmd == "components":
+        from . import components
+        lang_ = args.language or lang
+        if args.action == "status":
+            r = components.status(root) or {"ok": False, "problem": "never prepared here: %s" % components.RESUME}
+        else:
+            r = components.prepare(root, lang=lang_)
+        if args.text and r.get("summary"):
+            print(r["summary"])
+        else:
+            _p(r)
+        return 0 if r.get("ok") else 1
     elif args.cmd == "build-distribution":
         from . import distribution
-        r = distribution.build(root, Path(args.target), force=args.force)
+        r = distribution.build(root, Path(args.target), force=args.force,
+                               optional=() if args.without_vela else ("vela-view",))
         _p(r)
         return 0 if r["ok"] else 1
     elif args.cmd == "upgrade":
@@ -634,7 +810,8 @@ def _main(argv=None):
             return 0 if r["ok"] else 1
     elif args.cmd == "build-release":
         from . import release
-        r = release.build_release(root, Path(args.target), force=args.force)
+        r = release.build_release(root, Path(args.target), force=args.force,
+                                  optional=() if args.without_vela else ("vela-view",))
         _p(r)
         return 0 if r["ok"] else 1
     return 0

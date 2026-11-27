@@ -184,6 +184,8 @@ def build_menu(status):
         _action("tools.pinets", lang, "pine-tools"),
         _action("tools.update", lang, "pws-update"),
     ]
+    if status.get("vela_state") in ("ready", "no-deps"):     # only where the browser chart is installed
+        tools_children.insert(1, _action("tools.vela", lang, "vela-tools"))
     maintenance_children = [
         _action("maintenance.doctor", lang, "project-doctor"),
         _action("maintenance.status", lang, "command:session-status"),

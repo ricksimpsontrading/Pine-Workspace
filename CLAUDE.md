@@ -40,7 +40,7 @@ Tout conflit réel ou apparent entre sources est signalé au titulaire avec les 
 
 ## Trois niveaux de vérification (master §9.1) — proportionnalité
 
-1. **Travail courant** (`pine-develop`) : lecture ciblée à partir de la cartographie, dépendances immédiates, contrôle du diff, guard, vérifications utiles au changement. Jamais de lecture intégrale, d'agent ou de cascade de revues déclenchés automatiquement par une modification, quelle que soit sa classe (changement structurel compris) ; PineTS seulement si l'inventaire d'impact le prévoit.
+1. **Travail courant** (`pine-develop`) : lecture ciblée à partir de la cartographie, dépendances immédiates, contrôle du diff, guard, vérifications utiles au changement. Jamais de lecture intégrale, d'agent ou de cascade de revues déclenchés automatiquement par une modification, quelle que soit sa classe (changement structurel compris) ; PineTS seulement si l'inventaire d'impact le prévoit — exception expérimentale (décision du titulaire du 2026-11-23, `docs/architecture/OPERATIONS.md`) : pendant une séance de test local ouverte par le choix du script et des données, chaque sauvegarde stabilisée de cette copie de travail est calculée automatiquement ; hors de cette séance la règle s'applique, et les matrices restent explicites.
 2. **Audit approfondi** (`pine-audit`) : explicite, périmètre annoncé avant exécution.
 3. **Préparation de publication** (`pine-release`) : exigences finales de livraison.
 

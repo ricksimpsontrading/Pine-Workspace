@@ -74,7 +74,10 @@ TEXT = {
         "init_failed": "The first configuration failed ({detail}): nothing was installed.",
         "copy_failed": "Installation failed ({detail}): nothing was installed.",
         "interrupted": "Interrupted: nothing was installed.",
-        "done": "Installed. Next steps:\n  cd \"{path}\"\n  python3 -m tools.pws_workspace doctor\n  (optional, for local PineTS tests) cd tools/pine_exec && npm ci --ignore-scripts\n  claude",
+        "preparing": "Preparing the local test components (PineTS, demonstration data, Vela) with npm from the shipped lockfiles…",
+        "done": "Installed. Next steps:\n  cd \"{path}\"\n  claude\n  then /pws → Quality / publication → Local test (PineTS): choose a script and the demonstration data, then \"Open the chart\".",
+        "skipped_components": "Local test components not prepared (PWS_INSTALL_SKIP_COMPONENTS=1). Prepare them with: python3 -m tools.pws_workspace components prepare --text",
+        "partial": "Installed, but the local test components are not all ready (see above). Your installation is usable; the missing part can be resumed at any time.",
         "recorded": "Install path recorded in {record}",
         "record_failed": "Could not record the install path in {record} ({detail}); the installation itself is complete.",
         "git_init": "Git repository initialized (local-first, no remote).",
@@ -107,7 +110,10 @@ TEXT = {
         "init_failed": "La première configuration a échoué ({detail}) : rien n'a été installé.",
         "copy_failed": "L'installation a échoué ({detail}) : rien n'a été installé.",
         "interrupted": "Interrompu : rien n'a été installé.",
-        "done": "Installé. Étapes suivantes :\n  cd \"{path}\"\n  python3 -m tools.pws_workspace doctor\n  (facultatif, tests PineTS locaux) cd tools/pine_exec && npm ci --ignore-scripts\n  claude",
+        "preparing": "Préparation des composants des tests locaux (PineTS, données de démonstration, Vela) avec npm, à partir des lockfiles fournis…",
+        "done": "Installé. Étapes suivantes :\n  cd \"{path}\"\n  claude\n  puis /pws → Qualité / publication → Test local (PineTS) : choisissez un script et les données de démonstration, puis « Ouvrir le graphique ».",
+        "skipped_components": "Composants des tests locaux non préparés (PWS_INSTALL_SKIP_COMPONENTS=1). Préparez-les avec : python3 -m tools.pws_workspace components prepare --text",
+        "partial": "Installé, mais les composants des tests locaux ne sont pas tous prêts (voir ci-dessus). L'installation est utilisable ; la partie manquante peut être reprise à tout moment.",
         "recorded": "Chemin d'installation enregistré dans {record}",
         "record_failed": "Le chemin d'installation n'a pas pu être enregistré dans {record} ({detail}) ; l'installation elle-même est complète.",
         "git_init": "Dépôt Git initialisé (local-first, aucun remote).",
@@ -410,8 +416,25 @@ def main(argv=None):
         print(t(lang, "recorded", record=RECORD))
     except OSError as exc:
         print(t(lang, "record_failed", record=RECORD, detail=exc))
+    # local test components (PineTS, demonstration data, Vela): npm ci from the shipped lockfiles,
+    # nothing global; a failure never undoes the installation and can be resumed
+    if os.environ.get("PWS_INSTALL_SKIP_COMPONENTS") == "1":          # maintainers' tests only, never offered to users
+        print(t(lang, "skipped_components"))
+        print(t(lang, "done", path=target))
+        return 0
+    print(t(lang, "preparing"))
+    env = dict(os.environ)
+    env.pop("PYTHONSAFEPATH", None)
+    comp = subprocess.run([sys.executable, "-m", "tools.pws_workspace", "components", "prepare", "--text",
+                           "--language", lang], cwd=str(real_target), env=env, capture_output=True, text=True)
+    if comp.stdout:
+        print(comp.stdout.rstrip())
+    if comp.returncode != 0:
+        if comp.stderr and not comp.stdout:
+            print(comp.stderr.strip().splitlines()[-1])
+        print(t(lang, "partial"))
     print(t(lang, "done", path=target))
-    return 0
+    return 0 if comp.returncode == 0 else 4
 
 
 if __name__ == "__main__":

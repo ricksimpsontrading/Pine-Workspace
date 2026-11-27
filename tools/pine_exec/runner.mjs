@@ -44,13 +44,14 @@
 // Matrix runs are explicit and bounded. No hook ever invokes this runner.
 
 import { createHash, randomUUID } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { loadDataset } from './datasets.mjs';
 import { computeFingerprint, enforceControlledEnv } from './fingerprint.mjs';
 import { NORMALIZATION_SCHEMA, normalizeContext, payloadSha256 } from './normalize.mjs';
+import { GRAPHICS_SCHEMA, extractGraphics } from './graphics.mjs';
 
 enforceControlledEnv();
 
@@ -347,7 +348,7 @@ function assertWritableDestination(path, what) {
 }
 
 // --- single run ------------------------------------------------------------
-export async function runOnce({ sourcePath, datasetPath, config, calibrationDir }) {
+export async function runOnce({ sourcePath, datasetPath, config, calibrationDir, graphicsOut }) {
   const sourceBytes = readFileSync(sourcePath);
   const sourceText = sourceBytes.toString('utf8');
   const dataset = loadDataset(datasetPath);
@@ -384,6 +385,7 @@ export async function runOnce({ sourcePath, datasetPath, config, calibrationDir 
     normalized_payload_sha256: null,
   };
 
+  let ctx = null;
   try {
     const { PineTS, Indicator } = await import('pinets');
     const pineTS = new PineTS(dataset.candles);
@@ -393,7 +395,7 @@ export async function runOnce({ sourcePath, datasetPath, config, calibrationDir 
       for (const [k, v] of Object.entries(config.inputs)) ind.input[k] = v;
       code = ind;
     }
-    const ctx = await pineTS.run(code, config?.periods);
+    ctx = await pineTS.run(code, config?.periods);
     report.execution_status = 'PINETS_EXECUTION_PASS';
     report.normalized = normalizeContext(ctx);
     report.normalized_payload_sha256 = payloadSha256(report.normalized);
@@ -401,7 +403,56 @@ export async function runOnce({ sourcePath, datasetPath, config, calibrationDir 
     report.execution_status = 'PINETS_EXECUTION_FAIL';
     report.error = { message: String(err?.message ?? err) };
   }
+  // EXPERIMENTAL graphics annex (isolated study copy only), from the SAME execution, written
+  // OUTSIDE the computation's try: an extraction or write failure is a graphics-output
+  // (infrastructure) failure and never turns a passing computation into a Pine source failure.
+  if (graphicsOut && report.execution_status === 'PINETS_EXECUTION_PASS') {
+    report.graphics_annex = writeGraphicsAnnex(ctx, report, graphicsOut);
+  }
   return report;
+}
+
+// Graphics annex output. Writes to a temporary file in the destination directory, then renames
+// it (a failed write never leaves a partial annex at the destination), reads it back and records
+// its SHA-256. `status`: GRAPHICS_WRITTEN | GRAPHICS_EXTRACTION_FAILED | GRAPHICS_WRITE_FAILED |
+// GRAPHICS_WRITE_UNVERIFIED. `file_state` reports what is really at the destination.
+function writeGraphicsAnnex(ctx, report, path) {
+  const dest = resolve(path);
+  const out = { schema: GRAPHICS_SCHEMA, path: dest, status: null, sha256: null, error: null, file_state: null };
+  const stateOf = () => (existsSync(dest) ? 'present-not-written-by-this-run' : 'absent');
+  let text;
+  try {
+    const annex = { schema: GRAPHICS_SCHEMA, run_id: report.run_id, source_sha256: report.source_sha256,
+                    dataset_sha256: report.dataset_sha256, pinets_version: report.pinets_version,
+                    executor_fingerprint: report.executor_fingerprint,
+                    normalization_schema: report.normalization_schema,
+                    normalized_payload_sha256: report.normalized_payload_sha256, ...extractGraphics(ctx) };
+    text = JSON.stringify(annex, null, 1) + '\n';
+  } catch (err) {
+    Object.assign(out, { status: 'GRAPHICS_EXTRACTION_FAILED', file_state: stateOf(),
+                         error: { stage: 'extraction', message: String(err?.message ?? err) } });
+    return out;
+  }
+  const tmp = `${dest}.tmp-${report.run_id}`;
+  try {
+    writeFileSync(tmp, text, 'utf8');
+    renameSync(tmp, dest);
+  } catch (err) {
+    try { unlinkSync(tmp); } catch { /* temporary file may not exist */ }
+    Object.assign(out, { status: 'GRAPHICS_WRITE_FAILED', file_state: stateOf(),
+                         error: { stage: 'write', message: String(err?.message ?? err) } });
+    return out;
+  }
+  const written = sha256(Buffer.from(text, 'utf8'));
+  let onDisk = null;
+  try { onDisk = sha256(readFileSync(dest)); } catch { /* reported below */ }
+  if (onDisk !== written) {
+    Object.assign(out, { status: 'GRAPHICS_WRITE_UNVERIFIED', file_state: onDisk ? 'present-differs' : 'unreadable',
+                         error: { stage: 'verify', message: 'annex read back does not match what was written' } });
+    return out;
+  }
+  Object.assign(out, { status: 'GRAPHICS_WRITTEN', sha256: written, file_state: 'written-by-this-run' });
+  return out;
 }
 
 // --- regression comparison (spec section 24.4.9, audit F6f) ----------------
@@ -568,14 +619,21 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   };
   if (cmd === 'run') {
     if (opts.out) assertWritableDestination(opts.out, 'a run report');
+    if (opts['graphics-out']) assertWritableDestination(opts['graphics-out'], 'a graphics annex');
     let config = {};
     try {
       config = opts.config ? JSON.parse(readFileSync(opts.config, 'utf8')) : {};
     } catch (err) { infra(err); }
     runOnce({ sourcePath: opts.source, datasetPath: opts.dataset, config,
-              calibrationDir: opts.calibration }).then(report => {
+              calibrationDir: opts.calibration, graphicsOut: opts['graphics-out'] }).then(report => {
       const text = JSON.stringify(report, null, 2) + '\n';
       if (opts.out) writeFileSync(opts.out, text, 'utf8'); else process.stdout.write(text);
+      const ga = report.graphics_annex;
+      if (report.execution_status === 'PINETS_EXECUTION_PASS' && ga && ga.status !== 'GRAPHICS_WRITTEN') {
+        console.error(`pine_exec: graphics annex not produced (${ga.status}, file ${ga.file_state}): `
+          + `${ga.error?.message ?? ''} — the computation itself passed; this is never a Pine source result.`);
+        process.exit(5);
+      }
       process.exit(report.execution_status === 'PINETS_EXECUTION_PASS' ? 0 : 1);
     }).catch(infra);
   } else if (cmd === 'matrix') {

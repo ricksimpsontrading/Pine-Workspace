@@ -1,0 +1,161 @@
+{
+ "schema": "pws-pinets-run-v1",
+ "run_id": "pexec-812929e2-69e1-4a97-9033-bc7924c79f50",
+ "timestamp": "2026-11-19T22:00:16Z",
+ "source": "f4-objects.pine",
+ "source_sha256": "2472b3e1fbae414b6bb58a11c24baeb2f279b11aebb81fd6c839757cab117213",
+ "dataset": "dataset.json",
+ "dataset_sha256": "65bb3837349c878e427ddde6da3a6ba89c836878dcb19c8de1db1c8833f16b9b",
+ "dataset_descriptor": {
+  "generator": "lcg-ohlcv-v1",
+  "params": {
+   "bars": 500,
+   "base_cents": 10000,
+   "seed": 7,
+   "t0_ms": 1577836800000,
+   "tf_ms": 3600000,
+   "vol_cents": 150
+  },
+  "price_scale": 100,
+  "symbol": "SYNTH",
+  "timeframe_ms": 3600000,
+  "timezone": "UTC",
+  "type": "synthetic"
+ },
+ "configuration": {},
+ "pinets_version": "0.10.0",
+ "executor_fingerprint": "2da0a6351962f161d61b1e9bded756644b8a165fcf28f47b01e5ee3c5e43da6b",
+ "normalization_schema": "pws-pinets-norm-v2",
+ "capabilities_used": {
+  "array-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "chart-point": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "chart-point-from_index": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-blue": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-navy": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-orange": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-teal": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-white": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "color-yellow": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "compare-op": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "control-flow": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "declaration-indicator": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "CURRENT"
+  },
+  "label-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "label-style_label_down": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "line-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "linefill-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "math-arith": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "CURRENT"
+  },
+  "polyline-new": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "series-builtin": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "CURRENT"
+  },
+  "state-reassign": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "state-var": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "type-annotation": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "udt-member-access": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  },
+  "xloc-bar_time": {
+   "capability_status": "EXPERIMENTAL",
+   "calibration_status": "MISSING"
+  }
+ },
+ "capabilities_detection": "lexical-closed-world-v2",
+ "unclassified_tokens": [],
+ "calibration_environment_match": true,
+ "calibration_artifact_failures": [],
+ "calibration_manifest_sha256": "0f0a32555a6c0a4b6c7744bca42c554edd7e6164b091882722085a0f80bce516",
+ "execution_status": "PINETS_EXECUTION_PASS",
+ "error": null,
+ "normalized": {
+  "schema": "pws-pinets-norm-v2",
+  "plots": {},
+  "alerts": [],
+  "warnings": [],
+  "internal_keys_present": [
+   "__boxes__",
+   "__labels__",
+   "__linefills__",
+   "__lines__",
+   "__polylines__",
+   "__tables__"
+  ]
+ },
+ "normalized_payload_sha256": "9eda3991053993c15087b5f83e528fd8fe0770d9c6767d1d66d26e12e4f84763",
+ "graphics_annex": {
+  "schema": "pws-pinets-graphics-v0.2-exp",
+  "path": "graphics.json",
+  "status": "GRAPHICS_WRITTEN",
+  "sha256": "30f63533a10fc0623036d43c0c47bed9f94156719a29d4956b1b5c0f9a1e9152",
+  "error": null,
+  "file_state": "written-by-this-run"
+ }
+}

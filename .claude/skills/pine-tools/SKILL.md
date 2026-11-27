@@ -7,7 +7,7 @@ description: Outils intégrés et mises à jour — état de PineTS (local), par
 
 Langue : répondre dans la langue configurée (`language` de `session-status --json`).
 
-Cette skill ne gère que PineTS ; la mise à jour de Pine-Workspace lui-même relève de `pws-update` (« Mettre à jour Pine-Workspace », même sous-menu). Seul PineTS est un outil intégré géré. `pinets-cli`, Vela, edge-stats et LuxAlgo MCP ne sont ni installés ni activés : leur place éventuelle est seulement documentée (`tooling-status` → `other_tools`).
+Cette skill ne gère que PineTS ; la mise à jour de Pine-Workspace lui-même relève de `pws-update` (« Mettre à jour Pine-Workspace », même sous-menu). Seul PineTS est un outil intégré géré. `pinets-cli`, edge-stats et LuxAlgo MCP ne sont ni installés ni activés : leur place éventuelle est seulement documentée (`tooling-status` → `other_tools`). Vela (EXPÉRIMENTAL, installations équipées du composant `vela-view`) : `@luxalgo/vela`, sous `tools/vela_view`, affiche dans le navigateur les séries déjà calculées par l'adaptateur PWS ; aucun connecteur, aucun second calcul. Sa mise à jour a son propre parcours, la skill `vela-tools` (`/pws → Maintenance / configuration → Outils et mises à jour → Vela`) ; elle ne touche jamais PineTS ni ses calibrations.
 
 ## 0. Parcours guidé (par défaut depuis 2.2.0)
 

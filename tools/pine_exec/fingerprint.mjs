@@ -33,6 +33,7 @@ export const FINGERPRINTED_FILES = [
   'normalize.mjs',
   'datasets.mjs',
   'fingerprint.mjs',
+  'graphics.mjs',
   'package.json',
   'package-lock.json',
 ];

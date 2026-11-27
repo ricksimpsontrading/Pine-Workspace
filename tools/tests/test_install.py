@@ -39,7 +39,7 @@ class TestInstaller(unittest.TestCase):
         cls.home = base / "isolated home"
         cls.home.mkdir()
         cls.target = base / "My Pine Workspace"
-        cls.env = dict(os.environ, HOME=str(cls.home), PYTHONDONTWRITEBYTECODE="1")
+        cls.env = dict(os.environ, HOME=str(cls.home), PYTHONDONTWRITEBYTECODE="1", PWS_INSTALL_SKIP_COMPONENTS="1")
         cls.first = cls._install(cls.target, "en")
 
     @classmethod

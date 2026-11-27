@@ -65,6 +65,27 @@ class TestTooling(unittest.TestCase):
         self.assertIn("no silent update at startup", s["rules"])
         self.assertIn("pinets-cli", s["other_tools"])
 
+    def test_vela_description_follows_what_is_installed(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            t = tooling.vela_status(d)
+            self.assertNotIn("documented only", t)
+            for words in ("not installed", "vela-view", "stay numeric", "VELA_ABSENT", "without recomputation"):
+                self.assertIn(words, t)
+            page = Path(d) / "tools" / "vela_view" / "page" / "pws-view.js"
+            page.parent.mkdir(parents=True); page.write_text("//")
+            t = tooling.vela_status(d)
+            self.assertIn("npm ci --ignore-scripts", t); self.assertIn("VELA_NO_DEPS", t)
+            for pkg, v in (("@luxalgo/vela", "9.9.9"), ("@luxalgo/vela-pinets", "8.8.8")):
+                f = Path(d) / "tools" / "vela_view" / "node_modules" / pkg / "package.json"
+                f.parent.mkdir(parents=True); f.write_text(json.dumps({"version": v}))
+            t = tooling.vela_status(d)
+            self.assertTrue(t.startswith("installed in this workspace (tools/vela_view): "), t)
+            self.assertNotIn("isolated copy", t)
+            self.assertIn("@luxalgo/vela 9.9.9 displays local test results", t)
+            self.assertIn("@luxalgo/vela-pinets 8.8.8 is installed", t)
+            self.assertIn("series already computed by the PWS adapter", t)
+
     def test_verify_records_then_detects_artifact_drift(self):
         st = self._statuses(tooling.verify(self.root))
         self.assertEqual(st["installed-artifact"], "INFO")  # not recorded yet

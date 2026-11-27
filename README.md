@@ -30,7 +30,7 @@ The same development and documentation standards apply to free and commercial sc
 | **Python 3.9 or later** | Required for the installer and workspace tooling. The Python tooling uses the standard library. |
 | **Claude Code** | Required for the guided assistant workflows. |
 | **Git** | Recommended for local history and required for Git-based publication workflows. |
-| **Node.js and npm** | Optional; needed only for PineTS local tests. |
+| **Node.js and npm** | Needed for local tests and charts. With Node.js, npm and a network connection, the installer prepares PineTS and Vela automatically; without them, the workspace installs and works, and local tests wait until the components are prepared. |
 
 Pine Workspace runs inside Claude Code. Install and configure Claude Code before starting a workspace session.
 
@@ -40,10 +40,10 @@ Pine Workspace runs inside Claude Code. Install and configure Claude Code before
 
 From the [Releases page](https://github.com/ricksimpsontrading/Pine-Workspace/releases), download the packaged ZIP and its matching `.sha256` file.
 
-For version 2.2.0, place both files in the same folder and run this command from that folder:
+For version 2.3.0, place both files in the same folder and run this command from that folder:
 
 ```bash
-shasum -a 256 -c pine-workspace-2.2.0.zip.sha256
+shasum -a 256 -c pine-workspace-2.3.0.zip.sha256
 ```
 
 The result should report `OK`. This checks download integrity; the release does not include a cryptographic signature.
@@ -61,6 +61,8 @@ The installer lets you choose:
 - an installation folder;
 - English or French;
 - the copyright holder for your own scripts.
+
+Then, with Node.js, npm and a network connection available, it prepares the local test components automatically: PineTS (the computation engine), Vela (the browser chart) and the demonstration data, from the shipped lockfiles and inside the installation folder only. There is no option to choose and no npm command to type. If a component cannot be prepared, the installer says what is ready, what is missing and how to resume ([installation guide, section 5](INSTALL.md#5-local-test-components-prepared-by-the-installer)).
 
 **Choose a separate installation folder.** The extracted package is the installer source, not your working installation. The installer refuses to overwrite a non-empty destination.
 
@@ -125,9 +127,9 @@ Git commits and pushes require authorization. Preparing a publication does not a
 
 The default `manual` mode prepares checks for you to perform in TradingView. The optional `chrome-experimental` mode supports partial browser automation with a manual fallback.
 
-PineTS provides an optional local testing environment. It can help investigate behavior, but a successful PineTS test does not establish TradingView compatibility.
+PineTS provides a local testing environment. It can help investigate behavior, but a successful PineTS test does not establish TradingView compatibility.
 
-PineTS is not bundled with the distribution. See the [optional PineTS installation instructions](INSTALL.md#5-optional-local-pinets-tests) before installing it. Its installation, updates, verification, and rollback are managed explicitly; it is never updated silently. Once it is installed, **Tools and updates → PineTS** guides an update of the engine: search, changes and licence review, one confirmation of a verified plan, verified restore point, installation, checks, and recalibration against the existing independent references.
+PineTS and Vela are not bundled in the archive: the installer installs them into your installation from npm, at their pinned versions, under their own licences (see the [local test components](INSTALL.md#5-local-test-components-prepared-by-the-installer)). Their updates, verification, and rollback are managed explicitly; they are never updated silently. Once they are installed, **Tools and updates → PineTS** guides an update of the engine: search, changes and licence review, one confirmation of a verified plan, verified restore point, installation, checks, and recalibration against the existing independent references.
 
 ## Updates and maintenance
 
@@ -169,7 +171,7 @@ Pine Workspace is distributed with component-specific licenses:
 |---|---|
 | **Pine Workspace core** | [Apache License 2.0](LICENSE) |
 | **PineTS adapter** | [GNU AGPL v3 only](tools/pine_exec/LICENSE) |
-| **PineTS engine, installed separately** | Its own license; see [third-party notices](THIRD_PARTY_NOTICES.md) |
+| **PineTS engine and Vela chart, installed by the installer from npm** | Their own licenses (PineTS AGPL-3.0-only; Vela and vela-ui Apache-2.0); see [third-party notices](THIRD_PARTY_NOTICES.md) |
 | **Reusable legal templates** | [Apache License 2.0](LICENSE), plus the [Template Permission](docs/licensing/TEMPLATE_PERMISSION.md) |
 
 Your scripts have their own licensing terms. Pine Workspace provides **FREE**, **PRIVATE**, and **COMMERCIAL** profiles and supports recording recognized licenses for imported scripts. A profile does not by itself determine source visibility or publication mode.

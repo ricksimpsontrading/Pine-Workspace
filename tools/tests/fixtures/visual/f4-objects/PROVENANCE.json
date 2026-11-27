@@ -1,0 +1,35 @@
+{
+ "origin": "Visual Engine study repository, read only, commit ce3f8fa32f074a297dbabc032c20b62c7b1bd6b7",
+ "files": {
+  "graphics.json": {
+   "from": "evidence/v02/f4-objects.graphics.json",
+   "sha256": "30f63533a10fc0623036d43c0c47bed9f94156719a29d4956b1b5c0f9a1e9152",
+   "byte_identical": true
+  },
+  "dataset.json": {
+   "from": "fixtures/lcg-7-500.json",
+   "sha256": "65bb3837349c878e427ddde6da3a6ba89c836878dcb19c8de1db1c8833f16b9b",
+   "byte_identical": true
+  },
+  "f4-objects.pine": {
+   "from": "fixtures/f4-objects.pine",
+   "sha256": "2472b3e1fbae414b6bb58a11c24baeb2f279b11aebb81fd6c839757cab117213",
+   "equals_report_source_sha256": true
+  },
+  "run.json": {
+   "from": "evidence/v02/f4-objects.run.json",
+   "original_sha256": "c648172079a819cfa975509f4c9b21369dc04de4b62e1742ef5bf213f06a0e3c",
+   "changed_fields_only": [
+    "source",
+    "dataset",
+    "graphics_annex.path"
+   ],
+   "reason": "absolute paths of the study account replaced by the names of the files in this folder; no bound field (identity, payload, annex SHA-256) is changed",
+   "original_values_redacted": true
+  }
+ },
+ "run_id": "pexec-812929e2-69e1-4a97-9033-bc7924c79f50",
+ "executor_fingerprint": "2da0a6351962f161d61b1e9bded756644b8a165fcf28f47b01e5ee3c5e43da6b",
+ "pinets_version": "0.10.0",
+ "annex_schema": "pws-pinets-graphics-v0.2-exp"
+}

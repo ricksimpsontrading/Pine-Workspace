@@ -78,6 +78,11 @@ def _compact_license(lic):
             if k in lic}
 
 
+def _vela_state(root):
+    from . import live
+    return live.vela_state(root)
+
+
 def session_status(root):
     """Structured mechanical state for the /pws menu and diagnostics."""
     root = Path(root)
@@ -117,6 +122,7 @@ def session_status(root):
             "pending_migrations": [m["id"] for m in pending],
         },
         "git": git,
+        "vela_state": _vela_state(root),
         "tv_mode": mode_detail["mode"],
         "tv_mode_source": mode_detail["source"],
         "tv_mode_error": mode_detail["error"],

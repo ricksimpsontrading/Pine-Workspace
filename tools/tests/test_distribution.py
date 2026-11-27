@@ -51,6 +51,39 @@ class TestDistribution(unittest.TestCase):
         self.assertIn("LICENSE", marker["files"])
         self.assertEqual(marker["platform_support"]["windows"], "deferred")
 
+    def test_runner_imports_ship_and_vela_is_the_only_optional_viewer(self):
+        # every local module runner.mjs imports is shipped: without one no local test runs at all
+        import re
+        runner = (ROOT / "tools" / "pine_exec" / "runner.mjs").read_text(encoding="utf-8")
+        local = sorted(set(re.findall(r"from '\./([A-Za-z0-9_.-]+\.mjs)'", runner)))
+        self.assertIn("graphics.mjs", local)
+        r = distribution.build(ROOT, self.target, account="agent")
+        self.assertTrue(r["ok"], r)
+        for mod in local:
+            self.assertTrue((self.target / "tools" / "pine_exec" / mod).is_file(), mod)
+        self.assertEqual(r["optional_components"], [])
+        self.assertTrue((self.target / "tools" / "pws_workspace" / "annex_reader.py").is_file())   # reader: core
+        self.assertFalse((self.target / "tools" / "vela_view").exists())
+        # the terminal viewers are withdrawn: no component, never shipped
+        self.assertEqual(sorted(distribution.OPTIONAL_DIRS), ["vela-view"])
+        self.assertIn("tools/visual", distribution.NEVER_SHIP)
+        refused = distribution.build(ROOT, Path(self.tmp.name) / "viewer", optional=("visual-viewer",))
+        self.assertFalse(refused["ok"])
+        with_vela = Path(self.tmp.name) / "with vela"
+        r3 = distribution.build(ROOT, with_vela, account="agent", optional=("vela-view",))
+        self.assertTrue(r3["ok"], r3)
+        self.assertEqual(r3["optional_components"], ["vela-view"])
+        for f in ("tools/vela_view/package.json", "tools/vela_view/package-lock.json", "tools/vela_view/page/pws-view.js",
+                  "tools/pws_workspace/annex_reader.py", "tools/pws_workspace/READER_CONTRACT.md"):
+            self.assertTrue((with_vela / f).is_file(), f)
+        for absent in ("tools/vela_view/node_modules", "tools/visual"):
+            self.assertFalse((with_vela / absent).exists(), absent)
+        marker = json.loads((with_vela / distribution.MARKER).read_text(encoding="utf-8"))
+        self.assertFalse([k for k in marker["files"] if k.startswith("tools/visual/") or k.endswith(".jsonl")])
+        bad = distribution.build(ROOT, Path(self.tmp.name) / "unknown", optional=("nope",))
+        self.assertFalse(bad["ok"])
+        self.assertFalse((Path(self.tmp.name) / "unknown").exists())
+
     def test_target_safety(self):
         other = Path(self.tmp.name) / "existing project"
         other.mkdir()

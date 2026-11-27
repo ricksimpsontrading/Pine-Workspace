@@ -13,9 +13,11 @@ tools.pws_workspace tooling-status`, `pinets verify`, the doctor's `pinets-licen
 |---|---|---|---|---|
 | Python 3 (standard library) | deterministic tooling | PSF | system interpreter | not shipped |
 | Git | local history, worktrees | GPL-2.0 | system binary (optional, degraded mode without it) | not shipped |
-| Node.js / npm | runs the PineTS thin adapter | MIT (Node.js), Artistic-2.0 (npm) | system binaries (optional) | not shipped |
+| Node.js / npm | runs the PineTS thin adapter; installs PineTS and Vela at installation (`npm ci --ignore-scripts`) | MIT (Node.js), Artistic-2.0 (npm) | system binaries, required for local tests and charts | not shipped |
 | Claude Code | the assistant harness (skills, rules, agents, hooks) | Anthropic terms | user's own subscription | not shipped |
 | **PineTS** (`pinets` npm package) | local behavioural execution of Pine sources (laboratory only, never a TradingView validation) | **AGPL-3.0-only** (`tools/pine_exec/PINETS_LICENSE`, `PROVENANCE.json`) | installed by the user with `npm ci --ignore-scripts` from the exact pinned version in `tools/pine_exec/package-lock.json` | **not shipped**: only the pin, the lockfile, the licence notice and the thin adapter are distributed |
+| **Vela** (`@luxalgo/vela` 0.10.15, LuxAlgo) and `@luxalgo/vela-ui` 0.4.4 | browser chart of the local tests: displays the series computed by PWS (never computes; the PineTS connector `@luxalgo/vela-pinets` is not installed) | **Apache-2.0** (licence field of the locked packages; the installed provenance is `tools/vela_view/PROVENANCE.json`) | installed by the installer into the user's installation with `npm ci --ignore-scripts` from `tools/vela_view/package-lock.json`; the page loads a local copy of `vela.global.min.js` checked by SHA-256 | **not shipped**: only the page script, the pin and the lockfile are distributed |
+| Dependencies of Vela (`@zag-js/*`, `@internationalized/*`, `@swc/helpers`, …; 32 packages) | used by `vela-ui` | MIT (30), Apache-2.0 (`@internationalized/number`, `@swc/helpers`) per the lockfile | installed by npm with Vela | not shipped |
 
 ### PineTS — engine, adapter and licence stop
 

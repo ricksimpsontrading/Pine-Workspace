@@ -14,7 +14,7 @@ over it.
 | Python 3.9 or later (standard library only) | yes | the deterministic tooling and the installer |
 | Claude Code | yes | the assistant harness (skills, rules, agents, hooks) |
 | Git | recommended | local history and worktrees; without it PWS runs in a documented degraded mode |
-| Node.js + npm | optional | only for the local PineTS behavioural tests (`tools/pine_exec`) |
+| Node.js + npm | for local tests and charts | the installer prepares PineTS and Vela with them; without them PWS installs and works, local tests and charts wait until Node.js is installed (section 5) |
 
 ## 1. Check the downloaded archive
 
@@ -50,6 +50,9 @@ python3 install.py                       # interactive: folder, language, copyri
 python3 install.py --target "~/My Pine Workspace" --language en --yes   # non-interactive (--yes required)
 ```
 
+At the end, the installer prepares the **local test components** by itself (section 5): there is
+no option to choose and no npm command to type.
+
 ## 3. First configuration
 
 The installer runs the first configuration (`python3 -m tools.pws_workspace init`):
@@ -81,22 +84,38 @@ Known limitation of this step (A-09, deferred): the tests that build a distribut
 installation run the same privacy check as a real build. If the copyright holder you configured
 appears word for word in a shipped file (for example a name used by a test fixture), those
 tests fail because the check refuses the build; it is the privacy check working, not a defect of
-your installation. Tests that need Node.js and PineTS are reported as skipped until you install
-them (section 5). Never weaken the check to make the suite pass.
+your installation. Tests that need Node.js and PineTS are reported as skipped until the components
+are prepared (section 5). Never weaken the check to make the suite pass.
 
-## 5. Optional: local PineTS tests
+## 5. Local test components (prepared by the installer)
+
+The installer runs `python3 -m tools.pws_workspace components prepare` in the new installation:
+
+- **PineTS** (the only computation engine, `tools/pine_exec`) and **Vela** (the browser chart that
+  displays the results computed by PWS, `tools/vela_view`) are installed with
+  `npm ci --ignore-scripts` from the shipped lockfiles, at their exact pinned versions, inside the
+  installation folder only — nothing is installed globally;
+- PineTS is verified (pin, lockfile, registry integrity, installed artefact, executor fingerprint);
+- Vela's provenance is established from its verified npm archive (pinned version only — never an update);
+- the 500-candle demonstration dataset is generated (deterministic, checked by SHA-256);
+- no follow-up is started and no browser is opened.
+
+If Node.js/npm is missing, or a step fails (network, disk…), the installation itself is kept and
+usable; the installer says what is ready, what is missing, and exits with code 4. Resume at any
+time, from the installation folder (your scripts and settings are kept):
 
 ```bash
-cd tools/pine_exec && npm ci --ignore-scripts
+python3 -m tools.pws_workspace components prepare --text
 ```
 
-PineTS is installed by **you**, from npm, at the exact version pinned in `package-lock.json`,
-under PineTS's own licence (AGPL-3.0-only — see `THIRD_PARTY_NOTICES.md`). PWS never updates it
-silently; `python3 -m tools.pws_workspace pinets check-update` is an explicit query, and
-`pinets install <version> --yes` an explicit, reversible operation; the guided path
-(`/pws → Maintenance / configuration → Tools and updates → PineTS`) chains them with one
-confirmation. PineTS is a local laboratory;
-TradingView remains the validation authority.
+A Vela failure leaves the numeric local test usable when PineTS is ready. `components status`
+shows the last preparation. PWS never updates PineTS or Vela silently: the guided paths
+(`/pws → Maintenance / configuration → Tools and updates → PineTS` or `Vela`) search, show a plan
+and apply only after one confirmation, with a verified rollback point. PineTS is a local
+laboratory; TradingView remains the validation authority.
+
+**First chart**: `claude`, then `/pws → Quality / publication → Local test (PineTS)`, choose your
+script and the demonstration data; then "Open the chart".
 
 ## 6. Start
 
@@ -109,8 +128,9 @@ claude            # the PWS state is shown at session start
 
 - Pine Workspace's own components: Apache License 2.0 for the core (`LICENSE`) and GNU AGPL v3 only
   for the PineTS thin adapter (`tools/pine_exec/LICENSE`) — see `NOTICE` and
-  `docs/licensing/LICENSING.md`. PineTS itself is not shipped: installing it with npm is optional and
-  happens under PineTS's own licence (`THIRD_PARTY_NOTICES.md`).
+  `docs/licensing/LICENSING.md`. PineTS and Vela are not shipped in the archive: the installer
+  installs them with npm into your installation, each under its own licence (PineTS AGPL-3.0-only,
+  Vela and vela-ui Apache-2.0 — `THIRD_PARTY_NOTICES.md`).
 - Your scripts: **yours**. PWS never imposes its licence or its authors' identity on them; you
   choose a profile per project (FREE / PRIVATE / COMMERCIAL — see `docs/licensing/PROFILES.md`).
 - Licence templates rendered for your scripts (headers, notices, grants, EULAs): reusable and

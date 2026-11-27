@@ -11,6 +11,92 @@ doctor). A published version is never replaced silently: a corrected delivery ge
 Each entry lists what changed and the limits that remain, so that the guided update path can show
 them before anything is applied.
 
+## [2.3.0] — Local tests with a browser chart, PineTS 0.13.1, adaptive local test loop (prepared 2026-11-27)
+
+### What this version is
+
+A compatible evolution of the 2.2.0 core. A local test can now be inspected on a chart in the
+browser (Vela), drawn from the same run as the numeric result, without a second computation; the
+standard installation prepares the engine, the demonstration data and the chart; new installations
+use PineTS 0.13.1; and a local test session (EXPERIMENTAL) follows each saved revision of a work copy
+and tells Claude Code which check is useful next. The existing commands, states and protections are
+reused. No data migration other than the usual recording of the version (m004).
+
+### Added — inspect the result on a chart
+
+- Graphics annex (`tools/pine_exec/graphics.mjs`, `runner.mjs --graphics-out`): the same PineTS run
+  that writes the report can write the chart content (series, levels, signals, candles, lines and fills
+  in their final state, styles), bound to the report by its SHA-256. A chart that cannot be written
+  never fails the computation (status `GRAPHICS_*`, exit 5: numeric result valid).
+- Reader contract v1 (`tools/pws_workspace/annex_reader.py`, `READER_CONTRACT.md`): an annex is read
+  only with its own report and dataset snapshot, under its version of origin; anything inconsistent is
+  refused with its reason, never repaired.
+- `local-test plan / run / open`: one engine call per test; the chart option is never preselected;
+  `open` reopens a past run without recomputing it.
+- Vela browser chart (`tools/vela_view`, `@luxalgo/vela` 0.10.15 and `@luxalgo/vela-ui` 0.4.4): the
+  page only reads the files of the run (it never runs PineTS), with "Export as PNG".
+- Guided update of Vela (`vela-tools` skill, `vela guide`, `vela rollback`, `vela points`): the same
+  steps as the PineTS guide, offline installation from verified archives, verified rollback points;
+  it never touches PineTS or its calibrations.
+
+### Added — installation
+
+- `install.py` ends with `components prepare`: PineTS from the shipped lockfile (`npm ci
+  --ignore-scripts`, then pin, lockfile, registry integrity, installed artifact and executor
+  fingerprint checks), the 500-candle demonstration dataset (checked against its reference SHA-256)
+  and Vela (provenance established from the verified npm archive of the pinned version). Installed
+  versions are compared with the lockfiles and repaired by `npm ci --ignore-scripts` before "ready".
+  A missing Node.js / npm or a failed component leaves the numeric test usable and gives the exact
+  resume command; resuming never touches scripts, settings or runs.
+- The standard package ships the browser chart; `build-release --without-vela` builds a special
+  numeric-only package.
+
+### Added — adaptive local test session (EXPERIMENTAL)
+
+- A session opened by choosing a script and a dataset keeps a work copy; each stabilized save of that
+  copy is computed automatically (holder's decision of 2026-11-23, `docs/architecture/OPERATIONS.md`);
+  what Claude Code reads (`local-test status`, `inspect --work`) is tied to the saved revision.
+- Qualification of each result against the previous good one, without any new computation: runner
+  `compareRuns`, chart facets (values, signals, objects, styles), first established divergences.
+- `local-test next` (advisory): the next useful check, from the declared expectation and the facts —
+  read a bar, review a facet, nothing more to check, or why nothing can be concluded. A missing or
+  refused annex makes signals, styles and objects unverifiable, never unchanged.
+- `local-test impact` and `expect --from-impact`: for a calculation change, each output's prediction
+  (may change, stays identical, uncertain) with the chain of definitions that justifies it; `next`
+  reports what each output did against its prediction, an equality only when the output was measured
+  in both runs on every announced bar.
+- Runs that are not comparable (different dataset, configuration, PineTS version, executor, schema,
+  a run not PASS, an unusable report) are checked at each call: nothing is stated between them, for
+  any output; both runs and the reason are named, and each run's own facts are given separately.
+
+### Changed
+
+- Default PineTS for new installations: 0.13.1 (was 0.10.0), installed by the guided path with a
+  verified rollback point; calibrations re-exercised on 0.13.1 (seven capabilities CURRENT, none
+  GATING; executor fingerprint changed with the adapter).
+- `pine-develop` and `pine-local-test` describe the session, the qualification and every kind of
+  `local-test next` answer; `tooling-status` reports Vela.
+
+### Limits that remain
+
+- The local test session, `next`, `impact` and the chart are EXPERIMENTAL and advisory. A PineTS
+  result is never a TradingView validation (`PINETS_EXECUTION_PASS ≠ TV_VALIDATED`); CURRENT never
+  means GATING; the EXPECTED / UNEXPECTED / UNRESOLVED judgement stays Claude Code's.
+- `impact` follows only the dependencies the source shows (blocks, loops, functions, tuples and
+  non-literal titles are "uncertain"); "may change" never means "will change".
+- The chart was verified on macOS with Safari; other browsers and systems are not verified.
+  Objects are drawn in their final state only.
+- Node.js and npm are required for local tests and charts; components are installed only from the
+  shipped lockfiles.
+- The limits listed for 2.2.0 still apply.
+
+### Licence
+
+Unchanged for the core (Apache License 2.0) and the PineTS thin adapter (GNU AGPL v3 only). Added
+third-party components: Vela and vela-ui (Apache-2.0, LuxAlgo) and their dependencies (MIT or
+Apache-2.0 per `tools/vela_view/package-lock.json`), listed in `THIRD_PARTY_NOTICES.md` and
+`docs/licensing/LICENSING.md`; PineTS 0.13.1 keeps `AGPL-3.0-only`.
+
 ## [2.2.0] — Guided updates of Pine Workspace and PineTS, fewer permission prompts (prepared 2026-11-17)
 
 ### What this version is

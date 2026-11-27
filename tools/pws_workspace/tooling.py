@@ -243,7 +243,7 @@ def status(root):
         "rollback_leftovers_note": _leftovers_note(leftovers) if leftovers else None,
         "other_tools": {
             "pinets-cli": "not installed — optional interface to compare with the existing runner (documented only)",
-            "vela": "not installed — optional local preview (documented only)",
+            "vela": vela_status(root),
             "edge-stats": "not installed — statistical research (documented only)",
             "luxalgo-mcp": "not installed — future need to justify (spec §59 gate)",
         },
@@ -251,6 +251,35 @@ def status(root):
                   "update ⇒ dependent calibrations STALE", "CURRENT is never GATING by itself",
                   "TradingView remains the validation authority"],
     }
+
+
+def vela_status(root):
+    """What Vela is in THIS workspace, from the packages actually installed under tools/vela_view
+    (an EXPERIMENTAL folder of the isolated study copy, never shipped by the distribution)."""
+    nm = Path(root) / "tools" / "vela_view" / "node_modules"
+
+    def ver(pkg):
+        try:
+            return json.loads((nm / pkg / "package.json").read_text(encoding="utf-8")).get("version")
+        except (OSError, ValueError, AttributeError):
+            return None
+    vela, conn = ver("@luxalgo/vela"), ver("@luxalgo/vela-pinets")
+    if vela and not conn:
+        return ("installed in this workspace (tools/vela_view): @luxalgo/vela %s displays local test results in the "
+                "browser from the series already computed by the PWS adapter (no connector, no second computation); "
+                "guided update: `vela guide` (state, search, prepare, apply) and `vela rollback`" % vela)
+    if not vela:
+        if (Path(root) / "tools" / "vela_view" / "page" / "pws-view.js").is_file():
+            return ("component present (tools/vela_view) but not prepared yet: run `python3 -m tools.pws_workspace "
+                    "components prepare` (npm ci --ignore-scripts from the lockfile); until then local tests stay "
+                    "numeric and a chart request is refused (VELA_NO_DEPS)")
+        return ("not installed: this workspace comes from a special build without the browser chart (component vela-view); "
+                "local tests stay numeric (results readable with local-test status / inspect) and a chart request "
+                "is refused with VELA_ABSENT, without recomputation")
+    return ("installed in this workspace (tools/vela_view): @luxalgo/vela %s displays local test results in the "
+            "browser; the official connector @luxalgo/vela-pinets %s is %s, but the page uses the series already "
+            "computed by the PWS adapter (no second computation); updates are not managed by the guided path (to be "
+            "decided)" % (vela, conn or "?", "installed" if conn else "NOT installed"))
 
 
 def verify(root, record=False):
